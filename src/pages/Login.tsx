@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import Button from "../UiComponent/Button";
-import InputBox from "../UiComponent/InputTextArea";
+import InputBox from "../components/UiComponents/InputTextArea";
 import Loader from "../UiComponent/Loader";
-import useLoading from "../../hooks/useLoading";
+import useLoading from "../hooks/useLoading";
 import Header from "../Header";
 
 const Login = () => {
