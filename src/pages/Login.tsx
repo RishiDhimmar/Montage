@@ -3,7 +3,7 @@ import Navbar from "../Navbar";
 import Button from "../UiComponent/Button";
 import InputBox from "../UiComponent/InputTextArea";
 import Loader from "../UiComponent/Loader";
-import useLoading from "../../Hooks/useLoading";
+import useLoading from "../../hooks/useLoading";
 import Header from "../Header";
 
 const Login = () => {
