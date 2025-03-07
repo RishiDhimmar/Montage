@@ -1,10 +1,12 @@
 
 import "./App.css";
+import ConfiguratorLayout from "./layouts/ConfiguratorLayout";
+
 
 function App() {
   return (
     <>
-      <div className="text-3xl">Hello world 1</div>
+      <ConfiguratorLayout />
     </>
   );
 }
