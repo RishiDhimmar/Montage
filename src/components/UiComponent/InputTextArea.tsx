@@ -9,7 +9,7 @@ interface InputBoxProps {
 const InputBox: React.FC<InputBoxProps> = ({
   label,
   type = "text",
-  placeholder = "", 
+  placeholder = "", // Default position in 3D space
 }) => {
   return (
     
