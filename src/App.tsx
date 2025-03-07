@@ -8,8 +8,7 @@ function App() {
   return (
     <>
       <ConfiguratorLayout />
-      <div className="text-3xl">Hello world 1</div>
-      <Signup />
+      {/* <Signup /> */}
     </>
   );
 }
