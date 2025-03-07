@@ -1,8 +1,13 @@
 import React from 'react'
+import RightSideBar from '../components/RightSideBar'
+import Sidebar from '../components/Sidebar'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <Sidebar/>
+      <RightSideBar/>
+    </div>
   )
 }
 

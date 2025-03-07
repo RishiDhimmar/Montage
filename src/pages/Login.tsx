@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
-import Button from "../UiComponent/Button";
-import InputBox from "../components/UiComponents/InputTextArea";
-import Loader from "../UiComponent/Loader";
+import Button from "../components/UiComponent/Button";
+import InputBox from "../components/UiComponent/InputTextArea";
+import Loader from "../components/UiComponent/Loader";
 import useLoading from "../hooks/useLoading";
 import Header from "../Header";
 
@@ -21,8 +21,8 @@ const Login = () => {
   return (
     <>
       <Loader isLoading={isLoading} />
-      <Navbar />
-      <Header/>
+      {/* <Navbar /> */}
+      {/* <Header/> */}
       <div className="flex justify-center items-center min-h-[calc(100vh-60px)]"> 
         <div className="w-[392px] bg-white rounded">
           <div className="text-2xl font-bold mb-4">Sign In</div>
