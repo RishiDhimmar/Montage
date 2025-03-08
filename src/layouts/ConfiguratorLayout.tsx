@@ -1,8 +1,8 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import LeftSidebar from "../components/LeftSidebar";
-import RightSidebar from "../components/RightSidebar";
-import Center from "../components/Center";
+import RightSidebar from "../components/Layout/RightSideBar";
+import Center from "../components/Layout/Center";
+import LeftSidebar from "../components/Layout/LeftSidebar";
 function ConfiguratorLayout() {
   return (
     <>
