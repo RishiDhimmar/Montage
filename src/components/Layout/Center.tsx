@@ -53,7 +53,11 @@ const Center: React.FC = () => {
           <OrthographicCamera makeDefault position={[0, 2, 0]} zoom={50} ref={cameraRef as React.MutableRefObject<THREE.OrthographicCamera>} />
         )}
 
+<<<<<<< HEAD
         <CameraControls makeDefault azimuthRotateSpeed={!is3D ? 0 : 2} polarRotateSpeed={!is3D ? 0 : 2} ref={controlsRef} dampingFactor={0}/>
+=======
+        <CameraControls azimuthRotateSpeed={!is3D ? 0 : 1} polarRotateSpeed={!is3D ? 0 : 1} />
+>>>>>>> 68878c41ca7ca5d25fe3d0d694c8920346660a7a
 
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 2, 2]} />

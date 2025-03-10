@@ -11,7 +11,7 @@ const ModuleBar: React.FC = observer(() => {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-[#FAFAFF]">
       <div className="text-xl font-bold mb-3">Modules</div>
       <div className="mb-3 border-b border-gray-300"></div>
       <div className="mb-3">
