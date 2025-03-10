@@ -20,7 +20,7 @@ const TextureSection: React.FC<TextureSectionProps> = ({ section }) => {
       <img
         src={textureStore.selectedTextures[section.id]?.url || ""}
         alt={textureStore.selectedTextures[section.id]?.label || "Texture"}
-        className="w-full h-48 object-cover rounded mb-2 border border-gray-400"
+        className="w-full h-[280px] object-cover rounded mb-2 border border-gray-400"
       />
       <div className="font-semibold mb-2">{section.title}</div>
 
