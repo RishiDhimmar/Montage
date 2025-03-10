@@ -21,7 +21,6 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => 
 
   // ✅ Ensure a valid image source
   const imageSrc = selectedTexture?.imageUrl?.trim() ? selectedTexture.imageUrl : null;
-    console.log(imageSrc);
   return (
     <div className="mb-6 text-center">
       {imageSrc ? (
