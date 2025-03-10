@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { PerspectiveCamera, OrthographicCamera, CameraControls, Grid } from "@react-three/drei";
 import { ModelRenderer } from "../Models/ModelRenderer";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
-import { PlaneGeometry } from "three";
+import * as THREE from "three";
 
 interface ModelProps {
   modelPath: string;
@@ -12,21 +12,32 @@ interface ModelProps {
 
 const Center: React.FC = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const groundRef = useRef<THREE.Mesh | null>(null);
+  const cameraRef = useRef<THREE.Camera | null>(null);
+  const controlsRef = useRef<CameraControls | null>(null);
+
   const [is3D, setIs3D] = useState(false);
-  const groundRef = useRef()
   const [models, setModels] = useState<ModelProps[]>([]);
 
-  const addModel = (modelPath: string, position: [number, number, number]) =>
+  const addModel = (modelPath: string, position: [number, number, number]) => {
     setModels((prev) => [...prev, { modelPath, position }]);
+  };
 
-  const handleDrop = (event: React.DragEvent) => {
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const modelPath = event.dataTransfer.getData("modelPath");
-    if (!modelPath) return;
+    if (!modelPath || !cameraRef.current || !groundRef.current || !controlsRef.current) return;
+    controlsRef.current.enabled = false
 
-    console.log(performRaycastFromMouse(event, canvasRef.current, [groundRef.current]));
+    controlsRef.current.enabled = false
+    const intersections = performRaycastFromMouse(event.nativeEvent, cameraRef.current, [groundRef.current]);
 
-    addModel(modelPath, [0, 0, 0]); // Default drop position
+    const point = intersections[0]?.point ?? new THREE.Vector3(0, 0, 0);    
+    addModel(modelPath, [point.x, point.y, point.z]);
+    console.log(cameraRef.current.position)
+    cameraRef.current.updateMatrixWorld()
+    controlsRef.current.enabled = true
+
   };
 
   return (
@@ -37,21 +48,26 @@ const Center: React.FC = () => {
 
       <Canvas>
         {is3D ? (
-          <PerspectiveCamera makeDefault position={[5, 5, 5]} />
+          <PerspectiveCamera makeDefault position={[5, 5, 5]}  ref={cameraRef as React.MutableRefObject<THREE.PerspectiveCamera>} />
         ) : (
-          <OrthographicCamera makeDefault position={[0, 10, 0]} zoom={50} />
+          <OrthographicCamera makeDefault position={[0, 2, 0]} zoom={50} ref={cameraRef as React.MutableRefObject<THREE.OrthographicCamera>} />
         )}
 
-        {/* ✅ Disable Rotation */}
-        <CameraControls azimuthRotateSpeed={!is3D ? 0 : 1} polarRotateSpeed={!is3D ? 0 : 1} />
+        <CameraControls makeDefault azimuthRotateSpeed={!is3D ? 0 : 2} polarRotateSpeed={!is3D ? 0 : 2} ref={controlsRef} dampingFactor={0}/>
 
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 2, 2]} />
 
-        <><mesh rotation={[-Math.PI / 2, 0, 0]} ref={groundRef}><planeGeometry args={[50, 50]} /></mesh></>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} ref={groundRef} position={[0, 0, 0]}>
+          <planeGeometry args={[50, 50]} />
+          <meshBasicMaterial visible={false} />
+        </mesh>
 
-        {is3D == false ? <Grid args={[50, 50]} cellColor="gray" sectionColor="gray" /> : null }
-        {models.map((model, index) => <ModelRenderer key={index} {...model} />)}
+        {!is3D && <Grid args={[50, 50]} cellColor="gray" sectionColor="gray" />}
+
+        {models.map((model, index) => (
+          <ModelRenderer key={index} {...model} />
+        ))}
       </Canvas>
     </div>
   );
