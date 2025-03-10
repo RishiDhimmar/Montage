@@ -42,7 +42,6 @@ const Center: React.FC = () => {
           <OrthographicCamera makeDefault position={[0, 10, 0]} zoom={50} />
         )}
 
-        {/* ✅ Disable Rotation */}
         <CameraControls azimuthRotateSpeed={!is3D ? 0 : 1} polarRotateSpeed={!is3D ? 0 : 1} />
 
         <ambientLight intensity={0.5} />

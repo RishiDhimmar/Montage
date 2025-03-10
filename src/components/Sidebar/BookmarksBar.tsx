@@ -15,7 +15,7 @@ const bookmarks: BookmarkItem[] = [
 
 const BookmarksBar: React.FC = () => {
   return (
-    <div >
+    <div className="p-4 bg-[#FAFAFF]" >
       <h2 className="text-xl font-bold mb-3">Bookmarks</h2>
       <div className="mb-3 border-b border-gray-300" ></div>
 
