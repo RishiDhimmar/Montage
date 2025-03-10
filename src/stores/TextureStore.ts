@@ -1,11 +1,13 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, observable } from "mobx";
 import { fetchData } from "../utils/fetchData";
+import { BASE_URL } from "../Constants";
 
 interface Texture {
   id: number;
   label: string;
-  url: string;
-  compatibility: string[]; // ✅ Include compatibility
+  imageUrl: string;
+  materialUrl: string;
+  compatibility: string[];
   price: number;
   manufacturer: string;
 }
@@ -18,8 +20,8 @@ interface TextureCategory {
 
 class TextureStore {
   textures: TextureCategory[] = [];
-  selectedTexture: Texture | null = null;
-  loading: boolean = false;
+  selectedTextures = observable.object<Record<string, Texture | null>>({}); // ✅ MobX tracks changes better
+  loading = false;
   error: string | null = null;
 
   constructor() {
@@ -28,30 +30,35 @@ class TextureStore {
 
   setTextures(apiData: any[]) {
     runInAction(() => {
-      this.textures = apiData.map((category) => ({
-        id: category.id,
-        title: category.name,
-        textures: category.materialList.map((material) => ({
-          id: material.materialId,
-          label: material.materialTable.name,
-          url: material.materialTable.imageURL || "placeholder.png",
-          compatibility: material.materialTable.compatibility || [],
-          price: material.materialTable.price || 0, 
-          manufacturer: material.materialTable.manufacturer || "Unknown", 
+      this.textures = apiData.map((subStyle) => ({
+        id: subStyle.id,
+        title: subStyle.name,
+        textures: subStyle.materialList.map((material) => ({
+          id: material.id,
+          label: material.name,
+          imageUrl: material.samplePreviewUrl || "placeholder.png",
+          materialUrl: material.imageURL || "placeholder.png",
+          compatibility: subStyle.compatibility || [],
+          price: material.price || 0,
+          manufacturer: material.description || "Unknown",
         })),
       }));
 
       this.error = null;
 
-      if (this.textures.length > 0 && this.textures[0].textures.length > 0) {
-        this.setTexture(this.textures[0].textures[0]);
-      }
+      this.textures.forEach((category) => {
+        if (category.textures.length > 0) {
+          this.selectedTextures[category.id] = category.textures[0]; // ✅ Fixed `.set()`
+        } else {
+          this.selectedTextures[category.id] = null; // ✅ Explicitly handle empty categories
+        }
+      });
     });
   }
 
-  setTexture(texture: Texture) {
+  setTexture(categoryId: string, texture: Texture) {
     runInAction(() => {
-      this.selectedTexture = texture;
+      this.selectedTextures[categoryId] = texture; // ✅ Fixed `.set()`
     });
   }
 
@@ -62,14 +69,14 @@ class TextureStore {
     });
 
     try {
-      const data = await fetchData("http://50.18.136.147:8080/sub-styles");
-      console.log("📡 API Response:", data); // Debugging API response
+      const data = await fetchData(`${BASE_URL}/styles`);
+      console.log("📡 API Response:", data);
 
-      if (!data || !Array.isArray(data)) {
+      if (!data || typeof data !== "object" || !Array.isArray(data.subStyleList)) {
         throw new Error("Invalid API response format");
       }
 
-      this.setTextures(data);
+      this.setTextures(data.subStyleList);
     } catch (error) {
       console.error("❌ Fetch Error:", error);
       runInAction(() => {

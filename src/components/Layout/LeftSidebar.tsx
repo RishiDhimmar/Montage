@@ -8,7 +8,7 @@ import BookmarksBar from "../Sidebar/BookmarksBar";
 
 const LeftSidebar: React.FC = observer(() => {
   return (
-    <div className="w-[440px] flex border-r border-gray-300 h-[calc(100vh-64px)] bg-[#FCFCFC]">
+    <div className="w-[440px] flex border-r border-gray-300 h-[calc(100vh-64px)] bg-[#FAFAFF]">
       {/* Sidebar Buttons */}
       <SidebarMenu />
 
