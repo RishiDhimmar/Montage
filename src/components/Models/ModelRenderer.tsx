@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 
-interface ModelProps {
+interface ModelRendererProps {
   modelPath: string;
   position: [number, number, number];
-  onLoad?: () => void; // Callback function when model loads
+  onLoad?: () => void;
 }
 
-export const ModelRenderer: React.FC<ModelProps> = ({ modelPath, position, onLoad }) => {
+export const ModelRenderer: React.FC<ModelRendererProps> = ({ modelPath, position, onLoad }) => {
   const { scene } = useGLTF(modelPath);
-  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    if (scene && !loaded) {
-      setLoaded(true);
-      if (onLoad) onLoad(); // Call the callback function
-    }
-  }, [scene, loaded, onLoad]);
+  React.useEffect(() => {
+    if (onLoad) onLoad();
+  }, [onLoad]);
 
   return <primitive object={scene} position={position} />;
 };
