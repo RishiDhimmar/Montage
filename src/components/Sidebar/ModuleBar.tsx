@@ -1,95 +1,48 @@
-import React from "react";
-import { FaPlus } from "react-icons/fa";
+import React, { useEffect } from "react";
+import { observer } from "mobx-react-lite";
+import moduleStore from "../../stores/ModuleStore";
 import Button from "../UiComponent/Button";
 import SearchBar from "./SearchBar";
 
-const modules = [
-  {
-    id: "1",
-    name: "Annex",
-    image: "/color.jpg",
-    model: "/models/Annex_tag.glb",
-  },
-  {
-    id: "2",
-    name: "Dwelling",
-    image: "/logo.png",
-    model: "/models/Dwelling_tag.glb",
-  },
-  {
-    id: "3",
-    name: "Lifestyle",
-    image: "/height.jpg",
-    model: "/models/Lifestyle_tag.glb",
-  },
-  {
-    id: "4",
-    name: "Annex",
-    image: "/color.jpg",
-    model: "/models/Annex_tag.glb",
-  },
-  {
-    id: "5",
-    name: "Dwelling",
-    image: "/logo.png",
-    model: "/models/Dwelling_tag.glb",
-  },
-  {
-    id: "6",
-    name: "Lifestyle",
-    image: "/height.jpg",
-    model: "/models/Lifestyle_tag.glb",
-  },
-  {
-    id: "7",
-    name: "Annex",
-    image: "/color.jpg",
-    model: "/models/Annex_tag.glb",
-  },
-  {
-    id: "8",
-    name: "Dwelling",
-    image: "/logo.png",
-    model: "/models/Dwelling_tag.glb",
-  },
-  {
-    id: "9",
-    name: "Lifestyle",
-    image: "/height.jpg",
-    model: "/models/Lifestyle_tag.glb",
-  },
-];
+const ModuleBar: React.FC = observer(() => {
+  useEffect(() => {
+    moduleStore.fetchModules();
+  }, []);
 
-const ModuleBar: React.FC = () => {
-  const handleDragStart = (event: React.DragEvent, modelPath: string) => {
+  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, modelPath: string) => {
     event.dataTransfer.setData("modelPath", modelPath);
     event.dataTransfer.effectAllowed = "copy";
   };
 
   return (
-    <>
     <div className="p-4">
       <div className="text-xl font-bold mb-3">Modules</div>
       <div className="mb-3 border-b border-gray-300"></div>
       <div className="mb-3">
-        <SearchBar/>
+        <SearchBar />
       </div>
       <div className="mb-2 border-b border-gray-300"></div>
-      <div className="flex justify-between mb-2  border-gray-300  rounded items-center h-[7vh] px-7 ">
+
+      <div className="flex justify-between mb-2 border-gray-300 rounded items-center h-[7vh] px-7">
         <div className="border rounded w-[80px]">
-        <Button label="Annex" onClick={() => {}} variant="none" />
+          <Button label="Annex" onClick={() => {}} variant="none" />
         </div>
         <div className="border rounded w-[80px]">
-        <Button label="Dwelling" onClick={() => {}} variant="none"/>
+          <Button label="Dwelling" onClick={() => {}} variant="none" />
         </div>
         <div className="border rounded w-[80px]">
-        <Button label="Lifestyle" onClick={() => {}} variant="none"/>
+          <Button label="Lifestyle" onClick={() => {}} variant="none" />
         </div>
       </div>
+
       <div className="mb-2 border-b border-gray-300"></div>
+
       <div className="h-[60vh] p-4 overflow-y-scroll custom-scrollbar">
-        <div className=" ">
-          {modules.map((module) => (
+        {moduleStore.loading && <p>Loading modules...</p>}
+        {moduleStore.error && <p className="text-red-500">{moduleStore.error}</p>}
+
+        <div>
+          {moduleStore.modules.map((module) => (
             <div
               key={module.id}
               draggable
@@ -102,13 +55,16 @@ const ModuleBar: React.FC = () => {
                 className="w-full h-[200px] object-cover rounded"
               />
               <p className="text-center mt-2 font-medium">{module.name}</p>
+              <p className="text-center text-gray-600">Type: {module.moduleType}</p>
+              <p className="text-center text-gray-600">Size: {module.size} sqft</p>
+              <p className="text-center text-gray-600 font-semibold">${module.price}</p>
             </div>
           ))}
         </div>
       </div>
-      </div>
-    </>
+    </div>
   );
-};
+});
 
 export default ModuleBar;
+
