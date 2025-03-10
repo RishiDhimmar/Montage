@@ -8,13 +8,13 @@ const Dropdown = () => {
             <div>
               <button
                 type="button"
-                className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+                className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-gray-100 px-3 py-2 text font-semibold text-gray-500"
                 onClick={() => setShowDropdown(!showDropdown)}
                 aria-expanded={showDropdown ? "true" : "false"}
                 aria-haspopup="true"
               >
                 Date Created
-                <IoIosArrowDown className="ml-2 text-gray-400" />
+                <IoIosArrowDown size={20} />
               </button>
             </div>
 

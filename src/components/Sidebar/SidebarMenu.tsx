@@ -14,7 +14,7 @@ const SidebarMenu: React.FC = observer(() => {
   ];
 
   return (
-    <div className="w-[80px] border-r border-gray-300 flex flex-col items-center py-4">
+    <div className="w-[80px] border-r border-gray-300 flex flex-col items-center py-4 bg-[#FAFAFF]">
       {options.map(({ id, icon, filledIcon, label }) => (
         <SidebarButton
           key={id}

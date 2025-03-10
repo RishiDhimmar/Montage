@@ -14,7 +14,7 @@ const Header = () => {
 
         <div className="flex gap-3 items-center">
           <div>
-            <Button label="Grid" icon={<PiSquaresFourLight />} />
+            <Button label="Grid" icon={<PiSquaresFourLight />} variant="tertiary"/>
           </div>
 
           <div>
@@ -30,7 +30,7 @@ const Header = () => {
             <Button
               label="New Design"
               variant="primary"
-              icon={<FaPlus size={14} />}
+              icon={<FaPlus size={12} />}
             />
           </div>
         </div>

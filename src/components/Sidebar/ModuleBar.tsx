@@ -1,5 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
+import Button from "../UiComponent/Button";
+import SearchBar from "./SearchBar";
 
 const modules = [
   {
@@ -66,9 +68,26 @@ const ModuleBar: React.FC = () => {
 
   return (
     <>
+    <div className="p-4">
       <div className="text-xl font-bold mb-3">Modules</div>
       <div className="mb-3 border-b border-gray-300"></div>
-      <div className="h-[70vh] p-4 overflow-y-scroll custom-scrollbar">
+      <div className="mb-3">
+        <SearchBar/>
+      </div>
+      <div className="mb-2 border-b border-gray-300"></div>
+      <div className="flex justify-between mb-2  border-gray-300  rounded items-center h-[7vh] px-7 ">
+        <div className="border rounded w-[80px]">
+        <Button label="Annex" onClick={() => {}} variant="none" />
+        </div>
+        <div className="border rounded w-[80px]">
+        <Button label="Dwelling" onClick={() => {}} variant="none"/>
+        </div>
+        <div className="border rounded w-[80px]">
+        <Button label="Lifestyle" onClick={() => {}} variant="none"/>
+        </div>
+      </div>
+      <div className="mb-2 border-b border-gray-300"></div>
+      <div className="h-[60vh] p-4 overflow-y-scroll custom-scrollbar">
         <div className=" ">
           {modules.map((module) => (
             <div
@@ -87,9 +106,6 @@ const ModuleBar: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className=" flex justify-between mb-3 border-t border-gray-300 items-center p-3 "> 
-        <div className="font-semibold">Add Module</div>
-        <div><FaPlus size={20} /></div>
       </div>
     </>
   );
