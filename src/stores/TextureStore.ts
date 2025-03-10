@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { fetchData } from "../utils/fetchData";
+import { BASE_URL } from "../Constants";
 
 interface Texture {
   id: number;
@@ -62,7 +63,7 @@ class TextureStore {
     });
 
     try {
-      const data = await fetchData("http://50.18.136.147:8080/sub-styles");
+      const data = await fetchData(`${BASE_URL}/sub-styles`);
       console.log("📡 API Response:", data); // Debugging API response
 
       if (!data || !Array.isArray(data)) {

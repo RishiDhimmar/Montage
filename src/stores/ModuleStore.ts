@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { fetchData } from "../utils/fetchData"; 
+import { BASE_URL } from "../Constants";
 
 interface Module {
   id: number;
@@ -7,6 +8,8 @@ interface Module {
   image: string;
   model: string;
   price: number;
+  noOfBedRooms: number;
+  noOfBathRooms: number;
   size: number;
   moduleType: string;
 }
@@ -28,7 +31,9 @@ class ModuleStore {
         name: module.name,
         image: module.moduleImage || "placeholder.png",
         model: module.glbFile,
-        price: module.price || 0,
+        price: module.pricePerSqft || 0,
+        noOfBedRooms: module.noOfBedrooms || 0,
+        noOfBathRooms: module.noOfBathrooms || 0,
         size: module.size || 0,
         moduleType: module.moduleType?.name || "Unknown",
       }));
@@ -54,7 +59,7 @@ class ModuleStore {
     });
 
     try {
-      const data = await fetchData("http://50.18.136.147:8080/modules"); // Replace with actual API endpoint
+      const data = await fetchData(`${BASE_URL}/modules`); // Replace with actual API endpoint
       console.log("📡 API Response:", data); // Debugging API response
 
       if (!data || !Array.isArray(data)) {
