@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import Navbar from "../Navbar";
-import Button from "../UiComponent/Button";
-import InputBox from "../components/UiComponents/InputTextArea";
-import Loader from "../UiComponent/Loader";
+import Navbar from "../components/Navbar";
+import Button from "../components/UiComponent/Button";
+import InputBox from "../components/UiComponent/InputTextArea";
+import Loader from "../components/UiComponent/Loader";
 import useLoading from "../hooks/useLoading";
 import Header from "../Header";
 
@@ -22,8 +22,8 @@ const Login = () => {
     <>
       <Loader isLoading={isLoading} />
       <Navbar />
-      <Header/>
-      <div className="flex justify-center items-center min-h-[calc(100vh-60px)]"> 
+      {/* <Header/> */}
+      <div className="flex justify-center items-center min-h-[calc(100vh-97px)]"> 
         <div className="w-[392px] bg-white rounded">
           <div className="text-2xl font-bold mb-4">Sign In</div>
           <div className="mt-4">
@@ -33,7 +33,7 @@ const Login = () => {
           <InputBox label="Password" type="password" placeholder="Enter your password" />
           </div>
           <div className="mt-4">
-            <Button label="Sign In" variant="primary" onClick={() => navigate("/dashboard")} />
+            <Button label="Sign In" variant="primary" onClick={() => navigate("/portfolio")} />
           </div>
 
           <div className="text-center mt-4">

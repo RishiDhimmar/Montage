@@ -1,17 +1,19 @@
 import React from "react";
 
 interface ButtonProps {
-  label: string;
+  label?: string;
   onClick?: () => void;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary" | "none";
   icon?: React.ReactNode;
   disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, variant = "primary", disabled , icon }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, variant="tertiary", disabled , icon }) => {
   const buttonStyles = {
     primary: `bg-blue-900 text-white hover:bg-blue-800 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
     secondary: `bg-white text-black border border-gray-300 hover:bg-gray-100 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    tertiary: `bg-gray-100 text-black ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    none: `bg-gray-100 text-gray-600 hover:bg-gray-200 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
   };
 
   return (
@@ -20,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant = "primary", di
       className={`w-full p-2 rounded-md transition-all duration-300 ${buttonStyles[variant]}`}
       disabled={disabled}
     >
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center gap-2">
       {icon && <span className="">{icon}</span>}
       {label}
       </div>
