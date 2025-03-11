@@ -57,7 +57,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
       <OrbitControls enableRotate={modelStore.is3d} makeDefault />
       <SceneLights />
       <GroundPlane groundRef={groundRef} />
-      {!modelStore.is3d && <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />}
+      {!modelStore.is3d && (<Grid args={[150, 150]}  cellColor="gray" sectionColor="gray" /> )}
       <ModelManager />
       {/* Sphere to indicate current cursor position */}
       <mesh position={cursorPosition}>
