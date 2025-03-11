@@ -54,7 +54,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
   return (
     <group onPointerMove={handlePointerMove}>
       <SceneCamera is3D={modelStore.is3d} cameraRef={camera}/>
-      <OrbitControls enableRotate={true} makeDefault />
+      <OrbitControls enableRotate={modelStore.is3d} makeDefault />
       <SceneLights />
       <GroundPlane groundRef={groundRef} />
       {!modelStore.is3d && <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />}

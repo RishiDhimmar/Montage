@@ -101,7 +101,7 @@ const EdgeModel = observer(({ id, nodes, position }) => {
               <mesh key={`${key}-${Date.now()}`} geometry={geometry} material={material}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={modelStore.selectedModelId == id ? 4 : 2}
+                  lineWidth={ 2}
                   threshold={1}
                 />
               </mesh>
@@ -109,7 +109,7 @@ const EdgeModel = observer(({ id, nodes, position }) => {
               <mesh key={`${key}-${Date.now()}`} geometry={geometry}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={modelStore.selectedModelId == id ? 4 : 2}
+                  lineWidth={ 2}
                   threshold={1}
                 />
               </mesh>
