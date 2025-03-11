@@ -4,12 +4,12 @@ import { FaPlus, FaThList } from "react-icons/fa";
 import { FiFolderPlus } from "react-icons/fi";
 import Dropdown from "./UiComponent/Dropdown";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { set } from "mobx";
+import portfolioStore from "../stores/PortfolioStore";
+import { observer } from "mobx-react-lite";
 
-const Header = () => {
+const Header = observer(() => {
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState("grid");
+  // const [viewMode, setViewMode] = useState("grid");
   return (
     <>
       <header className=" text-white h-[60px] flex justify-between items-center px-4 ">
@@ -21,7 +21,7 @@ const Header = () => {
           <div className="flex">
             <div
               className={`${
-                viewMode === "grid" ? "bg-gray-200" : "bg-gray-100"
+                portfolioStore.selectedView === "grid" ? "bg-gray-200" : "bg-gray-100"
               }`}
             >
               <Button
@@ -29,21 +29,21 @@ const Header = () => {
                 icon={<PiSquaresFourLight />}
                 variant="tertiary"
                 onClick={() => {
-                  setViewMode("grid");
+                  portfolioStore.setSelectedView("grid");
                 }}
               />
             </div>
 
             <div
               className={`${
-                viewMode === "list" ? "bg-gray-200" : "bg-gray-100"
+                portfolioStore.selectedView === "list" ? "bg-gray-200" : "bg-gray-100"
               }`}
             >
               <Button
                 label="List"
                 icon={<FaThList />}
                 onClick={() => {
-                  setViewMode("list");
+                  portfolioStore.setSelectedView("list");
                 }}
               />
             </div>
@@ -69,6 +69,6 @@ const Header = () => {
       </header>
     </>
   );
-};
+});
 
 export default Header;
