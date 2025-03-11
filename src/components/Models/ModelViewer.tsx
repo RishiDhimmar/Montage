@@ -33,6 +33,8 @@ import React, { useMemo, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import EdgeModel from "./EdgeModel";
+import { observer } from "mobx-react-lite";
+import modelStore from "../../stores/ModelStore";
 
 interface ModelRendererProps {
   modelPath: string;
@@ -41,7 +43,7 @@ interface ModelRendererProps {
   is3D: boolean;
 }
 
-export const ModelViewer: React.FC<ModelRendererProps> = ({ is3D, modelPath, position, onLoad }) => {
+export const ModelViewer: React.FC<ModelRendererProps> = observer(({ is3D, modelPath, position, onLoad }) => {
   const { nodes, scene } = useGLTF(modelPath);
 
   // Deep clone nodes so that materials and geometries are duplicated
@@ -67,11 +69,11 @@ export const ModelViewer: React.FC<ModelRendererProps> = ({ is3D, modelPath, pos
     if (onLoad) onLoad();
   }, [onLoad]);
 
-  return is3D ? (
+  return modelStore.is3d ? (
     <primitive object={scene} position={position} />
   ) : (
     <EdgeModel nodes={clonedNodes} position={position} />
   );
-};
+})
 
 export default ModelViewer;
