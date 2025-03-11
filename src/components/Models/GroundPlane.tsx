@@ -7,7 +7,7 @@ interface GroundPlaneProps {
 
 export const GroundPlane: React.FC<GroundPlaneProps> = ({ groundRef }) => (
   <mesh rotation={[-Math.PI / 2, 0, 0]} ref={groundRef} position={[0, 0, 0]}>
-    <planeGeometry args={[50, 50]} />
+    <planeGeometry args={[150, 150]} />
     <meshBasicMaterial visible={false} />
   </mesh>
 );
