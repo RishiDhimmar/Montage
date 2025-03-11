@@ -11,10 +11,13 @@ function Navbar() {
         </div>
         <div className="px-4">
           <div className="flex items-center">
-            <IoIosMenu />
+            <div className="hover:bg-gray-200 rounded p-2">
+            <IoIosMenu size={20}/>
+            </div>
             <div className="flex gap-4">
-              <div className="border-r px-5"> Hexaa</div>
-              <div> Untitle-1</div>
+              <div className="px-3 font-semibold"> Hexaa</div>
+              <div className="border border-black"></div>
+              <div className="px-3 font-semibold"> Untitled-1</div>
             </div>
           </div>
         </div>
