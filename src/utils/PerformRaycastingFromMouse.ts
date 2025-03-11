@@ -18,7 +18,7 @@ export function performRaycastFromMouse(
 
     const intersects = raycaster.intersectObjects(objects);
 
-    console.log(objects)
+    console.log(intersects)
 
     return intersects; // Returns an array of intersected objects
 }
