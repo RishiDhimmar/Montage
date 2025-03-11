@@ -8,6 +8,7 @@ import { ModelRenderer } from "../Models/ModelRenderer";
 import { useModels } from "../../hooks/useModels";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
 import * as THREE from "three";
+  import ModelViewer from "../Models/ModelViewer";
 
 const Center: React.FC = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -46,11 +47,14 @@ const Center: React.FC = () => {
         <CameraControls makeDefault azimuthRotateSpeed={!is3D ? 0 : 2} polarRotateSpeed={!is3D ? 0 : 2} ref={controlsRef} dampingFactor={0} />
         <SceneLights />
         <GroundPlane groundRef={groundRef} />
-        {!is3D && <Grid args={[50, 50]} cellColor="gray" sectionColor="gray" />}
+        {!is3D && <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />}
 
         {models.map((model, index) => (
-          <ModelRenderer key={index} {...model} />
+          // <ModelRenderer key={index} {...model} />
+        <ModelViewer is3D={is3D} key={index} {...model}/>
+
         ))}
+
       </Canvas>
     </div>
   );
