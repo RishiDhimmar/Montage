@@ -8,10 +8,10 @@ const ModelManager = observer(() => {
       {modelStore.models.map((model) => (
         <ModelViewer
           key={model.id}
+          id={model.id}
           modelPath={model.modelPath}
           position={model.position}
           is3D={model.is3D}
-          onLoad={() => console.log(`${model.modelPath} loaded`)}
         />
       ))}
     </>
