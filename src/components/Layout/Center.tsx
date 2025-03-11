@@ -8,7 +8,7 @@ import { ModelRenderer } from "../Models/ModelRenderer";
 import { useModels } from "../../hooks/useModels";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
 import * as THREE from "three";
-  import ModelViewer from "../Models/ModelViewer";
+import ModelViewer from "../Models/ModelViewer";
 
 const Center: React.FC = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -17,8 +17,6 @@ const Center: React.FC = () => {
   const controlsRef = useRef<CameraControls | null>(null);
   const [is3D, setIs3D] = useState(false);
   const { models, addModel, resetCamera } = useModels(cameraRef);
-
-  
 
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -29,12 +27,10 @@ const Center: React.FC = () => {
     const dropPosition = intersections[0]?.point ?? new THREE.Vector3(0, 0, 0);
 
     await addModel(modelPath, [dropPosition.x, dropPosition.y, dropPosition.z]).then(() => {
-      if(!cameraRef.current) return
+      if (!cameraRef.current) return;
       cameraRef.current.position.set(0, 10, 0);
     });
   };
-
-  
 
   return (
     <div ref={canvasRef} className="relative flex-grow bg-gray-200" onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}>
@@ -42,7 +38,7 @@ const Center: React.FC = () => {
         {is3D ? "Switch to 2D" : "Switch to 3D"}
       </button>
 
-      <Canvas>
+      <Canvas linear={false}>
         <SceneCamera is3D={is3D} cameraRef={cameraRef} />
         <CameraControls makeDefault azimuthRotateSpeed={!is3D ? 0 : 2} polarRotateSpeed={!is3D ? 0 : 2} ref={controlsRef} dampingFactor={0} />
         <SceneLights />
@@ -50,11 +46,8 @@ const Center: React.FC = () => {
         {!is3D && <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />}
 
         {models.map((model, index) => (
-          // <ModelRenderer key={index} {...model} />
-        <ModelViewer is3D={is3D} key={index} {...model}/>
-
+          <ModelViewer is3D={is3D} key={index} {...model} />
         ))}
-
       </Canvas>
     </div>
   );
