@@ -19,7 +19,6 @@ interface TextureSectionProps {
 const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => {
   const selectedTexture = textureStore.selectedTextures[section.id];
 
-  // ✅ Ensure a valid image source
   const imageSrc = selectedTexture?.imageUrl?.trim() ? selectedTexture.imageUrl : null;
   return (
     <div className="mb-6 text-center">

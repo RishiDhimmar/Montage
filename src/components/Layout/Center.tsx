@@ -6,10 +6,8 @@ import Experience from "../Models/Experience";
 
 const Center: React.FC = observer(() => {
   const canvasRef = useRef<HTMLDivElement>(null);
-  // Create a ref to access Experience’s drop handler
   const experienceRef = useRef<{ handleDrop: (event: React.DragEvent<HTMLDivElement>) => void }>(null);
 
-  // Handle drop on the container and delegate to Experience
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     if (experienceRef.current && experienceRef.current.handleDrop) {
       experienceRef.current.handleDrop(event);
