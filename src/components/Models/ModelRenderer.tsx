@@ -1,6 +1,19 @@
-import { Edges, useGLTF } from "@react-three/drei";
+import React from "react";
+import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 
-export const ModelRenderer: React.FC<ModelProps> = ({ modelPath, position }) => {
+interface ModelRendererProps {
+  modelPath: string;
+  position: [number, number, number];
+  onLoad?: () => void;
+}
+
+export const ModelRenderer: React.FC<ModelRendererProps> = ({ modelPath, position, onLoad }) => {
   const { scene } = useGLTF(modelPath);
-  return <primitive object={scene} position={position} />
+
+  React.useEffect(() => {
+    if (onLoad) onLoad();
+  }, [onLoad]);
+
+  return <primitive object={scene} position={position} />;
 };
