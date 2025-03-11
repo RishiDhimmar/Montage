@@ -22,7 +22,7 @@ const PortfolioListView: React.FC = observer(() => {
         portfolioStore.portfolios.map((portfolio) => (
           <div
             key={portfolio.id}
-            className="flex justify-between gap-5 border border-gray-300 bg-white shadow-md m-2 px-3 items-center rounded"
+            className="flex justify-between gap-5 border border-gray-300 bg-white  m-2 px-3 items-center rounded"
           >
             <div className="flex gap-3">
               <div>
