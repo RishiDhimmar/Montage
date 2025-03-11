@@ -1,8 +1,10 @@
-import { Edges } from "@react-three/drei";
+import { Edges, Line } from "@react-three/drei";
 import React, { useMemo } from "react";
 import * as THREE from "three";
+import modelStore from "../../stores/ModelStore";
+import { observer } from "mobx-react-lite";
 
-function EdgeModel({ nodes, position }) {
+const EdgeModel = observer(({ id, nodes, position }) => {
   // Define materials with stable references
   const materials = useMemo(
     () => ({
@@ -14,21 +16,17 @@ function EdgeModel({ nodes, position }) {
     []
   );
 
-  // Store processed nodes to ensure stability across re-renders
+  // Process nodes to clone geometry and assign materials
   const processedNodes = useMemo(() => {
-    const clonedNodes = {};
+    const clonedNodes: Record<string, { geometry: THREE.BufferGeometry; material: THREE.Material | null; name: string }> = {};
 
     for (const key of Object.keys(nodes)) {
       const node = nodes[key];
       if (!node.isMesh || node.name.includes("Roof")) continue;
 
-      console.log("Processing node:", node.name);
-
-      // Clone geometry properly and apply transformation
       const clonedGeometry = node.geometry.clone();
       clonedGeometry.applyMatrix4(new THREE.Matrix4().copy(node.matrixWorld));
 
-      // Store cloned nodes with stable material references
       clonedNodes[key] = {
         geometry: clonedGeometry,
         material: node.name.includes("Node")
@@ -40,33 +38,78 @@ function EdgeModel({ nodes, position }) {
       };
     }
     return clonedNodes;
-  }, [nodes]); // Removed `materials` from dependencies to prevent unnecessary re-renders
+  }, [nodes]);
+
+  const handleClick = (e: Event) => {
+    e.stopPropagation();
+    console.log(id);
+    modelStore.selectModel(id);
+  };
+
+  // Helper: Compute global bounding box and extract 4 corner points (projected on XZ plane)
+  const corners = useMemo(() => {
+    const globalBox = new THREE.Box3();
+    let first = true;
+    Object.values(processedNodes).forEach(({ geometry }) => {
+      geometry.computeBoundingBox();
+      if (geometry.boundingBox) {
+        if (first) {
+          globalBox.copy(geometry.boundingBox);
+          first = false;
+        } else {
+          globalBox.union(geometry.boundingBox);
+        }
+      }
+    });
+    if (globalBox.isEmpty()) return null;
+    const { min, max } = globalBox;
+    // Use max.y for top face since the model is flat on XZ plane
+    const y = max.y;
+    return [
+      new THREE.Vector3(min.x, y, min.z),
+      new THREE.Vector3(max.x, y, min.z),
+      new THREE.Vector3(max.x, y, max.z),
+      new THREE.Vector3(min.x, y, max.z),
+    ];
+  }, [processedNodes]);
+
+  // Render spheres with connecting lines using <Line>
+  const renderGroupBoundingBoxSpheres = () => {
+    if (!corners) return null;
+    return corners.map((corner, idx) => (
+      <React.Fragment key={`group-${idx}`}>
+        <mesh position={corner}>
+          <sphereGeometry args={[0.3, 16, 16]} />
+          <meshBasicMaterial color="yellow" />
+        </mesh>
+        <Line
+          points={[corner, corners[(idx + 1) % 4]]}
+          color="yellow"
+          lineWidth={2}
+        />
+      </React.Fragment>
+    ));
+  };
 
   return (
-    <group position={position}>
+    <group position={position} onClick={handleClick}>
       {Object.keys(processedNodes).map((key) => {
         const { geometry, material, name } = processedNodes[key];
-        console.log(material)
         return (
           <>
             {material != null ? (
-              <mesh
-                key={`${key}-${Date.now()}`}
-                geometry={geometry}
-                material={material}
-              >
-                {" "}
+              <mesh key={`${key}-${Date.now()}`} geometry={geometry} material={material}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={1}
+                  lineWidth={modelStore.selectedModelId == id ? 4 : 2}
                   threshold={1}
-                />{" "}
+                />
               </mesh>
             ) : (
               <mesh key={`${key}-${Date.now()}`} geometry={geometry}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={2}
+                  lineWidth={modelStore.selectedModelId == id ? 4 : 2}
                   threshold={1}
                 />
               </mesh>
@@ -74,8 +117,9 @@ function EdgeModel({ nodes, position }) {
           </>
         );
       })}
+      {modelStore.selectedModelId == id && renderGroupBoundingBoxSpheres()}
     </group>
   );
-}
+});
 
 export default EdgeModel;
