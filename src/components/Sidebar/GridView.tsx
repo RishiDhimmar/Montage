@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCirclePlus } from "react-icons/fa6";
+import designStore from "../../stores/DesignStore";
 
 interface Module {
   id: string;
@@ -35,8 +36,10 @@ const GridView: React.FC<GridViewProps> = ({ modules, onDragStart }) => {
           </div>
         </div>
       ))}
-      <div className="h-[210px] border rounded items-center flex justify-center">
-      <FaCirclePlus size={30}/>
+      <div className="h-[210px] border border-gray-300 rounded items-center flex justify-center hover:border-black"  onClick={() => designStore.setSelectedStyle("Modules")} >
+        <div className="">
+      <FaCirclePlus size={30} color="gray " hover:bg-gray-200/>
+      </div>
       </div>
     </div>
   );

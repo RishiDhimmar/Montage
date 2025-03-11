@@ -16,7 +16,7 @@ const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId }
     <button
       onClick={() => textureStore.setTexture(sectionId, texture)}
       className={` p-1 rounded ${
-        textureStore.selectedTextures[sectionId]?.id === texture.id // ✅ Fixed: No `.get()`
+        textureStore.selectedTextures[sectionId]?.id === texture.id 
           ? "border"
           : ""
       }`}
