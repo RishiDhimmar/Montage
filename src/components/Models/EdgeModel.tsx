@@ -1,5 +1,5 @@
 import { Edges, Line } from "@react-three/drei";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import * as THREE from "three";
 import modelStore from "../../stores/ModelStore";
 import { observer } from "mobx-react-lite";
@@ -18,15 +18,15 @@ const EdgeModel = observer(({ id, nodes, position }) => {
 
   // Process nodes to clone geometry and assign materials
   const processedNodes = useMemo(() => {
-    const clonedNodes: Record<string, { geometry: THREE.BufferGeometry; material: THREE.Material | null; name: string }> = {};
-
+    const clonedNodes: Record<
+      string,
+      { geometry: THREE.BufferGeometry; material: THREE.Material | null; name: string }
+    > = {};
     for (const key of Object.keys(nodes)) {
       const node = nodes[key];
       if (!node.isMesh || node.name.includes("Roof")) continue;
-
       const clonedGeometry = node.geometry.clone();
       clonedGeometry.applyMatrix4(new THREE.Matrix4().copy(node.matrixWorld));
-
       clonedNodes[key] = {
         geometry: clonedGeometry,
         material: node.name.includes("Node")
@@ -45,6 +45,9 @@ const EdgeModel = observer(({ id, nodes, position }) => {
     console.log(id);
     modelStore.selectModel(id);
   };
+
+  // Local state to track hover
+  const [hovered, setHovered] = useState(false);
 
   // Helper: Compute global bounding box and extract 4 corner points (projected on XZ plane)
   const corners = useMemo(() => {
@@ -73,26 +76,30 @@ const EdgeModel = observer(({ id, nodes, position }) => {
     ];
   }, [processedNodes]);
 
-  // Render spheres with connecting lines using <Line>
-  const renderGroupBoundingBoxSpheres = () => {
+  // Helper: Render a connecting yellow line through the 4 corners
+  const renderBoundingBoxLine = () => {
+    if (!corners) return null;
+    return <Line points={[...corners, corners[0]]} color="yellow" lineWidth={2} />;
+  };
+
+  // Helper: Render spheres at each of the 4 corners
+  const renderBoundingBoxSpheres = () => {
     if (!corners) return null;
     return corners.map((corner, idx) => (
-      <React.Fragment key={`group-${idx}`}>
-        <mesh position={corner}>
-          <sphereGeometry args={[0.3, 16, 16]} />
-          <meshBasicMaterial color="yellow" />
-        </mesh>
-        <Line
-          points={[corner, corners[(idx + 1) % 4]]}
-          color="yellow"
-          lineWidth={2}
-        />
-      </React.Fragment>
+      <mesh key={`corner-${idx}`} position={corner}>
+        <sphereGeometry args={[0.3, 16, 16]} />
+        <meshBasicMaterial color="yellow" />
+      </mesh>
     ));
   };
 
   return (
-    <group position={position} onClick={handleClick}>
+    <group
+      position={position}
+      onClick={handleClick}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
       {Object.keys(processedNodes).map((key) => {
         const { geometry, material, name } = processedNodes[key];
         return (
@@ -101,7 +108,7 @@ const EdgeModel = observer(({ id, nodes, position }) => {
               <mesh key={`${key}-${Date.now()}`} geometry={geometry} material={material}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={ 2}
+                  lineWidth={2}
                   threshold={1}
                 />
               </mesh>
@@ -109,7 +116,7 @@ const EdgeModel = observer(({ id, nodes, position }) => {
               <mesh key={`${key}-${Date.now()}`} geometry={geometry}>
                 <Edges
                   color={name.includes("Wall") ? "black" : "gray"}
-                  lineWidth={ 2}
+                  lineWidth={2}
                   threshold={1}
                 />
               </mesh>
@@ -117,7 +124,8 @@ const EdgeModel = observer(({ id, nodes, position }) => {
           </>
         );
       })}
-      {modelStore.selectedModelId == id && renderGroupBoundingBoxSpheres()}
+      {(modelStore.selectedModelId == id || hovered) && renderBoundingBoxLine()}
+      {modelStore.selectedModelId == id && renderBoundingBoxSpheres()}
     </group>
   );
 });
