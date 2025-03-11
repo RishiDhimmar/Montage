@@ -19,7 +19,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
   // Expose a drop handler via ref
   useImperativeHandle(ref, () => ({
     handleDrop: (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
+    //   event.preventDefault();
       const modelPath = event.dataTransfer.getData("modelPath");
       if (!modelPath) return;
 
@@ -30,6 +30,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
         [groundRef.current!],
         gl
       );
+      console.log(event)
       if (intersections.length > 0) {
         const dropPosition = intersections[0].point;
         modelStore.addModel(modelPath, [dropPosition.x, dropPosition.y, dropPosition.z]);
@@ -52,8 +53,8 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
 
   return (
     <group onPointerMove={handlePointerMove}>
-      <SceneCamera is3D={modelStore.is3d} />
-      {modelStore.is3d ? <OrbitControls /> : <OrbitControls enableRotate={false} />}
+      <SceneCamera is3D={modelStore.is3d} cameraRef={camera}/>
+      <OrbitControls enableRotate={modelStore.is3d} makeDefault />
       <SceneLights />
       <GroundPlane groundRef={groundRef} />
       {!modelStore.is3d && <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />}
