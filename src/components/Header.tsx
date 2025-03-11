@@ -34,7 +34,11 @@ const Header = () => {
               />
             </div>
 
-            <div className={`${viewMode === "list" ? "bg-gray-200" : "bg-gray-100"}`}>
+            <div
+              className={`${
+                viewMode === "list" ? "bg-gray-200" : "bg-gray-100"
+              }`}
+            >
               <Button
                 label="List"
                 icon={<FaThList />}
@@ -54,15 +58,11 @@ const Header = () => {
             <Button
               label="New Design"
               variant="primary"
-              icon={
-                <FaPlus
-                  size={12}
-                  onClick={() => {
-                    console.log(" clicked");
-                    navigate("/design");
-                  }}
-                />
-              }
+              icon={<FaPlus size={12} />}
+              onClick={() => {
+                console.log(" clicked");
+                navigate("/design");
+              }}
             />
           </div>
         </div>
