@@ -20,14 +20,14 @@ const ModuleBar: React.FC = observer(() => {
       <div className="mb-2 border-b border-gray-300"></div>
 
       <div className="flex justify-between mb-2 border-gray-300 rounded items-center h-[7vh] px-7">
-        <div className="border rounded w-[80px]">
-          <Button label="Annex" onClick={() => {}} variant="none" />
+        <div className={`border rounded w-[80px] ${moduleStore.selectedCategory === "Annex" ? "bg-gray-300" : "hover:bg-gray-200"}`}>
+          <Button label="Annex" onClick={() => moduleStore.setSelectedCategory("Annex")} variant="tertiary" />
         </div>
-        <div className="border rounded w-[80px]">
-          <Button label="Dwelling" onClick={() => {}} variant="none" />
+        <div className={`border rounded w-[80px] ${moduleStore.selectedCategory === "Dwelling" ? "bg-gray-300" : "hover:bg-gray-200"}`}>
+          <Button label="Dwelling" onClick={() => moduleStore.setSelectedCategory("Dwelling")} variant="tertiary" />
         </div>
-        <div className="border rounded w-[80px]">
-          <Button label="Lifestyle" onClick={() => {}} variant="none" />
+        <div className={`border rounded w-[80px] ${moduleStore.selectedCategory === "Lifestyle" ? "bg-gray-300" : "hover:bg-gray-200"}`}>
+          <Button label="Lifestyle" onClick={() => moduleStore.setSelectedCategory("Lifestyle")} variant="tertiary" />
         </div>
       </div>
 
@@ -38,9 +38,13 @@ const ModuleBar: React.FC = observer(() => {
         {moduleStore.error && <p className="text-red-500">{moduleStore.error}</p>}
 
         <div>
-          {moduleStore.modules.map((module) => (
-           <ModuleBarThumbnails module={module}  />
-          ))}
+          {moduleStore.filteredModules.length === 0 ? (
+            <p>No modules found for selected category.</p>
+          ) : (
+            moduleStore.filteredModules.map((module) => (
+              <ModuleBarThumbnails key={module.id} module={module} />
+            ))
+          )}
         </div>
       </div>
     </div>

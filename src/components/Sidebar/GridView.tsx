@@ -30,16 +30,16 @@ const GridView: React.FC<GridViewProps> = ({ modules, onDragStart }) => {
             className="w-full h-[150px] object-cover rounded"
           />
           <div className="flex justify-between px-2 h-[30px]">
-
-          <div className="text-center text-sm">{module.name}</div>
-          <div className="text-center text-sm">{module.id}</div>
+            <div className="text-center text-sm">{module.name}</div>
+            <div className="text-center text-sm">{module.id}</div>
           </div>
         </div>
       ))}
-      <div className="h-[210px] border border-gray-300 rounded items-center flex justify-center hover:border-black"  onClick={() => designStore.setSelectedStyle("Modules")} >
-        <div className="">
-      <FaCirclePlus size={30} color="gray " hover:bg-gray-200/>
-      </div>
+      <div
+        className="h-[210px] border border-gray-300 rounded items-center flex justify-center text-gray-500 hover:border-black hover:text-black transition duration-200 cursor-pointer"
+        onClick={() => designStore.setSelectedStyle("Modules")}
+      >
+          <FaCirclePlus size={30} className="" />
       </div>
     </div>
   );

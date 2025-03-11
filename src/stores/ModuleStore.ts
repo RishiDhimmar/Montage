@@ -17,11 +17,17 @@ interface Module {
 class ModuleStore {
   modules: Module[] = [];
   selectedModule: Module | null = null;
+  selectedCategory: string | null = "Annex"; 
   loading: boolean = false;
   error: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  get filteredModules() {
+    if (!this.selectedCategory) return this.modules;
+    return this.modules.filter(module => module.moduleType === this.selectedCategory);
   }
 
   setModules(apiData: any[]) {
@@ -40,8 +46,8 @@ class ModuleStore {
 
       this.error = null;
 
-      if (this.modules.length > 0) {
-        this.setSelectedModule(this.modules[0]); // Default to first module
+      if (this.filteredModules.length > 0) {
+        this.setSelectedModule(this.filteredModules[0]);
       }
     });
   }
@@ -52,6 +58,17 @@ class ModuleStore {
     });
   }
 
+  setSelectedCategory(category: string | null) {
+    runInAction(() => {
+      this.selectedCategory = category;
+      if (this.filteredModules.length > 0) {
+        this.setSelectedModule(this.filteredModules[0]);
+      } else {
+        this.selectedModule = null;
+      }
+    });
+  }
+
   async fetchModules() {
     runInAction(() => {
       this.loading = true;
@@ -59,8 +76,8 @@ class ModuleStore {
     });
 
     try {
-      const data = await fetchData(`${BASE_URL}/modules`); // Replace with actual API endpoint
-      console.log("📡 API Response:", data); // Debugging API response
+      const data = await fetchData(`${BASE_URL}/modules`);
+      console.log("📡 API Response:", data);
 
       if (!data || !Array.isArray(data)) {
         throw new Error("Invalid API response format");
