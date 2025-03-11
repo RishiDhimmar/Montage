@@ -1,5 +1,6 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
+import designStore from "../../stores/DesignStore";
 
 interface Module {
   id: string;
@@ -15,7 +16,8 @@ interface ListViewProps {
 const ListView: React.FC<ListViewProps> = ({ modules, onDragStart }) => {
   return (
     <>
-      <div className="p-4 h-[75vh] overflow-y-auto custom-scrollbar">
+    <div>
+      <div className="p-4 h-[73vh] overflow-y-auto custom-scrollbar">
         {modules.map((module) => (
           <div
             key={module.id}
@@ -34,9 +36,12 @@ const ListView: React.FC<ListViewProps> = ({ modules, onDragStart }) => {
           </div>
         ))}
       </div>
-      <div className="flex justify-between  border-t border-gray-300 items-center p-2">
+      <div className="flex justify-between  border-t border-gray-300 items-center p-2 mx-2" onClick={() => designStore.setSelectedStyle("Modules")}>
         <div className="font-semibold">Add Module</div>
+        <div className="hover:bg-gray-200 rounded-full p-2">
         <FaPlus size={20} />
+        </div>
+      </div>
       </div>
     </>
   );

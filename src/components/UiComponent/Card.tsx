@@ -1,4 +1,5 @@
 import React from "react";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 interface CardProps {
   imageSrc: string;
@@ -6,14 +7,20 @@ interface CardProps {
   description: string;
 }
 
-const Card: React.FC<CardProps> = ({imageSrc, title, description }) => {
+const Card: React.FC<CardProps> = ({ imageSrc, title, description }) => {
   return (
     <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
-      <img src={imageSrc} alt="Card Image" className="w-full h-2/3 object-cover" />
-      <hr />
-      <h1>{title}</h1>
-      <div className="h-1/3 flex ">
-        <p className="text-gray-700 text-sm">{description}</p>
+      <div className="w-full p-5 ">
+        <img src={imageSrc} alt="Card Image" className=" h-[215px] w-[300px] " />
+      </div>
+      <div className="flex  p-4 border-t border-gray-300 justify-between items-center">
+        <div>
+          <div>{title}</div>
+          <div className="text-gray-700 text-sm">{description}</div>
+        </div>
+        <div className=" ">
+          <HiDotsHorizontal />
+        </div>
       </div>
     </div>
   );
