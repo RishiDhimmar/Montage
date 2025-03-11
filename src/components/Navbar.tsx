@@ -1,5 +1,6 @@
 import React from "react";
 import { IoIosMenu } from "react-icons/io";
+import { MainMenuDropdown } from "./Dropdowns/MainMenuDropdown";
 
 function Navbar() {
   return (
@@ -12,7 +13,8 @@ function Navbar() {
         <div className="px-4">
           <div className="flex items-center">
             <div className="hover:bg-gray-200 rounded p-2">
-            <IoIosMenu size={20}/>
+            {/* <IoIosMenu size={20}/> */}
+            <MainMenuDropdown/>
             </div>
             <div className="flex gap-4">
               <div className="px-3 font-semibold"> Hexaa</div>
