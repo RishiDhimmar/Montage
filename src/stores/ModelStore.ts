@@ -100,6 +100,14 @@ class ModelStore {
       this.selectedModelId = id;
     }
   }
+  
+
+  setHoveredModelId = (id) => {
+    this.hoveredModelId = id;
+  };
+
+  isSelected = (id) => this.selectedModelId === id;
+  isHovered = (id) => this.hoveredModelId === id;
 }
 
 const modelStore = new ModelStore();
