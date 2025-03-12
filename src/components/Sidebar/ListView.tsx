@@ -1,6 +1,7 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import designStore from "../../stores/DesignStore";
+import {  HiDotsVertical } from "react-icons/hi";
 
 interface Module {
   id: string;
@@ -23,15 +24,20 @@ const ListView: React.FC<ListViewProps> = ({ modules, onDragStart }) => {
             key={module.id}
             draggable
             onDragStart={(e) => onDragStart(e, module.model)}
-            className="flex items-center gap-4  rounded mb-2 cursor-pointer hover:bg-white"
+            className="flex items-center gap-4 justify-between rounded mb-2 cursor-pointer hover:bg-white p-2"
           >
-            <div className=" bg-blue-900 text-white flex items-center justify-between w-20 h-12 rounded-md p-2 font-bold">
+            <div className="flex gap-2 items-center">
+            <div className=" bg-[#001833] text-white flex items-center justify-between w-20 h-10 rounded-md px-2 font-bold">
               <div className="gap-2">{module.name.charAt(0)}</div>
               <div>{module.id}</div>
             </div>
             <div>
               <p className="font-semibold">{module.name}</p>
-              <p className="text-sm text-gray-500">Module Description</p>
+              
+            </div>
+            </div>
+            <div>
+              <HiDotsVertical/>
             </div>
           </div>
         ))}

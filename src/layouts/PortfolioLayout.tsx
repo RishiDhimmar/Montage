@@ -154,7 +154,7 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
-import Sidebar from "../components/PortfolioSidebar";
+import Sidebar from "../components/Portfolio/PortfolioSidebar";
 import portfolioStore from "../stores/PortfolioStore"; 
 import PortfolioGridView from "../components/Portfolio/PortfolioGridView";
 import PortfolioListView from "../components/Portfolio/PortfolioListView";

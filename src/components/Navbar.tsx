@@ -1,13 +1,15 @@
 import React from "react";
 import { IoIosMenu } from "react-icons/io";
 import { MainMenuDropdown} from "./Dropdowns/MainMenuDropdown";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate()
   return (
     <div className="h-[64px] border border-gray-300 bg-[#FAFAFF] flex items-center p-4">
       <div className="flex gap-4 items-center w-full px-4">
         <div>
-      <h1 className="text-xl font-bold items-center">Montage</h1>
+      <div className="text-xl font-bold items-center" onClick={() => navigate("/portfolio")}>Montage</div>
           {/* <img src="/Montage-Logo.svg" alt="Montage" /> */}
         </div>
         <div className="px-4">

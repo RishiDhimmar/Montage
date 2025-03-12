@@ -10,7 +10,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, variant="tertiary", disabled , icon }) => {
   const buttonStyles = {
-    primary: `bg-blue-900 text-white hover:bg-blue-800 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    primary: `bg-[#001833] text-white ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
     secondary: `bg-white text-black border border-gray-300 hover:bg-gray-100 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
     tertiary: ` text-black ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
     none: `bg-gray-100 text-gray-600 hover:bg-gray-200 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,

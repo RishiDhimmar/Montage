@@ -14,6 +14,7 @@ class ModelStore {
   addModel(modelPath, position = [0, 0, 0], is3D = true) {
     const id = Date.now();
     this.models.push({ id, modelPath, position, is3D });
+    console.log(this.models)
     return id;
   }
 
@@ -40,6 +41,9 @@ class ModelStore {
   toggle3D() {
     this.is3d = !this.is3d;
   }
+  toggle2D() {
+    this.is3d = false;
+  }
 
   selectModel(id: number) {
     // Toggle selection: deselect if already selected; select otherwise.
@@ -47,6 +51,7 @@ class ModelStore {
       this.selectedModelId = null;
     } else {
       this.selectedModelId = id;
+      console.log(this.selectedModelId)
     }
   }
   

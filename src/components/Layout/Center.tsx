@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
+import CanvasToolbar from "../CanvasToolbar";
 
 const Center: React.FC = observer(() => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,9 @@ const Center: React.FC = observer(() => {
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
     >
+      <div className="bg-white">
+      <CanvasToolbar/>
+      </div>
       <button
         onClick={() => modelStore.toggle3D()}
         className="absolute top-4 left-4 bg-white px-4 py-2 shadow-md rounded z-10"
