@@ -14,6 +14,7 @@ class ModelStore {
   addModel(modelPath, position = [0, 0, 0], is3D = true) {
     const id = Date.now();
     this.models.push({ id, modelPath, position, is3D });
+    console.log(this.models)
     return id;
   }
 
@@ -47,6 +48,7 @@ class ModelStore {
       this.selectedModelId = null;
     } else {
       this.selectedModelId = id;
+      console.log(this.selectedModelId)
     }
   }
   

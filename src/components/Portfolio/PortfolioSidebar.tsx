@@ -37,19 +37,11 @@ const Sidebar: React.FC = () => {
         )}
       </div>
 
-      <div className="mt-4">
-        <SidebarItem icon={<FaTh />} label="All Designs" active = {true} />
+      <div className="mt-4 ">
+        <SidebarItem icon={<FaTh />} label="All Designs"  />
         
       </div>
-        {/* Admin Settings */}
-      <div className="mt-4">
-        <h4 className="text-sm font-semibold text-gray-500 mb-2">Admin Settings</h4>
-        <SidebarItem icon={<FaCogs />} label="General" />
-        <SidebarItem icon={<FaUsers />} label="Team" />
-        <SidebarItem icon={<FaClock />} label="Plans" />
-        <SidebarItem icon={<FaDollarSign />} label="Billing" />
-        <SidebarItem icon={<FaFileAlt />} label="Templates & Libraries" />
-      </div>
+       
       
     </div>
   );

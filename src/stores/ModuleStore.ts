@@ -45,7 +45,7 @@ class ModuleStore {
       }));
 
       this.error = null;
-
+      this.selectedModule = null;
       if (this.filteredModules.length > 0) {
         this.setSelectedModule(this.filteredModules[0]);
       }
@@ -61,11 +61,12 @@ class ModuleStore {
   setSelectedCategory(category: string | null) {
     runInAction(() => {
       this.selectedCategory = category;
-      if (this.filteredModules.length > 0) {
-        this.setSelectedModule(this.filteredModules[0]);
-      } else {
-        this.selectedModule = null;
-      }
+      this.selectedModule = null;
+      // if (this.filteredModules.length > 0) {
+      //   this.setSelectedModule(this.filteredModules[0]);
+      // } else {
+      //   this.selectedModule = null;
+      // }
     });
   }
 
