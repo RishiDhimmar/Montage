@@ -20,7 +20,7 @@ interface TextureCategory {
 
 class TextureStore {
   textures: TextureCategory[] = [];
-  selectedTextures = observable.object<Record<string, Texture | null>>({}); // ✅ MobX tracks changes better
+  selectedTextures = observable.object<Record<string, Texture | null>>({}); 
   loading = false;
   error: string | null = null;
 
