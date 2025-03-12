@@ -41,6 +41,9 @@ class ModelStore {
   toggle3D() {
     this.is3d = !this.is3d;
   }
+  toggle2D() {
+    this.is3d = false;
+  }
 
   selectModel(id: number) {
     // Toggle selection: deselect if already selected; select otherwise.

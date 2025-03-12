@@ -23,3 +23,5 @@ const Model3D: React.FC<Model3DProps> = ({ scene, position }) => {
 };
 
 export default Model3D;
+
+
