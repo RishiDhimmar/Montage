@@ -1,7 +1,5 @@
 import React from "react";
-import { useDrag } from "react-dnd";
 
-const DRAG_TYPE = "MODEL";
 
 function ModuleBarThumbnails({ module }) {
   const handleDragStart = (
@@ -17,13 +15,16 @@ function ModuleBarThumbnails({ module }) {
       key={module.id}
       draggable
       onDragStart={(e) => handleDragStart(e, module.model)}
-      className="border rounded bg-white shadow cursor-pointer mb-4"
+      className="border border-gray-300 rounded bg-white shadow cursor-pointer mb-4 p-2 w-[300px] h-[315px]"
     >
-      <img
-        src={module.image}
-        alt={module.name}
-        className=" h-[200px] object-cover rounded "
-      />
+      <div className="flex justify-center items-center w-full h-[250px] overflow-hidden">
+        <img
+          src={module.image}
+          alt={module.name}
+          className="w-full h-full object-contain rounded"
+        />
+      </div>
+
       <div className="text-sm mt-2 px-2 font-medium">{module.name}</div>
       <div className="flex justify-between text-sm px-2">
         <div className="text-center text-gray-600">${module.price}</div>
