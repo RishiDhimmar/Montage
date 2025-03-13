@@ -7,11 +7,11 @@ import { View } from "@react-three/drei";
 import ViewModeToggle from "./ViewModeToggle";
 
 const modules = [
-  { id: "1", name: "AnnexM", image: "/color.jpg", model: "/models/Annex_tag.glb" },
-  { id: "2", name: "Dwelling-1", image: "/logo.png", model: "/models/Dwelling_tag.glb" },
-  { id: "3", name: "Lifestyle-1", image: "/height.jpg", model: "/models/Lifestyle_tag.glb" },
-  { id: "4", name: "AnnexM", image: "/color.jpg", model: "/models/Annex_tag.glb" },
-  { id: "5", name: "Dwelling-1", image: "/logo.png", model: "/models/Dwelling_tag.glb" },
+  // { id: "1", name: "AnnexM", image: "/color.jpg", model: "/models/Annex_tag.glb" },
+  // { id: "2", name: "Dwelling-1", image: "/logo.png", model: "/models/Dwelling_tag.glb" },
+  // { id: "3", name: "Lifestyle-1", image: "/height.jpg", model: "/models/Lifestyle_tag.glb" },
+  // { id: "4", name: "AnnexM", image: "/color.jpg", model: "/models/Annex_tag.glb" },
+  // { id: "5", name: "Dwelling-1", image: "/logo.png", model: "/models/Dwelling_tag.glb" },
   { id: "6", name: "Lifestyle-1", image: "/height.jpg", model: "/models/Lifestyle_tag.glb" },
   { id: "7", name: "AnnexM", image: "/color.jpg", model: "/models/Annex_tag.glb" },
   { id: "8", name: "Dwelling-1", image: "/logo.png", model: "/models/Dwelling_tag.glb" },

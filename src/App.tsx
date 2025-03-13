@@ -10,7 +10,6 @@ import PortfolioLayout from "./layouts/PortfolioLayout";
 function App() {
   return (
     <>
-      {/* <ConfiguratorLayout /> */}
       
       <Router>
       <Routes>

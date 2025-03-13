@@ -13,7 +13,7 @@ const LeftSidebar: React.FC = observer(() => {
       <SidebarMenu />
 
       {/* Dynamic Content Based on Selection */}
-      <div className="space-y-4  flex-1">
+      <div className="space-y-4  flex-1 ">
         {designStore.selectedStyle === "Design" && <DesignBar />}
         {designStore.selectedStyle === "Modules" && <ModuleBar />}
         {designStore.selectedStyle === "Bookmarks" && <BookmarksBar />}

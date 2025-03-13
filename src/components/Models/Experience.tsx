@@ -48,9 +48,8 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
       <SceneCamera is3D={modelStore.is3d} cameraRef={camera} />
       <OrbitControls enableRotate={modelStore.is3d} makeDefault />
       <SceneLights />
-      {!modelStore.is3d && (
-        <Grid args={[150, 150]} cellColor="gray" sectionColor="gray" />
-      )}
+      <GroundPlane groundRef={groundRef} />
+      {!modelStore.is3d && (<Grid args={[150, 150]}  cellColor="white" sectionColor="white" /> )}
       <ModelManager />
     </group>
   );
