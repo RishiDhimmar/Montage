@@ -20,9 +20,7 @@ const Login = () => {
 
   return (
     <>
-      <Loader isLoading={isLoading} />
       <Navbar />
-      {/* <Header/> */}
       <div className="flex justify-center items-center min-h-[calc(100vh-97px)]"> 
         <div className="w-[392px] bg-white rounded">
           <div className="text-2xl font-bold mb-4">Sign In</div>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Icon_Group-Panel_left_open" data-name="Icon Group-Panel_left_open" transform="translate(-1013.873 -696)">
+    <g id="Padding" transform="translate(1013.873 696)" fill="none" stroke="#303030" stroke-width="0.5" stroke-dasharray="4 4" opacity="0">
+      <rect width="24" height="24" rx="2" stroke="none"/>
+      <rect x="0.25" y="0.25" width="23.5" height="23.5" rx="1.75" fill="none"/>
+    </g>
+    <g id="Live_Area" data-name="Live Area" transform="translate(1015.873 698)" fill="none" stroke="#303030" stroke-width="0.5" stroke-dasharray="2 2" opacity="0">
+      <rect width="20" height="20" rx="2" stroke="none"/>
+      <rect x="0.25" y="0.25" width="19.5" height="19.5" rx="1.75" fill="none"/>
+    </g>
+    <g id="Icon_Group" data-name="Icon Group" transform="translate(1001.872 684)">
+      <g id="Container" transform="translate(14 14)" fill="none" stroke="#656771" stroke-width="1">
+        <rect width="20" height="20" rx="4" stroke="none"/>
+        <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" fill="none"/>
+      </g>
+      <line id="Line_144" data-name="Line 144" y2="18" transform="translate(19 15)" fill="none" stroke="#656771" stroke-width="1"/>
+      <path id="Icon_material-round-arrow-right" data-name="Icon material-round-arrow-right" d="M11.71,15.29,14.3,12.7a1,1,0,0,0,0-1.41L11.71,8.7A1,1,0,0,0,10,9.41v5.17A1,1,0,0,0,11.71,15.29Z" transform="translate(13 12.002)" fill="#656771"/>
+    </g>
+  </g>
+</svg>
