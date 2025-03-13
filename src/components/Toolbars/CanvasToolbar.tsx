@@ -12,7 +12,7 @@ const CanvasToolbar: React.FC = observer(() => {
   };
 
   return (
-    <div className="absolute top-4 right-4 bg-white shadow-md rounded flex gap-3 p-2 z-10">
+    <div className="absolute top-4 right-1/4 bg-white shadow-md rounded flex gap-3 p-2 z-10">
       {/* 2D Mode Button */}
       <button
         onClick={() => {

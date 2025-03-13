@@ -14,7 +14,7 @@ function Navbar() {
         </div>
         <div className="px-4">
           <div className="flex items-center">
-            <div className="hover:bg-gray-200 rounded p-2 ">
+            <div className="hover:bg-gray-200 rounded flex items-center">
             {/* <IoIosMenu size={20}/> */}
             <MainMenuDropdown/>
             </div>
