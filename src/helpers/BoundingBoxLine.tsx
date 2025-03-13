@@ -21,7 +21,7 @@ const BoundingBoxLine: React.FC<BoundingBoxLineProps> = ({ corners }) => {
   }, []);
 
   if (!corners) return null;
-  return <Line ref={lineRef} points={points} color="yellow" lineWidth={2} />;
+  return <Line ref={lineRef} points={points} color="#fac725" lineWidth={3} transparent={true} opacity={0.9} renderOrder={1}/>;
 };
 
 export default BoundingBoxLine;
