@@ -3,9 +3,8 @@ import * as THREE from 'three';
 export function performRaycastFromMouse(
     event: MouseEvent,
     camera: THREE.Camera,
-    objects: THREE.Object3D[],
     gl: THREE.WebGLRenderer
-): THREE.Intersection<THREE.Object3D>[] {
+): THREE.Vector3 | null {
     // Get the size of the WebGL canvas
     const canvasBounds = gl.domElement.getBoundingClientRect();
 
@@ -18,10 +17,13 @@ export function performRaycastFromMouse(
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
-    // Perform raycasting
-    const intersects = raycaster.intersectObjects(objects, true);
+    // Define the XZ plane at y = 0
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const intersectionPoint = new THREE.Vector3();
 
-    // console.log(intersects);
-
-    return intersects; // Returns an array of intersected objects
+    if (raycaster.ray.intersectPlane(plane, intersectionPoint)) {
+        return intersectionPoint; // Returns the intersection point on the XZ plane
+    }
+    
+    return null; // No intersection found
 }

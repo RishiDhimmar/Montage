@@ -1,4 +1,3 @@
-
 import { makeAutoObservable } from "mobx";
 
 class ModelStore {
@@ -11,7 +10,12 @@ class ModelStore {
     makeAutoObservable(this);
   }
 
-  addModel(modelPath, position = [0, 0, 0], is3D = true) {
+  addModel(
+    modelPath: string,
+    position: [number, number, number] = [0, 0, 0],
+    is3D = true,
+    rotation: [number, number, number] = [0, 0, 0]
+  ) {
     const id = Date.now();
     this.models.push({ id, modelPath, position, is3D });
     console.log(this.models)
@@ -38,6 +42,11 @@ class ModelStore {
     if (model) model.position = newPosition;
   }
 
+  updateModelRotation(id: number, newRotation: [number, number, number]) {
+    const model = this.models.find((m) => m.id === id);
+    if (model) model.rotation = newRotation;
+  }
+
   toggle3D() {
     this.is3d = !this.is3d;
   }
@@ -55,13 +64,22 @@ class ModelStore {
     }
   }
   
-
-  setHoveredModelId = (id) => {
+  setHoveredModelId = (id: number) => {
     this.hoveredModelId = id;
   };
 
-  isSelected = (id) => this.selectedModelId === id;
-  isHovered = (id) => this.hoveredModelId === id;
+  getPosition = (id: number) => {
+    const model = this.models.find((m) => m.id === id);
+    return model ? model.position : null;
+  };
+
+  getRotation = (id: number) => {
+    const model = this.models.find((m) => m.id === id);
+    return model ? model.rotation : null;
+  };
+
+  isSelected = (id: number) => this.selectedModelId === id;
+  isHovered = (id: number) => this.hoveredModelId === id;
 }
 
 const modelStore = new ModelStore();

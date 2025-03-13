@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import ModelViewer from "./ModelViewer";
 
-const ModelManager = observer(() => {
+const ModelManager = observer(({ground}) => {
   return (
     <>
       {modelStore.models.map((model) => (
