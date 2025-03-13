@@ -4,10 +4,14 @@ import { IoOptionsOutline } from "react-icons/io5";
 
 const SearchBar: React.FC = () => {
   const [search, setSearch] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div className="flex items-center w-full max-w-md bg-white border border-gray-300 rounded-lg p-2 shadow-sm">
-
+    <div
+      className={`flex items-center w-full max-w-md border border-gray-300 rounded-lg p-2 transition-all ${
+        isFocused ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <FiSearch className="text-gray-400 text-lg ml-2" />
 
       <input
@@ -16,6 +20,8 @@ const SearchBar: React.FC = () => {
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search..."
         className="flex-1 px-3 py-1 text-gray-700 focus:outline-none bg-transparent"
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
 
       <button className="p-2 text-gray-600 hover:text-black">
@@ -26,3 +32,4 @@ const SearchBar: React.FC = () => {
 };
 
 export default SearchBar;
+

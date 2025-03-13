@@ -85,14 +85,14 @@ export function CustomDropdown({ icon, options }: DropdownProps) {
 
   return (
     <>
-      <button ref={triggerRef} onClick={toggleDropdown} className="p-2">
+      <button ref={triggerRef} onClick={toggleDropdown} >
         {icon}
       </button>
 
       {isOpen &&
         ReactDOM.createPortal(
           <div
-            className="absolute z-50 w-48 bg-[#FAFAFF] border border-gray-300 rounded shadow-lg"
+            className="absolute z-50 w-46 bg-[#FAFAFF] border border-gray-300 rounded shadow-lg"
             style={{ top: position.top, left: position.left }}
           >
             {options.map((option, index) => (
@@ -102,7 +102,7 @@ export function CustomDropdown({ icon, options }: DropdownProps) {
                   option.onClick();
                   setIsOpen(false);
                 }}
-                className="flex justify-between px-4 py-2 cursor-pointer hover:bg-gray-100 border-b border-gray-200"
+                className="flex justify-between items-center p-2 cursor-pointer hover:bg-gray-100 border-b border-gray-200"
               >
                 <div className="flex gap-2">
                   {option.icon}

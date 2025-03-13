@@ -240,3 +240,5 @@ const EdgeModel = observer(({ id, nodes, position }) => {
 });
 
 export default EdgeModel;
+
+
