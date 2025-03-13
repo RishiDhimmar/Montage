@@ -48,9 +48,9 @@ class TextureStore {
 
       this.textures.forEach((category) => {
         if (category.textures.length > 0) {
-          this.selectedTextures[category.id] = category.textures[0]; // ✅ Fixed `.set()`
+          this.selectedTextures[category.id] = category.textures[0];
         } else {
-          this.selectedTextures[category.id] = null; // ✅ Explicitly handle empty categories
+          this.selectedTextures[category.id] = null;
         }
       });
     });
@@ -58,7 +58,7 @@ class TextureStore {
 
   setTexture(categoryId: string, texture: Texture) {
     runInAction(() => {
-      this.selectedTextures[categoryId] = texture; // ✅ Fixed `.set()`
+      this.selectedTextures[categoryId] = texture;
     });
   }
 

@@ -23,7 +23,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
       const modelPath = event.dataTransfer.getData("modelPath");
       if (!modelPath) return;
 
-      // Raycast using the event, camera, and gl from Three.js
+
       const intersections = performRaycastFromMouse(
         event.nativeEvent,
         camera,
@@ -57,7 +57,7 @@ const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
       <OrbitControls enableRotate={modelStore.is3d} makeDefault />
       <SceneLights />
       <GroundPlane groundRef={groundRef} />
-      {!modelStore.is3d && (<Grid args={[150, 150]}  cellColor="gray" sectionColor="gray" /> )}
+      {!modelStore.is3d && (<Grid args={[150, 150]}  cellColor="white" sectionColor="white" /> )}
       <ModelManager />
       {/* Sphere to indicate current cursor position */}
       <mesh position={cursorPosition}>

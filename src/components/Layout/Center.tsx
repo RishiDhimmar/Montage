@@ -23,7 +23,7 @@ const Center: React.FC = observer(() => {
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
     >
-      <ModelToolbar/>
+      <ModelToolbar position={[0,0,0]}/>
       <div className="bg-white">
       <CanvasToolbar/>
       </div>
@@ -34,7 +34,7 @@ const Center: React.FC = observer(() => {
         {modelStore.is3d ? "Switch to 2D" : "Switch to 3D"}
       </button>
 
-      <Canvas linear={false}>
+      <Canvas linear={false} style={{background:"#ffffff"}}>
         <Experience ref={experienceRef} />
       </Canvas>
     </div>
