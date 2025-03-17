@@ -10,9 +10,9 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ label, onClick, variant="tertiary", disabled , icon }) => {
   const buttonStyles = {
-    primary: `bg-[#001833] text-white ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
-    secondary: `bg-white text-black border border-gray-300 hover:bg-gray-100 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
-    tertiary: ` text-black ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    primary: `bg-[#001833] text-white flex justify-center ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    secondary: `bg-white text-black border border-gray-300 hover:bg-gray-100 flex justify-center ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
+    tertiary: ` text-black flex justify-center ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
     none: `bg-gray-100 text-gray-600 hover:bg-gray-200 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
   };
 
@@ -22,7 +22,7 @@ const Button: React.FC<ButtonProps> = ({ label, onClick, variant="tertiary", dis
       className={`w-full p-2 rounded-md transition-all duration-300 ${buttonStyles[variant]}`}
       disabled={disabled}
     >
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex items-center gap-2">
       {icon && <span className="">{icon}</span>}
       {label}
       </div>

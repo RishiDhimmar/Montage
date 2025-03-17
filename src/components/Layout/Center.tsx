@@ -74,7 +74,7 @@ const Center: React.FC<CenterProps> = observer(
           {modelStore.is3d ? "Switch to 2D" : "Switch to 3D"}
         </button>
 
-        <Canvas linear={false} className="w-full h-full" style={{ background: "#ffffff" }}>
+        <Canvas linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }}>
           <Experience ref={experienceRef} />
         </Canvas>
       </div>
