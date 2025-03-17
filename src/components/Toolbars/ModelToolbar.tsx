@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { HiSwitchHorizontal } from "react-icons/hi";
 import { MdDelete, MdHome, MdOutlineFlip } from "react-icons/md";
 import { IoEllipsisHorizontal } from "react-icons/io5";
-import { CgEditFlipV } from "react-icons/cg";
-import ModuleDropdown from "../Dropdowns/ModuleDropdown";
+
+import { LuFlipHorizontal, LuFlipVertical } from "react-icons/lu";
+
 import modelStore from "../../stores/ModelStore";
 
 const ModelToolbar = () => {
@@ -47,25 +48,34 @@ const ModelToolbar = () => {
       </div>
 
       <div
-        onClick={() => handleSelect("VerticalMirror")}
+        onClick={() => {
+          handleSelect("VerticalMirror");
+          modelStore.flipModelVertically(modelStore.selectedModelId)
+
+        }}
         className={`p-2 rounded ${
           selectedTool === "VerticalMirror"
             ? "bg-gray-300"
             : "hover:bg-gray-200"
         }`}
       >
-        <MdOutlineFlip />
+        <LuFlipHorizontal />
       </div>
 
       <div
-        onClick={() => handleSelect("HorizontalMirror")}
+        onClick={() => {handleSelect("HorizontalMirror")
+          modelStore.flipModelHorizontally(modelStore.selectedModelId)
+
+        }}
         className={`p-2 rounded ${
           selectedTool === "HorizontalMirror"
             ? "bg-gray-300"
             : "hover:bg-gray-200"
         }`}
       >
-        <CgEditFlipV />
+
+        <LuFlipVertical />
+
       </div>
 
       <div

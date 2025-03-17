@@ -1,38 +1,36 @@
 import * as THREE from "three";
 
-export const processNodes = (
+export function processNodes(
   nodes: Record<string, THREE.Object3D>,
   materials: Record<string, THREE.Material>
-) => {
-  const clonedNodes: Record<
-    string,
-    { geometry: THREE.BufferGeometry; material: THREE.Material | null; name: string }
-  > = {};
-
-  Object.keys(nodes).forEach((key) => {
+) {
+  const result: Record<string, { geometry: THREE.BufferGeometry; material: THREE.Material; name: string }> = {};
+  
+  for (const key in nodes) {
     const node = nodes[key];
-    // Skip non-meshes or nodes that are part of the roof.
-    if (!node.isMesh || node.name.includes("Roof")) return;
-
-    const clonedGeometry = node.geometry.clone();
-    clonedGeometry.applyMatrix4(new THREE.Matrix4().copy(node.matrixWorld));
-
-    let assignedMaterial: THREE.Material | null = null;
-    if (node.name.includes("Node")) {
-      assignedMaterial = materials.cyan;
-    } else if (node.name.includes("Floor")) {
-      assignedMaterial = materials.gray;
-    } else {
-      assignedMaterial = materials.white;
+    // Skip non-meshes and nodes related to roof/ceiling.
+    if (
+      !node.isMesh ||
+      node.name.includes("Roof") ||
+      node.name.includes("Ceil") ||
+      (node.parent && node.parent.name && node.parent.name.includes("Ceiling"))
+    ) {
+      continue;
     }
+    const geometry = node.geometry.clone();
+    geometry.applyMatrix4(new THREE.Matrix4().copy(node.matrixWorld));
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
 
-    clonedNodes[key] = {
-      geometry: clonedGeometry,
-      material: assignedMaterial,
-      name: node.name,
-    };
-
-  });
-
-  return clonedNodes;
-};
+    let material: THREE.Material = materials.white;
+    if (node.name.includes("Node")) {
+      material = materials.cyan;
+    } else if (node.name.includes("Floor")) {
+      material = materials.gray;
+    }
+    
+    result[key] = { geometry, material, name: node.name };
+  }
+  
+  return result;
+}

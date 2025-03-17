@@ -2,7 +2,7 @@ import React from "react";
 
 export const SceneLights: React.FC = () => (
   <>
-    <ambientLight intensity={3} />
-    {/* <directionalLight position={[2, 2, 2]} /> */}
+    <ambientLight intensity={5} />
+    <directionalLight position={[2, 2, 2]} />
   </>
 );

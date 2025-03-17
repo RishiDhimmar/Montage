@@ -8,6 +8,7 @@ interface ClonedNode {
   material: THREE.Material | null;
   name: string;
   matrixWorld: THREE.Matrix4;
+  parent?: { name: string; visible: boolean };
 }
 
 interface Model3DProps {
@@ -22,12 +23,14 @@ const Model3D: React.FC<Model3DProps> = ({ id, nodes, position, rotation }) => {
     <group
       position={modelStore.getPosition(id)}
       rotation={modelStore.getRotation(id)}
+      scale={modelStore.getScale(id) || [1, 1, 1]}
     >
       {Object.entries(nodes).map(([key, node]) => {
-        const visible = !node.name.includes("Ceiling");
 
-        if (node.name.includes("Ceiling")) {
-          console.log(node);
+        // Hide node if its name contains "Roof" or if its parent's name is "Ceiling"
+        if (node.name.includes("Roof") || node.name.includes("Ceil") || (node.parent && node.parent.name.includes("Ceiling"))) {
+          return null;
+
         }
         const assignedMaterial = node.name.includes("Node")
           ? materials.cyan
@@ -40,7 +43,6 @@ const Model3D: React.FC<Model3DProps> = ({ id, nodes, position, rotation }) => {
             material={assignedMaterial}
             matrixAutoUpdate={false}
             matrix={node.matrixWorld}
-            visible={visible}
           />
         );
       })}
@@ -49,4 +51,3 @@ const Model3D: React.FC<Model3DProps> = ({ id, nodes, position, rotation }) => {
 };
 
 export default Model3D;
-

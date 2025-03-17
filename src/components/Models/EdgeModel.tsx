@@ -1,5 +1,5 @@
-import { Edges } from "@react-three/drei";
-import React, { useState, useEffect, useRef } from "react";
+import { Edges, Html } from "@react-three/drei";
+import React, { useState, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { observer } from "mobx-react-lite";
 import { useThree } from "@react-three/fiber";
@@ -7,19 +7,17 @@ import modelStore from "../../stores/ModelStore";
 import BoundingBoxLine from "../../helpers/BoundingBoxLine";
 import BoundingBoxSpheres from "../../helpers/BoundingBoxSpheres";
 import { useModelInteraction } from "../../hooks/useModelInteraction";
+import ModelToolbar from "../Toolbars/ModelToolbar";
 import { useProcessedNodes } from "../../hooks/useProcessedNodes";
 
 const EdgeModel = observer(({ id, nodes }) => {
   const { camera, gl } = useThree();
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-
-  const { processedNodes, corners, bbCenter } = useProcessedNodes(nodes);
-  useEffect(() => {
-    return () => {
-      Object.values(processedNodes).forEach(({ geometry }) => geometry.dispose());
-    };
-  }, [processedNodes]);
+  const scale = modelStore.getScale(id) || [1, 1, 1];
+  const { processedNodes, corners } = useProcessedNodes(nodes, scale);
+  const rotation = modelStore.models.find((m) => m.id === id)?.rotation || [0, 0, 0];
+  const position = modelStore.getPosition(id);
 
 
   const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
@@ -28,27 +26,34 @@ const EdgeModel = observer(({ id, nodes }) => {
     gl,
   });
 
-  const model = modelStore.models.find((m) => m.id === id);
-  const rotation = model ? model.rotation : [0, 0, 0];
+
+  useEffect(() => {
+    return () => {
+      Object.values(processedNodes).forEach(({ geometry }) => geometry.dispose());
+    };
+  }, [processedNodes]);
+
 
   return (
     <group
       ref={groupRef}
-      position={modelStore.getPosition(id)}
+      position={position}
       rotation={rotation}
-      onClick={(e) => {
-        e.stopPropagation();
-        modelStore.selectModel(id);
-      }}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
+      style={{ position: "relative" }}
     >
+      {modelStore.selectedModelId === id && (
+        <Html style={{ position: "absolute", top: "-210px", left: "-130px" }}>
+          <ModelToolbar />
+        </Html>
+      )}
       {Object.entries(processedNodes).map(([key, { geometry, material, name }]) => (
-        <mesh key={`${key}-${id}`} geometry={geometry} material={material || undefined}>
-          <Edges color={name.includes("Wall") ? "black" : "gray"} lineWidth={1} threshold={1} renderOrder={2}/>
+        <mesh key={`${key}-${id}`} geometry={geometry} material={material}>
+          <Edges color={name.includes("Wall") ? "black" : "gray"} lineWidth={1.5} threshold={15} renderOrder={2} />
         </mesh>
       ))}
       {(modelStore.selectedModelId === id || hovered) && <BoundingBoxLine corners={corners} />}
@@ -58,5 +63,3 @@ const EdgeModel = observer(({ id, nodes }) => {
 });
 
 export default EdgeModel;
-
-
