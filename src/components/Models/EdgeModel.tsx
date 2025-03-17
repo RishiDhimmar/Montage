@@ -19,17 +19,20 @@ const EdgeModel = observer(({ id, nodes }) => {
   const rotation = modelStore.models.find((m) => m.id === id)?.rotation || [0, 0, 0];
   const position = modelStore.getPosition(id);
 
+
   const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
     id,
     camera,
     gl,
   });
 
+
   useEffect(() => {
     return () => {
       Object.values(processedNodes).forEach(({ geometry }) => geometry.dispose());
     };
   }, [processedNodes]);
+
 
   return (
     <group

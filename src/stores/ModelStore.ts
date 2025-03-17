@@ -12,7 +12,7 @@ class ModelStore {
   models: Model[] = [];
   is3d = false;
   selectedModelId: number | null = null;
-  hoveredModelId: number | null = null; // Track hovered model ID
+  hoveredModelId: number | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,31 +20,54 @@ class ModelStore {
 
   addModel(
     modelPath: string,
+    image: string,
     position: [number, number, number] = [0, 0, 0],
-    rotation: [number, number, number] = [0, 0, 0]
+    rotation: [number, number, number] = [0, 0, 0],
   ) {
     const id = Date.now();
+
     // Initialize each model with a default scale of [1, 1, 1]
     this.models.push({
       id,
       modelPath,
+      image,
       position,
       rotation,
       scale: [1, 1, 1],
     });
+
     console.log(this.models);
     return id;
   }
 
   removeModel(id: number) {
     this.models = this.models.filter((model) => model.id !== id);
-    if (this.selectedModelId === id) {
-      this.selectedModelId = null;
-    }
-    if (this.hoveredModelId === id) {
-      this.hoveredModelId = null;
-    }
+    if (this.selectedModelId === id) this.selectedModelId = null;
+    if (this.hoveredModelId === id) this.hoveredModelId = null;
   }
+
+
+  duplicateModel() {
+    const selectedModel = this.models.find(
+      (m) => m.id === this.selectedModelId
+    );
+    if (!selectedModel) return;
+
+    const newModel = {
+      id: Date.now(),
+      modelPath: selectedModel.modelPath,
+      image: selectedModel.image, // Copy the image
+      position: [
+        selectedModel.position[0] + 0.5,
+        selectedModel.position[1],
+        selectedModel.position[2] + 0.5,
+      ],
+      rotation: [...selectedModel.rotation],
+    };
+
+    this.models.push(newModel);
+  }
+
 
   updateModelPosition(id: number, newPosition: [number, number, number]) {
     const model = this.models.find((m) => m.id === id);
@@ -65,6 +88,7 @@ class ModelStore {
   }
 
   selectModel(id: number) {
+
     // Toggle selection: deselect if already selected; select otherwise.
     if (this.selectedModelId === id) {
       this.selectedModelId = null;
@@ -72,6 +96,7 @@ class ModelStore {
       this.selectedModelId = id;
       console.log(this.selectedModelId);
     }
+
   }
   
   setHoveredModelId = (id: number) => {

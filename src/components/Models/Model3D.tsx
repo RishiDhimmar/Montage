@@ -1,6 +1,6 @@
 import React from "react";
 import * as THREE from "three";
-import { materials } from "../../utils/materials"; // Ensure this file exports your material definitions
+import { materials } from "../../utils/materials"; 
 import modelStore from "../../stores/ModelStore";
 
 interface ClonedNode {
@@ -26,11 +26,12 @@ const Model3D: React.FC<Model3DProps> = ({ id, nodes, position, rotation }) => {
       scale={modelStore.getScale(id) || [1, 1, 1]}
     >
       {Object.entries(nodes).map(([key, node]) => {
+
         // Hide node if its name contains "Roof" or if its parent's name is "Ceiling"
         if (node.name.includes("Roof") || node.name.includes("Ceil") || (node.parent && node.parent.name.includes("Ceiling"))) {
           return null;
+
         }
-        // Override material with cyan if the node's name includes "Node"
         const assignedMaterial = node.name.includes("Node")
           ? materials.cyan
           : node.material ?? undefined;

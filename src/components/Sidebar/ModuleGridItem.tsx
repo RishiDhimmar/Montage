@@ -23,14 +23,16 @@ const ModuleGridItem: React.FC<ModuleGridItemProps> = ({ module, onDragStart }) 
       className="relative h-[210px] bg-white border border-gray-300 rounded p-5 cursor-pointer 
                  hover:border-black transition duration-200 group"
     >
-      {/* Dropdown on Hover */}
       <div className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <ModuleDropdown icon={<IoEllipsisHorizontal size={20} />} />
       </div>
 
-      {/* Image */}
-      <div className="flex justify-center bg-white">
-        <img src={module.image} alt={module.name} className="w-full h-[150px] object-cover rounded" />
+      <div className="flex justify-center items-center w-full h-[150px] overflow-hidden">
+        <img
+          src={module.image}
+          alt={module.name}
+          className="w-full h-full object-contain rounded"
+        />
       </div>
 
       {/* Module Info */}
