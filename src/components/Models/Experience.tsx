@@ -14,31 +14,33 @@ import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse"
 interface ExperienceProps {}
 
 const Experience = forwardRef((props, ref) => {
-  const { gl, camera } = useThree(); // Three.js renderer and camera
+  const { gl, camera } = useThree();
   const controlsRef = useRef<any>(null);
-  const experienceRef = useRef<any>(null); // ✅ Create a valid React ref
+  const experienceRef = useRef<any>(null); 
 
   // Forward a ref to expose functions
   useImperativeHandle(ref, () => ({
     handleDrop: (event: React.DragEvent<HTMLDivElement>) => {
-      if (modelStore.is3d) return; // ✅ Disable drop in 3D mode
+      if (modelStore.is3d) return; 
 
       const modelPath = event.dataTransfer.getData("modelPath");
-      if (!modelPath) return;
+      const image = event.dataTransfer.getData("image");
+      if (!modelPath || !image) return;
 
       const intersection = performRaycastFromMouse(event.nativeEvent, camera, gl);
       if (intersection) {
-        modelStore.addModel(modelPath, [
+        modelStore.addModel(modelPath, 
+          image, [
           intersection.x,
           intersection.y,
           intersection.z,
-        ]);
+        ], [0, 0, 0]);
       }
     },
   }));
 
   return (
-    <group ref={experienceRef}> {/* ✅ Ensure group has a valid ref */}
+    <group ref={experienceRef}> 
       <SceneCamera is3D={modelStore.is3d} />
       <CameraControls
         makeDefault

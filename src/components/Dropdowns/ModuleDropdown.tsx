@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { createPortal } from "react-dom";
 import { HiDotsVertical } from "react-icons/hi";
+import { useDropdown } from "../../hooks/useDropdown";
+import modelStore from "../../stores/ModelStore";
 
 interface ModuleDropdownProps {
   icon: React.ReactNode;
@@ -13,50 +15,18 @@ const ModuleDropdown: React.FC<ModuleDropdownProps> = ({
   offsetX = 8,
   offsetY = 0,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setPosition({
-        top: rect.top + window.scrollY + offsetY,
-        left: rect.right + window.scrollX + offsetX,
-      });
-    }
-    setIsOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
+  const { dropdown, openDropdown, closeDropdown, dropdownRef } = useDropdown();
 
   return (
     <>
       <button
-        ref={buttonRef}
-        onClick={toggleDropdown}
+        onClick={(e) =>
+          openDropdown(e, [
+            { label: "Duplicate", shortcut: "Ctrl+D", onClick: () => modelStore.duplicateModel() },
+            { label: "Delete", shortcut: "Delete", onClick: () => console.log("Delete") },
+            { label: "Lock", shortcut: "Ctrl+Alt+L", onClick: () => console.log("Lock") },
+          ])
+        }
         className={`p-2 rounded transition-colors ${
           icon?.type === HiDotsVertical ? "hover:bg-white" : "hover:bg-gray-200"
         }`}
@@ -64,14 +34,14 @@ const ModuleDropdown: React.FC<ModuleDropdownProps> = ({
         {icon}
       </button>
 
-      {isOpen &&
+      {dropdown &&
         createPortal(
           <div
             ref={dropdownRef}
             className="absolute z-50 w-56 bg-white border border-gray-300 rounded shadow-lg"
             style={{
-              top: `${position.top}px`,
-              left: `${position.left}px`,
+              top: dropdown.y + offsetY,
+              left: dropdown.x + offsetX,
               position: "absolute",
             }}
           >
@@ -81,9 +51,17 @@ const ModuleDropdown: React.FC<ModuleDropdownProps> = ({
             <div className="border-t border-gray-200"></div>
 
             <div className="p-2 space-y-1">
-              <DropdownItem label="Duplicate" shortcut="Ctrl+D" />
-              <DropdownItem label="Delete" shortcut="Delete" />
-              <DropdownItem label="Lock" shortcut="Ctrl+Alt+L" />
+              {dropdown.options.map((option, index) => (
+                <DropdownItem
+                  key={index}
+                  label={option.label}
+                  shortcut={option.shortcut}
+                  onClick={() => {
+                    option.onClick();
+                    closeDropdown();
+                  }}
+                />
+              ))}
             </div>
           </div>,
           document.body
@@ -92,11 +70,15 @@ const ModuleDropdown: React.FC<ModuleDropdownProps> = ({
   );
 };
 
-const DropdownItem: React.FC<{ label: string; shortcut?: string }> = ({
+const DropdownItem: React.FC<{ label: string; shortcut?: string; onClick: () => void }> = ({
   label,
   shortcut,
+  onClick,
 }) => (
-  <div className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-100 rounded">
+  <div
+    onClick={onClick}
+    className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-100 rounded"
+  >
     <span>{label}</span>
     {shortcut && (
       <span className="text-xs bg-gray-200 px-2 py-1 rounded">{shortcut}</span>
