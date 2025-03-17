@@ -11,11 +11,10 @@ interface ModelRendererProps {
   modelPath: string;
   position: [number, number, number];
   onLoad?: () => void;
-  is3D: boolean;
 }
 
 const ModelViewer: React.FC<ModelRendererProps> = observer(
-  ({ id, is3D, modelPath, position, onLoad }) => {
+  ({ id,  modelPath, position, onLoad }) => {
     const { nodes, scene } = useGLTF(modelPath);
 
     // Deep clone nodes for EdgeModel mode
@@ -33,14 +32,14 @@ const ModelViewer: React.FC<ModelRendererProps> = observer(
         cloned[key] = nodeClone;
       }
       return cloned;
-    }, [nodes, is3D]);
+    }, [nodes]);
 
     useEffect(() => {
       if (onLoad) onLoad();
     }, [onLoad]);
 
     return modelStore.is3d ? (
-      <Model3D scene={scene.clone()} position={position} rotation={modelStore.getRotation(id)} />
+      <Model3D id={id} nodes={nodes} position={modelStore.getPosition(id)} rotation={modelStore.getRotation(id)} scene={scene} />
     ) : (
       <Suspense fallback={null}>
         <EdgeModel  nodes={clonedNodes} position={position} id={id}  />
