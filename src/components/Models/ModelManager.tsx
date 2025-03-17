@@ -11,7 +11,6 @@ const ModelManager = observer(({ground}) => {
           id={model.id}
           modelPath={model.modelPath}
           position={model.position}
-          is3D={model.is3D}
         />
       ))}
     </>

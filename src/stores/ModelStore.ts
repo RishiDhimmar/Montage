@@ -13,11 +13,10 @@ class ModelStore {
   addModel(
     modelPath: string,
     position: [number, number, number] = [0, 0, 0],
-    is3D = true,
     rotation: [number, number, number] = [0, 0, 0]
   ) {
     const id = Date.now();
-    this.models.push({ id, modelPath, position, is3D });
+    this.models.push({ id, modelPath, position });
     console.log(this.models)
     return id;
   }
@@ -32,10 +31,10 @@ class ModelStore {
     }
   }
 
-  toggleModelView(id: number) {
-    const model = this.models.find((m) => m.id === id);
-    if (model) model.is3D = !model.is3D;
-  }
+  // toggleModelView(id: number) {
+  //   const model = this.models.find((m) => m.id === id);
+  //   if (model) model.is3D = !model.is3D;
+  // }
 
   updateModelPosition(id: number, newPosition: [number, number, number]) {
     const model = this.models.find((m) => m.id === id);

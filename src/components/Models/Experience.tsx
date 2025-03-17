@@ -2,53 +2,55 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
 import { SceneCamera } from "./SceneCamera";
 import modelStore from "../../stores/ModelStore";
-import { Grid, OrbitControls } from "@react-three/drei";
+import { CameraControls, Grid } from "@react-three/drei";
 import { SceneLights } from "./SceneLights";
-import { GroundPlane } from "./GroundPlane";
 import ModelManager from "./ModelManager";
 import { useThree } from "@react-three/fiber";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
-import * as THREE from "three";
 
 interface ExperienceProps {}
 
-const Experience = forwardRef<any, ExperienceProps>((props, ref) => {
-  const { gl, camera } = useThree(); // Safe to use inside Canvas
+const Experience = forwardRef((props, ref) => {
+  const { gl, camera } = useThree(); // Three.js renderer and camera
+  const controlsRef = useRef<any>(null);
+  const experienceRef = useRef<any>(null); // ✅ Create a valid React ref
 
-  // Expose a drop handler via ref
+  // Forward a ref to expose functions
   useImperativeHandle(ref, () => ({
     handleDrop: (event: React.DragEvent<HTMLDivElement>) => {
-      //   event.preventDefault();
+      if (modelStore.is3d) return; // ✅ Disable drop in 3D mode
+
       const modelPath = event.dataTransfer.getData("modelPath");
       if (!modelPath) return;
 
-      // Raycast using the event, camera, and gl from Three.js
-      const intersection = performRaycastFromMouse(
-        event.nativeEvent,
-        camera,
-        gl
-      );
+      const intersection = performRaycastFromMouse(event.nativeEvent, camera, gl);
       if (intersection) {
-        const dropPosition = intersection;
         modelStore.addModel(modelPath, [
-          dropPosition.x,
-          dropPosition.y,
-          dropPosition.z,
+          intersection.x,
+          intersection.y,
+          intersection.z,
         ]);
       }
     },
   }));
 
   return (
-    <group>
-      <SceneCamera is3D={modelStore.is3d} cameraRef={camera} />
-      <OrbitControls enableRotate={modelStore.is3d} makeDefault />
+    <group ref={experienceRef}> {/* ✅ Ensure group has a valid ref */}
+      <SceneCamera is3D={modelStore.is3d} />
+      <CameraControls
+        makeDefault
+        ref={controlsRef}
+        minZoom={10}
+        azimuthRotateSpeed={modelStore.is3d ? 1 : 0}
+        polarRotateSpeed={modelStore.is3d ? 1 : 0}
+      />
       <SceneLights />
-      {!modelStore.is3d && (<Grid args={[150, 150]}  cellColor="white" sectionColor="white" /> )}
+      {!modelStore.is3d && (
+        <Grid args={[150, 150]} cellColor="white" sectionColor="white" />
+      )}
       <ModelManager />
     </group>
   );
