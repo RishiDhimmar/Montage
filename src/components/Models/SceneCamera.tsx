@@ -39,11 +39,6 @@ export const SceneCamera: React.FC<SceneCameraProps> = ({ is3D }) => {
       ref={perspectiveRef}
     />
   ) : (
-    <OrthographicCamera
-      makeDefault
-      position={[0, 30, 0]}
-      zoom={100}
-      ref={orthographicRef}
-    />
+    <OrthographicCamera makeDefault position={[0, 10, 0]}  zoom={100} ref={cameraRef as React.MutableRefObject<THREE.OrthographicCamera>} />
   );
 };
