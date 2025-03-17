@@ -6,14 +6,27 @@ import DesignBar from "../Sidebar/DesignBar";
 import ModuleBar from "../Sidebar/ModuleBar";
 import BookmarksBar from "../Sidebar/BookmarksBar";
 
-const LeftSidebar: React.FC = observer(() => {
-  return (
-    <div className="w-[440px] flex border-r border-gray-300 h-[calc(100vh-64px)] bg-[#FAFAFF]">
-      {/* Sidebar Buttons */}
-      <SidebarMenu />
+interface LeftSidebarProps {
+  isOpen: boolean;
+}
 
-      {/* Dynamic Content Based on Selection */}
-      <div className="space-y-4  flex-1 ">
+const LeftSidebar: React.FC<LeftSidebarProps> = observer(({ isOpen }) => {
+  return (
+    <div
+      className={`
+        absolute top-0 bottom-0 left-0
+        flex border-r border-gray-300 bg-[#FAFAFF]
+        transition-all duration-300 overflow-hidden
+        ${isOpen ? "w-[440px]" : "w-[80px]"}
+      `}
+    >
+      {/* Fixed part: SidebarMenu is always visible */}
+      <div className="w-[80px] flex-shrink-0">
+        <SidebarMenu />
+      </div>
+      
+      {/* Collapsible dynamic content */}
+      <div className={`transition-all duration-300 flex-1 ${isOpen ? "w-[40px]" : "w-0"}`}>
         {designStore.selectedStyle === "Design" && <DesignBar />}
         {designStore.selectedStyle === "Modules" && <ModuleBar />}
         {designStore.selectedStyle === "Bookmarks" && <BookmarksBar />}
@@ -23,3 +36,4 @@ const LeftSidebar: React.FC = observer(() => {
 });
 
 export default LeftSidebar;
+
