@@ -22,14 +22,12 @@ const EdgeModel = observer(({ id, nodes }) => {
   }, [processedNodes]);
 
 
-  // Use our drag-only hook (rotation logic removed).
   const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
     id,
     camera,
     gl,
   });
 
-  // Get the stored model rotation (remains unchanged by pointer events).
   const model = modelStore.models.find((m) => m.id === id);
   const rotation = model ? model.rotation : [0, 0, 0];
 

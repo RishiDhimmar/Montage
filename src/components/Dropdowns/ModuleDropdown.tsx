@@ -2,6 +2,7 @@ import React from "react";
 import { createPortal } from "react-dom";
 import { HiDotsVertical } from "react-icons/hi";
 import { useDropdown } from "../../hooks/useDropdown";
+import modelStore from "../../stores/ModelStore";
 
 interface ModuleDropdownProps {
   icon: React.ReactNode;
@@ -21,7 +22,7 @@ const ModuleDropdown: React.FC<ModuleDropdownProps> = ({
       <button
         onClick={(e) =>
           openDropdown(e, [
-            { label: "Duplicate", shortcut: "Ctrl+D", onClick: () => console.log("Duplicate") },
+            { label: "Duplicate", shortcut: "Ctrl+D", onClick: () => modelStore.duplicateModel() },
             { label: "Delete", shortcut: "Delete", onClick: () => console.log("Delete") },
             { label: "Lock", shortcut: "Ctrl+Alt+L", onClick: () => console.log("Lock") },
           ])

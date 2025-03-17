@@ -38,7 +38,7 @@ const Center: React.FC<CenterProps> = observer(
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
-        <ModelToolbar />
+        {/* <ModelToolbar /> */}
         <div className="bg-white">
           <CanvasToolbar />
         </div>

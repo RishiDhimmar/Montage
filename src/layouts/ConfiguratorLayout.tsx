@@ -14,7 +14,6 @@ function ConfiguratorLayout() {
   return (
     <>
       <Navbar />
-      {/* Full-height container below navbar */}
       <div className="relative w-full h-[calc(100vh-64px)]">
         <Center
           onToggleLeft={toggleLeftSidebar}
@@ -31,3 +30,4 @@ function ConfiguratorLayout() {
 }
 
 export default ConfiguratorLayout;
+

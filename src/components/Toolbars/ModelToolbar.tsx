@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { HiSwitchHorizontal } from "react-icons/hi";
-import { MdDelete, MdFlipToBack, MdHome, MdOutlineFlip } from "react-icons/md";
-import ModuleDropdown from "../Dropdowns/ModuleDropdown";
+import { MdDelete, MdHome, MdOutlineFlip } from "react-icons/md";
 import { IoEllipsisHorizontal } from "react-icons/io5";
+import { CgEditFlipV } from "react-icons/cg";
+import ModuleDropdown from "../Dropdowns/ModuleDropdown";
+import modelStore from "../../stores/ModelStore";
 
 const ModelToolbar = () => {
   const [selectedTool, setSelectedTool] = useState<string>("Switch");
@@ -11,6 +13,12 @@ const ModelToolbar = () => {
   const handleSelect = (tool: string) => {
     if (tool === "Menu") {
       setIsDropdownOpen((prev) => !prev);
+    } else if (tool === "Delete") {
+      if (modelStore.selectedModelId !== null) {
+        modelStore.removeModel(modelStore.selectedModelId);
+        setSelectedTool("Switch");
+      }
+      setIsDropdownOpen(false);
     } else {
       setSelectedTool(tool);
       setIsDropdownOpen(false);
@@ -57,7 +65,7 @@ const ModelToolbar = () => {
             : "hover:bg-gray-200"
         }`}
       >
-        <MdFlipToBack />
+        <CgEditFlipV />
       </div>
 
       <div
@@ -77,3 +85,4 @@ const ModelToolbar = () => {
 };
 
 export default ModelToolbar;
+
