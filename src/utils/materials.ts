@@ -14,6 +14,7 @@ export const materials = {
   gray: new THREE.MeshStandardMaterial({ color: "#bebebe" }),
   cyan: new THREE.MeshStandardMaterial({ color: "#009393" , transparent: true, opacity: 0.5 }),
   none: new THREE.MeshStandardMaterial({ transparent: true, opacity: 0 }),
+  pink: new THREE.MeshStandardMaterial({ color: "#FFC0CB" }),
 };
 
 export const MaterialsGUI = () => {

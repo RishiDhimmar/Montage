@@ -1,11 +1,7 @@
-import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { SceneCamera } from "./SceneCamera";
 import modelStore from "../../stores/ModelStore";
-import { CameraControls, Grid } from "@react-three/drei";
+import { CameraControls, Grid, OrbitControls } from "@react-three/drei";
 import { SceneLights } from "./SceneLights";
 import ModelManager from "./ModelManager";
 import { useThree } from "@react-three/fiber";
@@ -26,11 +22,15 @@ const Experience = forwardRef((props, ref) => {
       const modelPath = event.dataTransfer.getData("modelPath");
       if (!modelPath) return;
 
-      const intersection = performRaycastFromMouse(event.nativeEvent, camera, gl);
+      const intersection = performRaycastFromMouse(
+        event.nativeEvent,
+        camera,
+        gl
+      );
       if (intersection) {
         modelStore.addModel(modelPath, [
           intersection.x,
-          intersection.y,
+          intersection.y + 0.5,
           intersection.z,
         ]);
       }
@@ -38,18 +38,25 @@ const Experience = forwardRef((props, ref) => {
   }));
 
   return (
-    <group ref={experienceRef}> {/* ✅ Ensure group has a valid ref */}
+    <group ref={experienceRef}>
+      {" "}
+      {/* ✅ Ensure group has a valid ref */}
       <SceneCamera is3D={modelStore.is3d} />
       <CameraControls
         makeDefault
         ref={controlsRef}
         minZoom={10}
+        maxZoom={300}
         azimuthRotateSpeed={modelStore.is3d ? 1 : 0}
         polarRotateSpeed={modelStore.is3d ? 1 : 0}
       />
       <SceneLights />
       {!modelStore.is3d && (
-        <Grid args={[150, 150]} cellColor="white" sectionColor="white" />
+        <>
+          <Grid args={[150, 150]} cellColor="white" sectionColor="white" onClick={() => {
+            console.log("first")
+          }}/>
+        </>
       )}
       <ModelManager />
     </group>

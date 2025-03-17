@@ -9,8 +9,8 @@ interface SceneCameraProps {
 
 export const SceneCamera: React.FC<SceneCameraProps> = ({ is3D, cameraRef }) => {
   return is3D ? (
-    <PerspectiveCamera makeDefault position={[5, 5, 5]} ref={cameraRef as React.MutableRefObject<THREE.PerspectiveCamera>} />
+    <PerspectiveCamera makeDefault position={[5, 10, 15]} ref={cameraRef as React.MutableRefObject<THREE.PerspectiveCamera>} />
   ) : (
-    <OrthographicCamera makeDefault position={[0, 10, 0]}  zoom={100} ref={cameraRef as React.MutableRefObject<THREE.OrthographicCamera>} />
+    <OrthographicCamera makeDefault position={[0, 10, 0]}  zoom={50} ref={cameraRef as React.MutableRefObject<THREE.OrthographicCamera>} />
   );
 };

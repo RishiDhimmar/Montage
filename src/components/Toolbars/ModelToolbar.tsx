@@ -3,6 +3,8 @@ import { HiSwitchHorizontal } from "react-icons/hi";
 import { MdDelete, MdFlipToBack, MdHome, MdOutlineFlip } from "react-icons/md";
 import ModuleDropdown from "../Dropdowns/ModuleDropdown";
 import { IoEllipsisHorizontal } from "react-icons/io5";
+import { LuFlipHorizontal, LuFlipVertical } from "react-icons/lu";
+import modelStore from "../../stores/ModelStore";
 
 const ModelToolbar = () => {
   const [selectedTool, setSelectedTool] = useState<string>("Switch");
@@ -39,25 +41,32 @@ const ModelToolbar = () => {
       </div>
 
       <div
-        onClick={() => handleSelect("VerticalMirror")}
+        onClick={() => {
+          handleSelect("VerticalMirror");
+          modelStore.flipModelVertically(modelStore.selectedModelId)
+
+        }}
         className={`p-2 rounded ${
           selectedTool === "VerticalMirror"
             ? "bg-gray-300"
             : "hover:bg-gray-200"
         }`}
       >
-        <MdOutlineFlip />
+        <LuFlipHorizontal />
       </div>
 
       <div
-        onClick={() => handleSelect("HorizontalMirror")}
+        onClick={() => {handleSelect("HorizontalMirror")
+          modelStore.flipModelHorizontally(modelStore.selectedModelId)
+
+        }}
         className={`p-2 rounded ${
           selectedTool === "HorizontalMirror"
             ? "bg-gray-300"
             : "hover:bg-gray-200"
         }`}
       >
-        <MdFlipToBack />
+        <LuFlipVertical />
       </div>
 
       <div
