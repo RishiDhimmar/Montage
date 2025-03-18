@@ -63,7 +63,7 @@ interface TextureSectionProps {
     textures: {
       id: number;
       label: string;
-      imageUrl: string;
+      previewUrl: string;
       materialUrl: string;
     }[];
   };
@@ -71,8 +71,8 @@ interface TextureSectionProps {
 
 const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => {
   const selectedTexture = textureStore.selectedTextures[section.id];
-
-  const imageSrc = selectedTexture?.imageUrl?.trim() ? selectedTexture.imageUrl : null;
+  // console.log(textureStore.selectedTextures);
+  const imageSrc = selectedTexture?.previewUrl?.trim() ? selectedTexture.previewUrl : null;
   return (
     <div className="mb-6 text-center">
       {imageSrc ? (

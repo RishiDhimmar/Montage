@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../UiComponent/Button";
+import modelStore from "../../stores/ModelStore";
 
 const SidebarFooter: React.FC<{ blurIntensity: number; onOrderNow: () => void }> = ({ blurIntensity, onOrderNow }) => {
   return (
@@ -11,7 +12,7 @@ const SidebarFooter: React.FC<{ blurIntensity: number; onOrderNow: () => void }>
       }}
     >
       <div className="w-2/3">
-        <h3 className="text-lg font-semibold">$55,555</h3>
+        <h3 className="text-lg font-semibold">{"$ "}{modelStore.totalPrice}</h3>
         <div>Estimated Construction Cost</div>
       </div>
       <div>

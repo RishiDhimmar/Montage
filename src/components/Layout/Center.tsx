@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
 import CanvasToolbar from "../Toolbars/CanvasToolbar";
-import ModelToolbar from "../Toolbars/ModelToolbar";
 
 interface CenterProps {
   onToggleLeft: () => void;
@@ -26,19 +25,16 @@ const Center: React.FC<CenterProps> = observer(
       }
     };
 
-    // Calculate sidebar widths
     const leftSidebarWidth = isLeftOpen ? 440 : 80;
     const rightSidebarWidth = isRightOpen ? 360 : 0;
 
     return (
-      // Make this container fill the parent
       <div
         ref={canvasRef}
         className="absolute inset-0 bg-gray-200"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
-        {/* <ModelToolbar /> */}
         <div className="bg-white">
           <CanvasToolbar />
         </div>
@@ -67,14 +63,7 @@ const Center: React.FC<CenterProps> = observer(
           />
         </button>
 
-        <button
-          onClick={() => modelStore.toggle3D()}
-          className="absolute top-4 left-1/2 bg-white px-4 py-2 shadow-md rounded z-10"
-        >
-          {modelStore.is3d ? "Switch to 2D" : "Switch to 3D"}
-        </button>
-
-        <Canvas linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }}>
+        <Canvas linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }} onPointerMissed={() => modelStore.selectModel(null)}>
           <Experience ref={experienceRef} />
         </Canvas>
       </div>
