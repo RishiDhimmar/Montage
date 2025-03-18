@@ -321,10 +321,12 @@ interface Model {
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
+
   noOfBathRooms: number;
   noOfBedRooms: number;
   size: number; // in square feet
   price: number;
+
 }
 
 class ModelStore {
@@ -343,10 +345,14 @@ class ModelStore {
     name: string,
     position: [number, number, number] = [0, 0, 0],
     rotation: [number, number, number] = [0, 0, 0],
+
+    nodePositions: []
+
     noOfBathRooms: number = 5,
     noOfBedRooms: number = 0,
     size: number = 1000,
     price: number = 0
+
   ) {
     const id = Date.now();
     this.models.push({
@@ -357,12 +363,19 @@ class ModelStore {
       position,
       rotation,
       scale: [1, 1, 1],
+
+      nodePositions
+    });
+
+    // console.log(this.models);
+
       noOfBathRooms,
       noOfBedRooms,
       size,
       price,
     });
     console.log(this.models);
+
     return id;
   }
 
@@ -425,6 +438,9 @@ class ModelStore {
       console.log(this.selectedModelId);
     }
   }
+  getModel(id: number) {
+    return this.models.find((m) => m.id === id);
+  }
   
   setHoveredModelId = (id: number) => {
     this.hoveredModelId = id;
@@ -444,6 +460,8 @@ class ModelStore {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.scale = [-model.scale[0], model.scale[1], model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
   
@@ -451,9 +469,12 @@ class ModelStore {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.scale = [model.scale[0], model.scale[1], -model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
   
+
   getScale = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.scale : null;
