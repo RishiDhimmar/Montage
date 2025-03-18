@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ModuleListItem from "./ModuleListItem";
+import { observer } from "mobx-react-lite";
 
 interface Module {
   id: string;
@@ -10,33 +11,26 @@ interface Module {
 interface ModuleListProps {
   modules: Module[];
   onDragStart: (event: React.DragEvent, modelPath: string) => void;
-  selectedModule: string | null;
-  setSelectedModule: (id: string) => void;
 }
 
-const ModuleList: React.FC<ModuleListProps> = ({
-  modules,
-  onDragStart,
-  selectedModule,
-  setSelectedModule,
-}) => {
+const ModuleList: React.FC<ModuleListProps> = observer(({ modules, onDragStart }) => {
   const [hoveredModule, setHoveredModule] = useState<string | null>(null);
 
   return (
-    <div className="p-4 h-[73vh] overflow-y-auto custom-scrollbar">
-      {modules.map((module) => (
+    <div className="h-[73vh] overflow-y-auto custom-scrollbar">
+      {modules.map((module, index) => (
         <ModuleListItem
           key={module.id}
           module={module}
+          index={index}
           onDragStart={onDragStart}
           hoveredModule={hoveredModule}
           setHoveredModule={setHoveredModule}
-          selectedModule={selectedModule}
-          setSelectedModule={setSelectedModule}
         />
       ))}
     </div>
   );
-};
+});
 
 export default ModuleList;
+

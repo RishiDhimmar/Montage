@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
 import CanvasToolbar from "../Toolbars/CanvasToolbar";
-import ModelToolbar from "../Toolbars/ModelToolbar";
 
 interface CenterProps {
   onToggleLeft: () => void;
@@ -26,19 +25,16 @@ const Center: React.FC<CenterProps> = observer(
       }
     };
 
-    // Calculate sidebar widths
     const leftSidebarWidth = isLeftOpen ? 440 : 80;
     const rightSidebarWidth = isRightOpen ? 360 : 0;
 
     return (
-      // Make this container fill the parent
       <div
         ref={canvasRef}
         className="absolute inset-0 bg-gray-200"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
       >
-        {/* <ModelToolbar /> */}
         <div className="bg-white">
           <CanvasToolbar />
         </div>
