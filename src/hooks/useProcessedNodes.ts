@@ -1,29 +1,64 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import * as THREE from "three";
-import { processNodes } from "../helpers/ProcessNodes";
+import { materials } from "../utils/materials";
 import { computeGlobalCorners } from "../helpers/ComputeGlobalCorners";
-import { materials } from "../utils/materials"; // Adjust path as needed
 
-export function useProcessedNodes(
-  nodes: Record<string, THREE.Object3D>,
-  scale: [number, number, number]
-) {
-  return useMemo(() => {
-    // Process raw nodes.
-    const processed = processNodes(nodes, materials);
-    // Create scaled nodes by applying the scale to each geometry.
-    const scaled: Record<string, { geometry: THREE.BufferGeometry; material: THREE.Material; name: string }> = {};
-    for (const key in processed) {
-      const { geometry, material, name } = processed[key];
-      // Clone geometry and apply the scale matrix.
-      const clonedGeometry = geometry.clone();
-      const scaleMat = new THREE.Matrix4().makeScale(scale[0], scale[1], scale[2]);
-      clonedGeometry.applyMatrix4(scaleMat);
-      clonedGeometry.computeBoundingBox();
-      clonedGeometry.computeBoundingSphere();
-      scaled[key] = { geometry: clonedGeometry, material, name };
+export function useProcessedNodes(nodes, scale) {
+  const processedData = useMemo(() => {
+    const processedNodes = {};
+    const nodePositions = []
+    
+    // Process nodes
+    for (const key in nodes) {
+      const node = nodes[key];
+      
+      // Skip non-meshes and ceiling/roof elements
+      if (
+        !node.isMesh || 
+        node.name.includes("Roof") || 
+        node.name.includes("Ceil") ||
+        (node.parent?.name && node.parent.name.includes("Ceiling"))
+      ) {
+        continue;
+      }
+      
+      // Clone and transform geometry
+      const geometry = node.geometry.clone();
+      geometry.applyMatrix4(new THREE.Matrix4().copy(node.matrixWorld));
+      
+      // Apply scale
+      const scaleMat = new THREE.Matrix4().makeScale(...scale);
+      geometry.applyMatrix4(scaleMat);
+      geometry.computeBoundingBox();
+      geometry.computeBoundingSphere();
+      
+      // Determine material
+      let material = materials.white;
+      if (node.name.includes("Node")) {
+        material = materials.cyan;
+        nodePositions.push(node.position)
+
+      } else if (node.name.includes("Floor")) {
+        material = materials.gray;
+      }
+      
+      processedNodes[key] = { geometry, material, name: node.name };
     }
-    const corners = computeGlobalCorners(scaled);
-    return { processedNodes: scaled, corners };
+    
+    // Calculate corners from processed nodes using the provided function
+    const corners = computeGlobalCorners(processedNodes);
+    
+    return { processedNodes, corners };
   }, [nodes, scale]);
+  
+  // Cleanup geometries when unmounting
+  useEffect(() => {
+    return () => {
+      Object.values(processedData.processedNodes).forEach(
+        ({ geometry }) => geometry.dispose()
+      );
+    };
+  }, [processedData.processedNodes]);
+  
+  return processedData;
 }

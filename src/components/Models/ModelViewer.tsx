@@ -14,35 +14,20 @@ interface ModelRendererProps {
 }
 
 const ModelViewer: React.FC<ModelRendererProps> = observer(
-  ({ id,  modelPath, position, onLoad }) => {
+  ({ id, modelPath, position }) => {
     const { nodes, scene } = useGLTF(modelPath);
 
-    // Deep clone nodes for EdgeModel mode
-    const clonedNodes = useMemo(() => {
-      const cloned: Record<string, THREE.Object3D> = {};
-      for (const key in nodes) {
-        const node = nodes[key] as THREE.Object3D;
-        const nodeClone = node.clone();
-        if ((node as THREE.Mesh).material) {
-          nodeClone.material = (node as THREE.Mesh).material.clone();
-        }
-        if ((node as THREE.Mesh).geometry) {
-          nodeClone.geometry = (node as THREE.Mesh).geometry.clone();
-        }
-        cloned[key] = nodeClone;
-      }
-      return cloned;
-    }, [nodes]);
-
-    useEffect(() => {
-      if (onLoad) onLoad();
-    }, [onLoad]);
-
     return modelStore.is3d ? (
-      <Model3D id={id} nodes={nodes} position={modelStore.getPosition(id)} rotation={modelStore.getRotation(id)} scene={scene} />
+      <Model3D
+        id={id}
+        nodes={nodes}
+        position={modelStore.getPosition(id)}
+        rotation={modelStore.getRotation(id)}
+        scene={scene}
+      />
     ) : (
       <Suspense fallback={null}>
-        <EdgeModel  nodes={clonedNodes} position={position} id={id}  />
+        <EdgeModel nodes={nodes} position={position} id={id} />
       </Suspense>
     );
   }

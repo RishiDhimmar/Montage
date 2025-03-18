@@ -1,42 +1,35 @@
 import { Edges, Html } from "@react-three/drei";
-import React, { useState, useRef, useEffect } from "react";
-import * as THREE from "three";
-import { observer } from "mobx-react-lite";
+import React, { useState, useRef, use } from "react";
 import { useThree } from "@react-three/fiber";
+import { observer } from "mobx-react-lite";
+import * as THREE from "three";
 import modelStore from "../../stores/ModelStore";
 import BoundingBoxLine from "../../helpers/BoundingBoxLine";
 import BoundingBoxSpheres from "../../helpers/BoundingBoxSpheres";
-import { useModelInteraction } from "../../hooks/useModelInteraction";
 import ModelToolbar from "../Toolbars/ModelToolbar";
 import { useProcessedNodes } from "../../hooks/useProcessedNodes";
+import { useModelInteraction } from "../../hooks/useModelInteraction";
 
 const EdgeModel = observer(({ id, nodes }) => {
   const { camera, gl } = useThree();
-  const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const scale = modelStore.getScale(id) || [1, 1, 1];
+
+  const model = modelStore.models.find((m) => m.id === id) || {};
+  const scale = model.scale || [1, 1, 1];
+  const rotation = model.rotation || [0, 0, 0];
+  const position = model.position || [0, 0, 0];
+
   const { processedNodes, corners } = useProcessedNodes(nodes, scale);
-  const rotation = modelStore.models.find((m) => m.id === id)?.rotation || [0, 0, 0];
-  const position = modelStore.getPosition(id);
-
-
-  const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
-    id,
-    camera,
-    gl,
-  });
-
-
-  useEffect(() => {
-    return () => {
-      Object.values(processedNodes).forEach(({ geometry }) => geometry.dispose());
-    };
-  }, [processedNodes]);
-
+  const { handlePointerDown, handlePointerMove, handlePointerUp } =
+    useModelInteraction({
+      id,
+      camera,
+      gl,
+    });
 
   return (
+    <>
     <group
-      ref={groupRef}
       position={position}
       rotation={rotation}
       onPointerOver={() => setHovered(true)}
@@ -59,6 +52,8 @@ const EdgeModel = observer(({ id, nodes }) => {
       {(modelStore.selectedModelId === id || hovered) && <BoundingBoxLine corners={corners} />}
       {modelStore.selectedModelId === id && <BoundingBoxSpheres corners={corners} />}
     </group>
+    { console.log(modelStore.getModel(id)?.nodePositions)  }
+    </>
   );
 });
 

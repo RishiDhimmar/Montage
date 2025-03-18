@@ -6,6 +6,7 @@ interface Model {
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
+  nodePositions: [];
 }
 
 class ModelStore {
@@ -23,6 +24,7 @@ class ModelStore {
     image: string,
     position: [number, number, number] = [0, 0, 0],
     rotation: [number, number, number] = [0, 0, 0],
+    nodePositions: []
   ) {
     const id = Date.now();
 
@@ -34,9 +36,10 @@ class ModelStore {
       position,
       rotation,
       scale: [1, 1, 1],
+      nodePositions
     });
 
-    console.log(this.models);
+    // console.log(this.models);
     return id;
   }
 
@@ -97,6 +100,9 @@ class ModelStore {
       console.log(this.selectedModelId);
     }
 
+  }
+  getModel(id: number) {
+    return this.models.find((m) => m.id === id);
   }
   
   setHoveredModelId = (id: number) => {

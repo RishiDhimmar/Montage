@@ -1,6 +1,5 @@
 import React from "react";
 import { PerspectiveCamera, OrthographicCamera } from "@react-three/drei";
-import * as THREE from "three";
 
 interface SceneCameraProps {
   is3D: boolean;
