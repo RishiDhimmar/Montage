@@ -78,7 +78,6 @@ class ModuleStore {
 
     try {
       const data = await fetchData(`${BASE_URL}/modules`);
-      console.log("📡 API Response:", data);
 
       if (!data || !Array.isArray(data)) {
         throw new Error("Invalid API response format");

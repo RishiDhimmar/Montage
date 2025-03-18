@@ -6,6 +6,7 @@ import { IoEllipsisHorizontal } from "react-icons/io5";
 import { LuFlipHorizontal, LuFlipVertical } from "react-icons/lu";
 
 import modelStore from "../../stores/ModelStore";
+import ModuleDropdown from "../Dropdowns/ModuleDropdown";
 
 const ModelToolbar = () => {
   const [selectedTool, setSelectedTool] = useState<string>("Switch");
