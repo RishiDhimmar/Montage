@@ -63,12 +63,6 @@ const Center: React.FC<CenterProps> = observer(
           />
         </button>
 
-        <button
-          onClick={() => modelStore.toggle3D()} 
-          className="absolute top-4 left-1/2 bg-white px-4 py-2 shadow-md rounded z-10"
-        >
-          {modelStore.is3d ? "Switch to 2D" : "Switch to 3D"}
-        </button>
 
         <Canvas linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }} onPointerMissed={() => modelStore.selectModel(null)}>
           <Experience ref={experienceRef} />

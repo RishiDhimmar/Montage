@@ -136,13 +136,15 @@
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { SceneCamera } from "./SceneCamera";
 import modelStore from "../../stores/ModelStore";
-import { CameraControls, Grid,  } from "@react-three/drei";
+
+import dragStore from "../../stores/DragStore";
+import { CameraControls, Grid } from "@react-three/drei";
+
 import { SceneLights } from "./SceneLights";
 import ModelManager from "./ModelManager";
 import { useThree } from "@react-three/fiber";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
 
-// interface ExperienceProps {}
 
 const Experience = forwardRef((props, ref) => {
   const { gl, camera } = useThree();
@@ -191,11 +193,9 @@ const Experience = forwardRef((props, ref) => {
         polarRotateSpeed={modelStore.is3d ? 1 : 0}
       />
       <SceneLights />
-      {!modelStore.is3d && (
-        <>
-          <Grid args={[150, 150]} cellColor="white" sectionColor="white" cellSize={10}/>
-        </>
-      )}
+
+      {!modelStore.is3d && <Grid args={[150, 150]} cellColor="white" sectionColor="white" />}
+
       <ModelManager />
     </group>
   );
