@@ -6,6 +6,7 @@ import { IoEllipsisHorizontal } from "react-icons/io5";
 import { LuFlipHorizontal, LuFlipVertical } from "react-icons/lu";
 
 import modelStore from "../../stores/ModelStore";
+import ModuleDropdown from "../Dropdowns/ModuleDropdown";
 
 const ModelToolbar = () => {
   const [selectedTool, setSelectedTool] = useState<string>("Switch");
@@ -48,10 +49,11 @@ const ModelToolbar = () => {
       </div>
 
       <div
-        onClick={() => {
-          handleSelect("VerticalMirror");
-          modelStore.flipModelVertically(modelStore.selectedModelId)
+        onClick={(e) => {
+          e.stopPropagation();
 
+          handleSelect("VerticalMirror");
+          modelStore.flipModelVertically(modelStore.selectedModelId);
         }}
         className={`p-2 rounded ${
           selectedTool === "VerticalMirror"
@@ -63,9 +65,10 @@ const ModelToolbar = () => {
       </div>
 
       <div
-        onClick={() => {handleSelect("HorizontalMirror")
-          modelStore.flipModelHorizontally(modelStore.selectedModelId)
-
+        onClick={(e) => {
+          e.stopPropagation();
+          handleSelect("HorizontalMirror");
+          modelStore.flipModelHorizontally(modelStore.selectedModelId);
         }}
         className={`p-2 rounded ${
           selectedTool === "HorizontalMirror"
@@ -73,9 +76,7 @@ const ModelToolbar = () => {
             : "hover:bg-gray-200"
         }`}
       >
-
         <LuFlipVertical />
-
       </div>
 
       <div
@@ -95,4 +96,3 @@ const ModelToolbar = () => {
 };
 
 export default ModelToolbar;
-

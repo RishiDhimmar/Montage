@@ -5,6 +5,7 @@ import { Html } from "@react-three/drei";
 import gsap from "gsap";
 import modelStore from "../stores/ModelStore";
 import { performRaycastFromMouse } from "../utils/PerformRaycastingFromMouse";
+import { observer } from "mobx-react-lite";
 
 interface BoundingBoxSpheresProps {
   corners: THREE.Vector3[] | null;
@@ -27,7 +28,7 @@ const findNearestAngle = (deg: number): number => {
 
 
 // TODO : Understand this piece of code and fix it
-const BoundingBoxSpheres: React.FC<BoundingBoxSpheresProps> = ({ corners }) => {
+const BoundingBoxSpheres: React.FC<BoundingBoxSpheresProps> = observer( ({ corners }) => {
   if (!corners) return null;
 
   const { camera, gl } = useThree();
@@ -117,25 +118,32 @@ const BoundingBoxSpheres: React.FC<BoundingBoxSpheresProps> = ({ corners }) => {
   return (
     <>
       {corners.map((corner, i) => (
-        <Html key={i} position={corner} center renderOrder={2}>
-          <div
-            onPointerDown={(e) => onDown(e as unknown as PointerEvent, i)}
-            onPointerMove={(e) => onMove(e as unknown as PointerEvent, i)}
-            onPointerUp={(e) => onUp(e as unknown as PointerEvent, i)}
-            style={{
-              width: "16px",
-              height: "16px",
-              borderRadius: "50%",
-              background: "white",
-              border: "2px solid black",
-              pointerEvents: "auto",
-              cursor: "pointer"
-            }}
-          />
-        </Html>
+       <Html
+       key={i}
+       position={corner}
+       center
+       renderOrder={-1}
+       zIndexRange={[0, 0]} // Adjusted zIndexRange
+     >
+       <div
+         onPointerDown={(e) => onDown(e as unknown as PointerEvent, i)}
+         onPointerMove={(e) => onMove(e as unknown as PointerEvent, i)}
+         onPointerUp={(e) => onUp(e as unknown as PointerEvent, i)}
+         style={{
+           width: "16px",
+           height: "16px",
+           borderRadius: "50%",
+           background: "white",
+           border: "2px solid black",
+           pointerEvents: "auto",
+           cursor: "pointer",
+         }}
+       />
+     </Html>
+     
       ))}
     </>
   );
-};
+})
 
 export default BoundingBoxSpheres;

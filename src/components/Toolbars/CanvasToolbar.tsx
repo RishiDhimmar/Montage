@@ -16,7 +16,7 @@ const CanvasToolbar: React.FC = observer(() => {
       {/* 2D Mode Button */}
       <button
         onClick={() => {
-          modelStore.toggle2D();
+          modelStore.is3d = false;
           handleSelect("2D");
         }}
         className={`p-2 rounded ${selectedTool === "2D" ? "bg-gray-300" : "hover:bg-gray-200"}`}
@@ -43,7 +43,7 @@ const CanvasToolbar: React.FC = observer(() => {
       {/* 3D Mode Button */}
       <button
         onClick={() => {
-          modelStore.toggle3D();
+          modelStore.is3d = true;
           handleSelect("3D");
         }}
         className={`p-2 rounded ${selectedTool === "3D" ? "bg-gray-300" : "hover:bg-gray-200"}`}

@@ -53,7 +53,7 @@ const EdgeModel = observer(({ id, nodes }) => {
       )}
       {Object.entries(processedNodes).map(([key, { geometry, material, name }]) => (
         <mesh key={`${key}-${id}`} geometry={geometry} material={material}>
-          <Edges color={name.includes("Wall") ? "black" : "gray"} lineWidth={1.5} threshold={15} renderOrder={2} />
+          <Edges color={name.includes("Wall") ? "black" : "gray"} lineWidth={name.includes("Wall") ? 1.5 : 1} threshold={15}  />
         </mesh>
       ))}
       {(modelStore.selectedModelId === id || hovered) && <BoundingBoxLine corners={corners} />}

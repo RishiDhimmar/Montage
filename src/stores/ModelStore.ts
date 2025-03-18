@@ -117,6 +117,8 @@ class ModelStore {
     const model = this.models.find(m => m.id === id);
     if (model) {
       model.scale = [-model.scale[0], model.scale[1], model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
   
@@ -124,8 +126,11 @@ class ModelStore {
     const model = this.models.find(m => m.id === id);
     if (model) {
       model.scale = [model.scale[0], model.scale[1], -model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
+  
   
 
   getScale = (id: number) => {
