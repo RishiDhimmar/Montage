@@ -15,7 +15,7 @@ const BoundingBoxSpheres: React.FC<BoundingBoxSpheresProps> = ({ corners }) => {
   return (
     <>
       {corners.map((corner, i) => (
-        <Html key={i} position={corner} center renderOrder={-1}>
+        <Html key={i} position={corner} center>
           <div
             onPointerDown={(e) => onPointerDown(e as unknown as PointerEvent, i)}
             onPointerMove={(e) => onPointerMove(e as unknown as PointerEvent, i)}
@@ -26,13 +26,12 @@ const BoundingBoxSpheres: React.FC<BoundingBoxSpheresProps> = ({ corners }) => {
               borderRadius: "50%",
               background: "white",
               border: "2px solid black",
-              pointerEvents: "auto",
             }}
           />
         </Html>
       ))}
     </>
   );
-})
+}
 
 export default BoundingBoxSpheres;
