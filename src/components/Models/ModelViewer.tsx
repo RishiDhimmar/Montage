@@ -27,7 +27,7 @@ const ModelViewer: React.FC<ModelRendererProps> = observer(
       />
     ) : (
       <Suspense fallback={null}>
-        <EdgeModel nodes={nodes} position={position} id={id} />
+        <EdgeModel nodes={nodes} position={position} id={id} scene={scene} />
       </Suspense>
     );
   }
