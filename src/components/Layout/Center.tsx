@@ -63,7 +63,8 @@ const Center: React.FC<CenterProps> = observer(
           />
         </button>
 
-        <Canvas linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }} onPointerMissed={() => modelStore.selectModel(null)}>
+
+        <Canvas shadows gl={{antialias: true}} linear={false} className="w-full h-full" style={{background: modelStore.is3d ? "#eeeeee" : "#ffffff" }} onPointerMissed={() => modelStore.selectModel(null)}>
           <Experience ref={experienceRef} />
         </Canvas>
       </div>

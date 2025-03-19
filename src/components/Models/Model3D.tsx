@@ -79,6 +79,8 @@ const Model3D: React.FC<Model3DProps> = observer(({ id, nodes }) => {
         return (
           <mesh
             key={key}
+            castShadow
+            receiveShadow
             geometry={node.geometry}
             material={material}
             matrixAutoUpdate={false}

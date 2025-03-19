@@ -7,6 +7,7 @@ interface Texture {
   price: number;
 }
 
+
 interface Model {
   id: number;
   moduleId?: number;
@@ -16,6 +17,8 @@ interface Model {
   position: [number, number, number];
   rotation: [number, number, number];
   scale: [number, number, number];
+  nodePositions: THREE.Vector3[]; // Add this property to the interface
+
   noOfBathRooms: number;
   noOfBedRooms: number;
   size: number;
@@ -46,6 +49,7 @@ class ModelStore {
     name: string,
     position: [number, number, number] = [0, 0, 0],
     rotation: [number, number, number] = [0, 0, 0],
+    nodePositions: THREE.Vector3[] = [], // Fix parameter type
     noOfBathRooms: number = 5,
     noOfBedRooms: number = 0,
     size: number = 1000,
@@ -62,12 +66,15 @@ class ModelStore {
       position,
       rotation,
       scale: [1, 1, 1],
+      nodePositions: [], // Include nodePositions in the model object
       noOfBathRooms,
       noOfBedRooms,
       size,
       price,
       appliedTextures: [],
     });
+    console.log("Model added with node positions:", this.models);
+
     return id;
   }
 
@@ -108,6 +115,12 @@ class ModelStore {
     const design = this.savedDesigns.find((d) => d.id === designId);
     if (design) {
       this.models = JSON.parse(JSON.stringify(design.models));
+
+  setNodePositions(id: number, nodePositions: THREE.Vector3[]) {
+    const model = this.models.find((m) => m.id === id);
+    if (model) {
+      model.nodePositions = nodePositions; // Store the entire array of Vector3 positions
+
     }
   }
 
@@ -133,7 +146,11 @@ class ModelStore {
     this.selectedModelId = this.selectedModelId === id ? null : id;
   }
 
-  setHoveredModelId(id: number) {
+  getModel(id: number) {
+    return this.models.find((m) => m.id === id);
+  }
+
+  setHoveredModelId = (id: number) => {
     this.hoveredModelId = id;
   }
 
@@ -142,7 +159,12 @@ class ModelStore {
     return model ? model.position : null;
   }
 
-  getRotation(id: number) {
+  setPosition = (id: number, position: [number, number, number]) => {
+    const model = this.models.find((m) => m.id === id);
+    if (model) model.position = position;
+  };
+
+  getRotation = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.rotation : null;
   }
@@ -151,6 +173,8 @@ class ModelStore {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.scale = [-model.scale[0], model.scale[1], model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
 
@@ -158,10 +182,13 @@ class ModelStore {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.scale = [model.scale[0], model.scale[1], -model.scale[2]];
+      // Explicitly keep the model selected:
+      this.selectedModelId = id;
     }
   }
 
-  getScale(id: number) {
+
+  getScale = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.scale : null;
   }
@@ -199,6 +226,24 @@ class ModelStore {
         : 0;
 
     return modelTotal + textureTotal;
+  }
+
+  // In ModelStore class
+  getAllNodesFlat() {
+    return this.models.flatMap((model) => ({
+      modelid: model.id,
+      nodes: model.nodePositions.map((pos) => [pos.x, pos.y, pos.z]),
+    }));
+  }
+
+  // In ModelStore class
+  getNodesFlatArray() {
+    return this.models.flatMap((model) =>
+      model.nodePositions.map((pos) => ({
+        modelid: model.id,
+        position: [pos.x, pos.y, pos.z],
+      }))
+    );
   }
 }
 

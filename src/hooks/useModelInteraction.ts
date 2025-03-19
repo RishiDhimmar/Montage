@@ -1,67 +1,129 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 import modelStore from "../stores/ModelStore";
 import { performRaycastFromMouse } from "../utils/PerformRaycastingFromMouse";
 
-interface UseModelInteractionProps {
-  id: number;
-  camera: THREE.Camera;
-  gl: THREE.WebGLRenderer;
-}
+export function useModelInteraction({ id, camera, gl }) {
+  const dragState = useRef({
+    offset: null,
+    initialModelPos: null,
+    localNodePositions: null,
+    isDragging: false,
+    allNodesSnapshot: [] as Array<{ 
+      modelid: number; 
+      position: THREE.Vector3;
+      alignment?: "x" | "y" | "z";
+    }>,
+    currentDragNode: null as THREE.Vector3 | null,
+  });
 
-export function useModelInteraction({ id, camera, gl }: UseModelInteractionProps) {
-  const [isDragging, setIsDragging] = useState(false);
-  const offsetRef = useRef<THREE.Vector3 | null>(null);
-  const startPosRef = useRef<{ x: number; y: number } | null>(null);
-  const hasMovedRef = useRef(false);
-
-  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+  const handlePointerDown = (e) => {
     e.stopPropagation();
-    const { clientX, clientY, pointerId, nativeEvent } = e;
-    (e.target as Element).setPointerCapture(pointerId);
-    setIsDragging(true);
-    hasMovedRef.current = false;
-    startPosRef.current = { x: clientX, y: clientY };
-
-    // Immediately select the model.
+    const target = e.target;
+    target.setPointerCapture(e.pointerId);
+    dragState.current.isDragging = true;
     modelStore.selectModel(id);
+    const hit = performRaycastFromMouse(e.nativeEvent, camera, gl);
+    if (!hit) return;
+    const model = modelStore.getModel(id);
+    if (!model) return;
+    dragState.current.initialModelPos = new THREE.Vector3(...model.position);
+    dragState.current.localNodePositions = (model.nodePositions || []).map(v => v.clone());
+    dragState.current.offset = new THREE.Vector3().subVectors(
+      new THREE.Vector3(...model.position),
+      hit
+    );
+    dragState.current.allNodesSnapshot = modelStore.models
+      .filter(m => m && m.id !== id)
+      .flatMap(m => {
+        const otherModelCenter = new THREE.Vector3(...m.position);
+        return (m.nodePositions || []).map(pos => ({
+          modelid: m.id,
+          position: pos.clone(),
+        }));
+      });
+  };
 
-    const hit = performRaycastFromMouse(nativeEvent, camera, gl);
-    if (hit) {
-      const model = modelStore.models.find((m) => m.id === id);
-      if (model) {
-        const [mx, my, mz] = model.position;
-        offsetRef.current = new THREE.Vector3(hit.x - mx, hit.y - my, hit.z - mz);
+  const handlePointerMove = (e) => {
+    if (!dragState.current.isDragging) return;
+    const hit = performRaycastFromMouse(e.nativeEvent, camera, gl);
+    if (!hit || !dragState.current.offset) return;
+    const newModelPos = hit.clone().add(dragState.current.offset);
+    const currentModel = modelStore.getModel(id);
+    if (!currentModel || !currentModel.nodePositions) return;
+    const otherNodes = dragState.current.allNodesSnapshot;
+    const delta = new THREE.Vector3().subVectors(newModelPos, dragState.current.initialModelPos);
+    const projectedNodePositions = dragState.current.localNodePositions.map(localPos =>
+      localPos.clone().add(delta)
+    );
+    const projectedNodesWithAlignment = projectedNodePositions.map((pos, index) => {
+      const localPos = pos.clone().sub(newModelPos);
+      return { position: pos, index };
+    });
+    const nodeDistances = projectedNodesWithAlignment.flatMap(projectedNode =>
+      otherNodes.map(otherNode => ({
+        fromModel: id,
+        toModel: otherNode.modelid,
+        distance: projectedNode.position.distanceTo(otherNode.position),
+        currentNodeIndex: projectedNode.index,
+        projectedPosition: projectedNode.position.clone(),
+        otherPosition: otherNode.position.clone(),
+        projectedAlignment: projectedNode.alignment,
+        otherAlignment: otherNode.alignment
+      }))
+    );
+    nodeDistances.sort((a, b) => a.distance - b.distance);
+    const closestMatch = nodeDistances.find(d => {
+      if (d.distance > 1 || d.distance < 0.1) return false;
+      const sameAlignment = d.projectedAlignment === d.otherAlignment;
+      const bothVertical = d.projectedAlignment === "y" && d.otherAlignment === "y";
+      const bothHorizontal = d.projectedAlignment !== "y" && d.otherAlignment !== "y";
+      return sameAlignment || bothVertical || bothHorizontal;
+    });
+    if (closestMatch) {
+      const currentLocal = dragState.current.localNodePositions[closestMatch.currentNodeIndex];
+      const otherModel = modelStore.getModel(closestMatch.toModel);
+      if (!otherModel) return;
+      const isVertical = closestMatch.projectedAlignment === "y";
+      const offsetDirection = new THREE.Vector3();
+      if (isVertical) {
+        if (closestMatch.otherAlignment === "x") {
+          offsetDirection.set(0, 0, 1);
+        } else {
+          offsetDirection.set(1, 0, 0);
+        }
+      } else {
+        offsetDirection.set(0, 1, 0);
       }
+      const NODE_SIZE = 0.5;
+      const offsetAmount = NODE_SIZE * 1.2;
+      const nodeVector = currentLocal.clone().sub(dragState.current.initialModelPos);
+      let desiredModelPosition = closestMatch.otherPosition.clone().sub(nodeVector);
+      desiredModelPosition.y = 0
+      desiredModelPosition = desiredModelPosition.add(offsetDirection.multiplyScalar(offsetAmount));
+      modelStore.setPosition(id, desiredModelPosition.toArray());
+      const newNodePositions = dragState.current.localNodePositions.map(localPos => {
+        const relativePos = localPos.clone().sub(dragState.current.initialModelPos);
+        return relativePos.add(desiredModelPosition);
+      });
+      modelStore.setNodePositions(id, newNodePositions);
+      return;
     }
-  }, [camera, gl, id]);
+    modelStore.updateModelPosition(id, newModelPos.toArray());
+    modelStore.setNodePositions(id, projectedNodePositions);
+  };
 
-  const handlePointerMove = useCallback((e: React.PointerEvent) => {
-    e.stopPropagation();
-    if (!isDragging) return;
-    const { clientX, clientY, nativeEvent } = e;
-    if (startPosRef.current) {
-      const dx = clientX - startPosRef.current.x;
-      const dy = clientY - startPosRef.current.y;
-      if (Math.sqrt(dx * dx + dy * dy) > 5) hasMovedRef.current = true;
-    }
-    const hit = performRaycastFromMouse(nativeEvent, camera, gl);
-    if (hit && offsetRef.current) {
-      const newPos = new THREE.Vector3(hit.x - offsetRef.current.x, 0, hit.z - offsetRef.current.z);
-      modelStore.updateModelPosition(id, [newPos.x, newPos.y + 0.5, newPos.z]);
-    }
-  }, [isDragging, id, camera, gl]);
+  const handlePointerUp = (e) => {
+    e.target.releasePointerCapture(e.pointerId);
+    dragState.current = {
+      offset: null,
+      initialModelPos: null,
+      localNodePositions: null,
+      isDragging: false,
+      allNodesSnapshot: [],
+      currentDragNode: null,
+    };
+  };
 
-  const handlePointerUp = useCallback((e: React.PointerEvent) => {
-    e.stopPropagation();
-    (e.target as Element).releasePointerCapture(e.pointerId);
-    if (!isDragging) return;
-    setIsDragging(false);
-    offsetRef.current = null;
-    startPosRef.current = null;
-    // If a drag occurred, re-select the model.
-    if (hasMovedRef.current) modelStore.selectModel(id);
-  }, [isDragging, id]);
-
-  return { handlePointerDown, handlePointerMove, handlePointerUp, isDragging };
+  return { handlePointerDown, handlePointerMove, handlePointerUp };
 }
