@@ -147,7 +147,6 @@ class TextureStore {
 
       this.error = null;
 
-      // Preserve previously selected textures
       this.textures.forEach((category) => {
         if (
           !this.selectedTextures[category.id] || 

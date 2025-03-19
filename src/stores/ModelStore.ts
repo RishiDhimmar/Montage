@@ -1,8 +1,16 @@
 import { makeAutoObservable } from "mobx";
-import * as THREE from "three";
+import textureStore from "./TextureStore";
+
+interface Texture {
+  id: number;
+  label: string;
+  price: number;
+}
+
 
 interface Model {
   id: number;
+  moduleId?: number;
   modelPath: string;
   image: string;
   name: string;
@@ -13,12 +21,20 @@ interface Model {
 
   noOfBathRooms: number;
   noOfBedRooms: number;
-  size: number; // in square feet
+  size: number;
   price: number;
+  appliedTextures: Texture[];
+}
+
+interface SavedDesign {
+  id: string;
+  name: string;
+  models: Model[];
 }
 
 class ModelStore {
   models: Model[] = [];
+  savedDesigns: SavedDesign[] = [];
   is3d = false;
   selectedModelId: number | null = null;
   hoveredModelId: number | null = null;
@@ -37,11 +53,13 @@ class ModelStore {
     noOfBathRooms: number = 5,
     noOfBedRooms: number = 0,
     size: number = 1000,
-    price: number = 0
+    price: number = 0,
+    moduleId?: number
   ) {
     const id = Date.now();
     this.models.push({
       id,
+      moduleId,
       modelPath,
       image,
       name,
@@ -53,8 +71,10 @@ class ModelStore {
       noOfBedRooms,
       size,
       price,
+      appliedTextures: [],
     });
     console.log("Model added with node positions:", this.models);
+
     return id;
   }
 
@@ -65,36 +85,42 @@ class ModelStore {
   }
 
   duplicateModel() {
-    const selectedModel = this.models.find(
-      (m) => m.id === this.selectedModelId
-    );
+    const selectedModel = this.models.find((m) => m.id === this.selectedModelId);
     if (!selectedModel) return;
 
     const newModel = {
+      ...selectedModel,
       id: Date.now(),
-      modelPath: selectedModel.modelPath,
-      image: selectedModel.image,
-      name: selectedModel.name,
       position: [
         selectedModel.position[0] + 0.5,
         selectedModel.position[1],
         selectedModel.position[2] + 0.5,
       ],
-      rotation: [...selectedModel.rotation],
-      scale: [...selectedModel.scale],
-      noOfBathRooms: selectedModel.noOfBathRooms,
-      noOfBedRooms: selectedModel.noOfBedRooms,
-      size: selectedModel.size,
-      price: selectedModel.price,
+      appliedTextures: [...selectedModel.appliedTextures],
     };
 
     this.models.push(newModel);
   }
 
+  saveDesign(name: string) {
+    const newDesign: SavedDesign = {
+      id: Date.now().toString(),
+      name,
+      models: JSON.parse(JSON.stringify(this.models)),
+    };
+    this.savedDesigns.push(newDesign);
+  }
+
+  loadDesign(designId: string) {
+    const design = this.savedDesigns.find((d) => d.id === designId);
+    if (design) {
+      this.models = JSON.parse(JSON.stringify(design.models));
+
   setNodePositions(id: number, nodePositions: THREE.Vector3[]) {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.nodePositions = nodePositions; // Store the entire array of Vector3 positions
+
     }
   }
 
@@ -117,25 +143,21 @@ class ModelStore {
   }
 
   selectModel(id: number) {
-    if (this.selectedModelId === id) {
-      this.selectedModelId = null;
-    } else {
-      this.selectedModelId = id;
-      console.log(this.selectedModelId);
-    }
+    this.selectedModelId = this.selectedModelId === id ? null : id;
   }
+
   getModel(id: number) {
     return this.models.find((m) => m.id === id);
   }
 
   setHoveredModelId = (id: number) => {
     this.hoveredModelId = id;
-  };
+  }
 
-  getPosition = (id: number) => {
+  getPosition(id: number) {
     const model = this.models.find((m) => m.id === id);
     return model ? model.position : null;
-  };
+  }
 
   setPosition = (id: number, position: [number, number, number]) => {
     const model = this.models.find((m) => m.id === id);
@@ -145,7 +167,7 @@ class ModelStore {
   getRotation = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.rotation : null;
-  };
+  }
 
   flipModelHorizontally(id: number) {
     const model = this.models.find((m) => m.id === id);
@@ -165,15 +187,20 @@ class ModelStore {
     }
   }
 
+
   getScale = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.scale : null;
-  };
+  }
 
-  isSelected = (id: number) => this.selectedModelId === id;
-  isHovered = (id: number) => this.hoveredModelId === id;
+  isSelected(id: number) {
+    return this.selectedModelId === id;
+  }
 
-  // Computed aggregations for the sidebar display:
+  isHovered(id: number) {
+    return this.hoveredModelId === id;
+  }
+
   get totalBathRooms() {
     return this.models.reduce((acc, model) => acc + model.noOfBathRooms, 0);
   }
@@ -187,7 +214,18 @@ class ModelStore {
   }
 
   get totalPrice() {
-    return this.models.reduce((acc, model) => acc + model.price, 0);
+    if (this.models.length === 0) return 0;
+
+    const modelTotal = this.models.reduce((acc, model) => acc + model.price, 0);
+
+    const textureTotal =
+      this.models.length > 0
+        ? Object.values(textureStore.selectedTextures)
+            .filter((_, index) => [0, 2, 3].includes(index))
+            .reduce((sum, texture) => sum + (texture?.price || 0), 0)
+        : 0;
+
+    return modelTotal + textureTotal;
   }
 
   // In ModelStore class
