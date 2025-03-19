@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../UiComponent/Button";
 import modelStore from "../../stores/ModelStore";
+import { observer } from "mobx-react-lite";
 
 const SidebarFooter: React.FC<{ blurIntensity: number; onOrderNow: () => void }> = ({ blurIntensity, onOrderNow }) => {
   return (
@@ -22,4 +23,4 @@ const SidebarFooter: React.FC<{ blurIntensity: number; onOrderNow: () => void }>
   );
 };
 
-export default SidebarFooter;
+export default observer(SidebarFooter);

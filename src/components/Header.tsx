@@ -10,11 +10,14 @@ import { observer } from "mobx-react-lite";
 const Header = observer(() => {
   const navigate = useNavigate();
   // const [viewMode, setViewMode] = useState("grid");
+
+  const selectedPortfolio = portfolioStore.selectedPortfolio.get();
+  const portfolioName = selectedPortfolio ? selectedPortfolio.name : "No Portfolio Selected";
   return (
     <>
       <header className=" text-white h-[60px] flex justify-between items-center px-4 ">
         <div className="flex gap-4 w-[300px] text-black w-1/3">
-          <div>Hexacoder</div>
+          <div className="font-bold text-2xl">{portfolioName}</div>
         </div>
 
         <div className="flex gap-3 items-center">

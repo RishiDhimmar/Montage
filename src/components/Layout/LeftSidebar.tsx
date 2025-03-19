@@ -20,7 +20,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = observer(({ isOpen }) => {
         ${isOpen ? "w-[440px]" : "w-[80px]"}
       `}
     >
-      {/* Fixed part: SidebarMenu is always visible */}
       <div className="w-[80px] flex-shrink-0">
         <SidebarMenu />
       </div>

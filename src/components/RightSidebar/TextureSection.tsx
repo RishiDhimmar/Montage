@@ -65,14 +65,23 @@ interface TextureSectionProps {
       label: string;
       previewUrl: string;
       materialUrl: string;
+      price?: number;
     }[];
   };
+  index: number; // ✅ Receive section index
 }
 
-const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => {
+const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index }) => {
   const selectedTexture = textureStore.selectedTextures[section.id];
-  // console.log(textureStore.selectedTextures);
-  const imageSrc = selectedTexture?.previewUrl?.trim() ? selectedTexture.previewUrl : null;
+
+  const imageSrc = selectedTexture?.previewUrl?.trim()
+    ? selectedTexture.previewUrl
+    : null;
+
+  // ✅ Only show price in the 1st, 3rd, and 4th sections
+  const allowedSections = [0, 2, 3];
+  const showPrice = allowedSections.includes(index);
+
   return (
     <div className="mb-6 text-center">
       {imageSrc ? (
@@ -96,7 +105,9 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => 
       </div>
 
       <div className="mt-3 text-lg font-semibold text-gray-700">
-        {selectedTexture?.label || "No texture selected"}
+        {selectedTexture?.label || "No texture selected"}{" "}
+        {showPrice && selectedTexture?.price !== undefined &&
+          (selectedTexture.price > 0 ? `$${selectedTexture.price}` : "Included")}
       </div>
     </div>
   );
