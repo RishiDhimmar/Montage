@@ -54,7 +54,7 @@ const Model3D: React.FC<Model3DProps> = observer(({ id, nodes }) => {
     <group
       position={modelStore.getPosition(id)}
       rotation={modelStore.getRotation(id)}
-      scale={modelStore.getScale(id) || [1, 1, 1]}
+      // scale={modelStore.getScale(id) || [1, 1, 1]}
     >
       {Object.entries(nodes).map(([key, node]) => {
 
@@ -65,11 +65,12 @@ const Model3D: React.FC<Model3DProps> = observer(({ id, nodes }) => {
         const isExternalWall = node.name.includes("External_Wall"); // Checking via name
 
         const assignedTexture = isExternalWall ? loadedTextures["External Wall"] : null;
+        const tempTexture = new THREE.MeshStandardMaterial({ map: assignedTexture != null ? assignedTexture : null ,roughness: 1})
 
 
         // Apply the selected texture or fallback to default material
         const material = assignedTexture
-          ? new THREE.MeshStandardMaterial({ map: assignedTexture ,roughness: 0.4})
+          ? tempTexture
           : node.name.includes("Node")
           ? materials.cyan
           : node.material ?? undefined;
@@ -79,8 +80,8 @@ const Model3D: React.FC<Model3DProps> = observer(({ id, nodes }) => {
         return (
           <mesh
             key={key}
-            castShadow
-            receiveShadow
+            // castShadow
+            // receiveShadow
             geometry={node.geometry}
             material={material}
             matrixAutoUpdate={false}

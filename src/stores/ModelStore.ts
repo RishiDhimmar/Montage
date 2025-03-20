@@ -114,9 +114,9 @@ class ModelStore {
   loadDesign(designId: string) {
     const design = this.savedDesigns.find((d) => d.id === designId);
     if (design) {
-      this.models = JSON.parse(JSON.stringify(design.models));
-
-  setNodePositions(id: number, nodePositions: THREE.Vector3[]) {
+      this.models = JSON.parse(JSON.stringify(design.models)) }
+  }
+  setNodePositions(id, nodePositions: THREE.Vector3[]) {
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.nodePositions = nodePositions; // Store the entire array of Vector3 positions
