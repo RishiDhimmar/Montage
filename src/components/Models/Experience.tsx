@@ -13,7 +13,6 @@ import SceneLights3D from "./SceneLights3D";
 
 const Experience = forwardRef((props, ref) => {
   const { gl, camera } = useThree();
-  gl.shadowMap = THREE.PCFSoftShadowMap;
   const controlsRef = useRef<any>(null);
   const experienceRef = useRef<any>(null);
 
@@ -65,16 +64,13 @@ const Experience = forwardRef((props, ref) => {
         polarRotateSpeed={modelStore.is3d ? 1 : 0}
       />
       {/* <OrbitControls /> */}
-      {console.log(SceneLights2D)}
       {modelStore.is3d !== true ? <SceneLights2D /> : <SceneLights3D />}
       {!modelStore.is3d ? (
         <Grid args={[150, 150]} cellColor="white" sectionColor="white" />
-      ) : <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[150, 150]} /><meshStandardMaterial /></mesh>}
+      ) : <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[150, 150]} /><meshStandardMaterial /></mesh>}
 
       <ModelManager />
-      {/* <Html position={[0,0,0]}>
-        <ScreenshotButton />
-      </Html> */}
+
     </group>
   );
 });
