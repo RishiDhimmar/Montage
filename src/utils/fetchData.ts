@@ -5,7 +5,7 @@
 //   const authToken = AUTH_TOKEN
   
 //     if (!authToken) {
-//       console.error("🚨 Missing auth token! Check your .env file.");
+//       console.error(" Missing auth token! Check your .env file.");
 //       throw new Error("Missing auth token");
 //     }
   
@@ -25,7 +25,7 @@
 //       const data = await response.json();
 //       return data;
 //     } catch (error) {
-//       console.error("❌ Fetch Error:", error);
+//       console.error(" Fetch Error:", error);
 //       throw error;
 //     }
 //   };
@@ -38,7 +38,7 @@ export const fetchData = async (url: string) => {
   const authToken = AUTH_TOKEN;
 
   if (!authToken) {
-    console.error("🚨 Missing auth token! Check your .env file.");
+    console.error(" Missing auth token! Check your .env file.");
     throw new Error("Missing auth token");
   }
 
@@ -52,7 +52,7 @@ export const fetchData = async (url: string) => {
 
     return response.data; // Axios automatically parses JSON
   } catch (error) {
-    console.error("❌ Fetch Error:", error);
+    console.error(" Fetch Error:", error);
     throw error;
   }
 };

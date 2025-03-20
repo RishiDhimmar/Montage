@@ -1,91 +1,53 @@
-import React from "react";
-import { IoIosMenu } from "react-icons/io";
-import { MainMenuDropdown} from "./Dropdowns/MainMenuDropdown";
-import { useNavigate } from "react-router-dom";
+import { MainMenuDropdown } from "./Dropdowns/MainMenuDropdown";
+import { useNavigate, useLocation } from "react-router-dom";
+import portfolioStore from "../stores/PortfolioStore";
+import designStore from "../stores/DesignStore";
+import { observer } from "mobx-react-lite";
 
-function Navbar() {
-  const navigate = useNavigate()
+const Navbar = observer(() => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const selectedPortfolio = portfolioStore.selectedPortfolio.get();
+  const portfolioName = selectedPortfolio
+    ? selectedPortfolio.name
+    : "No Portfolio Selected";
+
   return (
     <div className="h-[64px] border border-gray-300 bg-[#FAFAFF] flex items-center p-4">
-      <div className="flex gap-4 items-center w-full px-4">
-        <div>
-      <div className="text-xl font-bold items-center" onClick={() => navigate("/portfolio")}>Montage</div>
-          {/* <img src="/Montage-Logo.svg" alt="Montage" /> */}
+      <div className="flex gap-4 items-center w-full px-2">
+        <div
+          className="text-xl font-bold cursor-pointer"
+          onClick={() => navigate("/portfolio")}
+        >
+          <img src="/Montage-Logo.svg" alt="Montage" />
         </div>
-        <div className="px-4">
+
+        {location.pathname !== "/portfolio" && (
           <div className="flex items-center">
             <div className="hover:bg-gray-200 rounded flex items-center">
-            {/* <IoIosMenu size={20}/> */}
-            <MainMenuDropdown/>
+              <MainMenuDropdown designName={designStore.designName} />
             </div>
             <div className="flex gap-4">
-              <div className="px-3 font-semibold"> Hexaa</div>
+              <div className="px-3 font-semibold">{portfolioName}</div>
               <div className="border border-black"></div>
-              <div className="px-3 font-semibold"> Untitled-1</div>
+
+              <input
+                type="text"
+                className="px-3 font-semibold bg-transparent border-b border-gray-400 w-[100px]"
+                value={designStore.designName}
+                onChange={(e) => designStore.setDesignName(e.target.value)}
+              />
             </div>
           </div>
-        </div>
+        )}
       </div>
+
       <div className="bg-gray-400 p-5 rounded-full w-10 h-10 items-center flex justify-center">
         H
       </div>
     </div>
   );
-}
+});
 
 export default Navbar;
-
-
-// import React from "react";
-// import { IoIosMenu } from "react-icons/io";
-// import { MainMenuDropdown } from "./Dropdowns/MainMenuDropdown";
-// import { useDropdown } from "../hooks/useDropdown";
-
-// function Navbar() {
-//   const { openDropdown } = useDropdown();
-
-//   const handleMenuClick = (e: React.MouseEvent) => {
-//     openDropdown(e, [
-//       { label: "Save", onClick: () => console.log("Save") },
-//       { label: "New Design", onClick: () => console.log("New Design") },
-//       { label: "View Summary", onClick: () => console.log("View Summary") },
-//       { label: "Make a copy", onClick: () => console.log("Make a copy") },
-//       { label: "Move to", onClick: () => console.log("Move to") },
-//       { label: "Save As Template", onClick: () => console.log("Save As Template") },
-//       { label: "Rename", onClick: () => console.log("Rename") },
-//       { label: "Delete", onClick: () => console.log("Delete") },
-//     ]);
-//   };
-
-//   return (
-//     <div className="h-[64px] border border-gray-300 bg-[#FAFAFF] flex items-center p-4">
-//       <div className="flex gap-4 items-center w-full px-4">
-//         <h1 className="text-xl font-bold">Montage</h1>
-//         <div className="px-4">
-//           <div className="flex items-center">
-//             {/* Click on this icon to open the dropdown */}
-//             <button
-//               className="hover:bg-gray-200 rounded p-2"
-              
-//             >
-//               <IoIosMenu size={20} onClick={handleMenuClick}/>
-//             </button>
-//             <div className="flex gap-4">
-//               <div className="px-3 font-semibold">Hexaa</div>
-//               <div className="border border-black"></div>
-//               <div className="px-3 font-semibold">Untitled-1</div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className="bg-gray-400 p-5 rounded-full w-10 h-10 flex items-center justify-center">
-//         H
-//       </div>
-
-//       {/* Dropdown Component */}
-//       <MainMenuDropdown />
-//     </div>
-//   );
-// }
-
-// export default Navbar;

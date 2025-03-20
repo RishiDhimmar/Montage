@@ -13,6 +13,8 @@ const Header = observer(() => {
 
   const selectedPortfolio = portfolioStore.selectedPortfolio.get();
   const portfolioName = selectedPortfolio ? selectedPortfolio.name : "No Portfolio Selected";
+  const selectedId = selectedPortfolio ? selectedPortfolio.id : null;
+      console.log(selectedId, "selectedId");
   return (
     <>
       <header className=" text-white h-[60px] flex justify-between items-center px-4 ">

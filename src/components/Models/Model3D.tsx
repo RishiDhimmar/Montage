@@ -43,7 +43,7 @@ const Model3D: React.FC<Model3DProps> = observer(({ id, nodes }) => {
           }));
         }
       } catch (error) {
-        console.error("❌ Error loading texture:", error);
+        console.error(" Error loading texture:", error);
       }
     };
 

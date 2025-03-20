@@ -9,13 +9,13 @@ const loadTexture = async (url: string): Promise<THREE.Texture | null> => {
       new THREE.TextureLoader().load(
         localProxyUrl,
         (texture) => {
-          console.log(`✅ Texture Loaded: ${url}`);
+          console.log(`Texture Loaded: ${url}`);
           texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
           resolve(texture);
         },
         undefined,
         (error) => {
-          console.error(`❌ Texture Load Failed: ${url}`, error);
+          console.error(` Texture Load Failed: ${url}`, error);
           resolve(null);
         }
       );

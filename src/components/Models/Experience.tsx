@@ -33,7 +33,6 @@ const Experience = forwardRef((props, ref) => {
         gl
       );
       if (intersection) {
-        // Call addModel with data from the dragged module
 
         modelStore.addModel(
           draggedModule.model,
@@ -45,7 +44,8 @@ const Experience = forwardRef((props, ref) => {
           draggedModule.noOfBathRooms,
           draggedModule.noOfBedRooms,
           draggedModule.size,
-          draggedModule.price
+          draggedModule.price,
+          draggedModule.id,
         );
       }
       // Clear the drag store
@@ -64,8 +64,6 @@ const Experience = forwardRef((props, ref) => {
         azimuthRotateSpeed={modelStore.is3d ? 1 : 0}
         polarRotateSpeed={modelStore.is3d ? 1 : 0}
       />
-      {/* <OrbitControls /> */}
-      {console.log(SceneLights2D)}
       {modelStore.is3d !== true ? <SceneLights2D /> : <SceneLights3D />}
       {!modelStore.is3d ? (
         <Grid args={[150, 150]} cellColor="white" sectionColor="white" />

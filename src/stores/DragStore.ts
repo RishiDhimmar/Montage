@@ -9,6 +9,7 @@ class DragStore {
 
   setCurrentModule(module: any) {
     this.currentModule = module;
+    console.log(this.currentModule,"currentModule");
   }
 
   clearCurrentModule() {

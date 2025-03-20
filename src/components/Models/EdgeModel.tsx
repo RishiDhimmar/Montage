@@ -13,7 +13,6 @@ import { useModelInteraction } from "../../hooks/useModelInteraction";
 const EdgeModel = observer(({ id, scene }) => {
   const { camera, gl } = useThree();
   const [hovered, setHovered] = useState(false);
-  console.log("first");
 
   const model = modelStore.models.find((m) => m.id === id) || {};
   const scale = model.scale || [1, 1, 1];

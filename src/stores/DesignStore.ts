@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class DesignStore {
   selectedStyle: string = "Design"; // Default selected
+  designName: string = "Untitled-1";
 
   constructor() {
     makeAutoObservable(this);
@@ -9,6 +10,10 @@ class DesignStore {
 
   setSelectedStyle(style: string) {
     this.selectedStyle = style;
+  }
+
+  setDesignName(name: string) {
+    this.designName = name;
   }
 }
 
