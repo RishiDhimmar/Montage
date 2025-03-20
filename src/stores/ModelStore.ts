@@ -120,6 +120,7 @@ class ModelStore {
     }
   }
   setNodePositions(id: number, nodePositions: THREE.Vector3[]) {
+
     const model = this.models.find((m) => m.id === id);
     if (model) {
       model.nodePositions = nodePositions; 

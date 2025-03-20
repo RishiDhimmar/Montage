@@ -10,7 +10,7 @@ export const SceneCamera: React.FC<SceneCameraProps> = ({ is3D }) => {
 
     <PerspectiveCamera makeDefault position={[0, 40, 0]}  />
   ) : (
-    <OrthographicCamera makeDefault position={[0, 30, 0]} zoom={100}  />
+    <OrthographicCamera makeDefault position={[0, 30, 0]} zoom={50 }  />
 
   );
 };

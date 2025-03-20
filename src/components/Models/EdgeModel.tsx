@@ -58,7 +58,7 @@ const EdgeModel = observer(({ id, scene }) => {
             <Edges
               color={mesh.name.includes("Wall") ? "black" : "gray"}
               lineWidth={mesh.name.includes("Wall") ? 1 : 0.5}
-              threshold={15}
+              threshold={1}
             />
           </mesh>
         ))}
@@ -72,10 +72,15 @@ const EdgeModel = observer(({ id, scene }) => {
 
       {/* Render nodes at their calculated world positions */}
       {modelStore.getModel(id)?.nodePositions.map((nodePos, index) => (
-        <mesh key={`node-${id}-${index}`} position={nodePos}>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
-          <meshNormalMaterial />
-        </mesh>
+        <>
+          <mesh
+            key={`node-${id}-${index}65`}
+            position={nodePos.farthestNormalPoint}
+          >
+            <boxGeometry args={[0.1, 0.1, 0.1]} />
+            <meshNormalMaterial />
+          </mesh>
+        </>
       ))}
     </>
   );

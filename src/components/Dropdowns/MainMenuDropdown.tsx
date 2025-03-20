@@ -61,6 +61,7 @@ export function MainMenuDropdown({ designName }: MainMenuDropdownProps) {
       // alert("An error occurred while saving.");
     } finally {
       setIsSaving(false);
+
     }
   };
 
