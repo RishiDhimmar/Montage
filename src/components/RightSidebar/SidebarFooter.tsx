@@ -17,7 +17,7 @@ const SidebarFooter: React.FC<{ blurIntensity: number; onOrderNow: () => void }>
         <div>Estimated Construction Cost</div>
       </div>
       <div>
-        <Button label="Order Now" variant="primary" onClick={onOrderNow} />
+        <Button label="Order Now" variant="primary" onClick={onOrderNow} disabled={!modelStore.isDesignSaved} />
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ interface Module {
   noOfBathRooms: number;
   size: number;
   moduleType: string;
+  moduleTypeId: number;
 }
 
 class ModuleStore {
@@ -42,6 +43,7 @@ class ModuleStore {
         noOfBathRooms: module.noOfBathrooms || 0,
         size: module.size || 0,
         moduleType: module.moduleType?.name || "Unknown",
+        moduleTypeId: module.moduleType?.id || 1
       }));
 
       this.error = null;
@@ -55,6 +57,7 @@ class ModuleStore {
   setSelectedModule(module: Module) {
     runInAction(() => {
       this.selectedModule = module;
+      console.log(this.selectedModule, "selectedModule");
     });
   }
 
@@ -62,11 +65,7 @@ class ModuleStore {
     runInAction(() => {
       this.selectedCategory = category;
       this.selectedModule = null;
-      // if (this.filteredModules.length > 0) {
-      //   this.setSelectedModule(this.filteredModules[0]);
-      // } else {
-      //   this.selectedModule = null;
-      // }
+     
     });
   }
 
@@ -85,7 +84,7 @@ class ModuleStore {
 
       this.setModules(data);
     } catch (error) {
-      console.error("❌ Fetch Error:", error);
+      console.error(" Fetch Error:", error);
       runInAction(() => {
         this.error = "Failed to fetch modules";
       });

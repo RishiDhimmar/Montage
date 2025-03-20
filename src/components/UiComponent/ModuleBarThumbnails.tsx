@@ -157,7 +157,8 @@ const ModuleBarThumbnails = ({ module }) => {
     // Instead of setting multiple properties on dataTransfer,
     // store the entire module in the dragStore
     dragStore.setCurrentModule(module);
-    event.dataTransfer.setData("dummy", ""); // DataTransfer requires something
+    console.log(dragStore.currentModule, "currentModule");
+    event.dataTransfer.setData("dummy", ""); 
     event.dataTransfer.effectAllowed = "copy";
   };
 
