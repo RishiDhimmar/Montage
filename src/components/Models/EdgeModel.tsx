@@ -45,7 +45,10 @@ const EdgeModel = observer(({ id, scene }) => {
         style={{ position: "relative" }}
       >
         {modelStore.selectedModelId === id && (
-          <Html style={{ position: "absolute", top: "-210px", left: "-130px" }}>
+          <Html
+            style={{ position: "absolute", top: "-210px", left: "-130px" }}
+            zIndexRange={[0, 0]}
+          >
             <ModelToolbar />
           </Html>
         )}
@@ -69,19 +72,6 @@ const EdgeModel = observer(({ id, scene }) => {
           <BoundingBoxSpheres corners={corners} />
         )}
       </group>
-
-      {/* Render nodes at their calculated world positions */}
-      {modelStore.getModel(id)?.nodePositions.map((nodePos, index) => (
-        <>
-          <mesh
-            key={`node-${id}-${index}65`}
-            position={nodePos.farthestNormalPoint}
-          >
-            <boxGeometry args={[0.1, 0.1, 0.1]} />
-            <meshNormalMaterial />
-          </mesh>
-        </>
-      ))}
     </>
   );
 });

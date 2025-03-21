@@ -8,7 +8,7 @@ interface SceneCameraProps {
 export const SceneCamera: React.FC<SceneCameraProps> = ({ is3D }) => {
   return is3D ? (
 
-    <PerspectiveCamera makeDefault position={[0, 40, 0]}  />
+    <PerspectiveCamera makeDefault position={[10, 10, 15]} fov={70} />
   ) : (
     <OrthographicCamera makeDefault position={[0, 30, 0]} zoom={50 }  />
 

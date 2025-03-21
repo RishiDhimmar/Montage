@@ -168,6 +168,11 @@ class ModelStore {
     if (model) model.position = position;
   };
 
+  setPositionYTo0 = (id: number) => {
+    const model = this.models.find((m) => m.id === id);
+    if (model) model.position[1] = 0;
+  };
+
   getRotation = (id: number) => {
     const model = this.models.find((m) => m.id === id);
     return model ? model.rotation : null;
