@@ -19,7 +19,8 @@ interface TextureSectionProps {
 }
 
 const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index }) => {
-  const selectedTexture = textureStore.selectedTextures[section.id];
+  const selectedTexture = textureStore.selectedTextures[section.title];
+  console.log(selectedTexture)
 
   const imageSrc = selectedTexture?.previewUrl?.trim()
     ? selectedTexture.previewUrl
@@ -31,9 +32,9 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index
 
   return (
     <div className="mb-6 text-center">
-      {imageSrc ? (
+      {selectedTexture ? (
         <img
-          src={imageSrc}
+          src={selectedTexture.previewUrl}
           alt={selectedTexture?.label || "Texture"}
           className="w-full h-[280px] object-cover rounded mb-2 border border-gray-400"
         />
@@ -47,7 +48,7 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index
 
       <div className="flex gap-2 justify-center">
         {section.textures.map((texture) => (
-          <TextureItem key={texture.id} texture={texture} sectionId={section.id} />
+          <TextureItem key={texture.id} texture={texture} sectionId={section.id} sectionName={section.title} />
         ))}
       </div>
 
@@ -61,4 +62,6 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index
 });
 
 export default TextureSection;
+
+
 

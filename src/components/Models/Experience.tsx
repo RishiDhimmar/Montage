@@ -6,15 +6,11 @@ import { CameraControls, Grid,  } from "@react-three/drei";
 import ModelManager from "./ModelManager";
 import { useThree } from "@react-three/fiber";
 import { performRaycastFromMouse } from "../../utils/PerformRaycastingFromMouse";
-import ScreenshotButton from "./ScreenshotButton";
 import SceneLights2D from "./SceneLights2D";
-import * as THREE from "three";
 import SceneLights3D from "./SceneLights3D";
 
 const Experience = forwardRef((props, ref) => {
   const { gl, camera } = useThree();
-  const controlsRef = useRef<any>(null);
-  const experienceRef = useRef<any>(null);
 
   useImperativeHandle(ref, () => ({
     handleDrop: (event: React.DragEvent<HTMLDivElement>) => {
@@ -53,11 +49,10 @@ const Experience = forwardRef((props, ref) => {
   }));
 
   return (
-    <group ref={experienceRef}>
+    <group>
       <SceneCamera is3D={modelStore.is3d} />
       <CameraControls
         makeDefault
-        ref={controlsRef}
         minZoom={10}
         maxZoom={300}
         azimuthRotateSpeed={modelStore.is3d ? 1 : 0}
@@ -65,8 +60,8 @@ const Experience = forwardRef((props, ref) => {
       />
       {modelStore.is3d !== true ? <SceneLights2D /> : <SceneLights3D />}
       {!modelStore.is3d ? (
-        <Grid args={[150, 150]} cellColor="white" sectionColor="white" />
-      ) : <mesh rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[150, 150]} /><meshStandardMaterial /></mesh>}
+        <Grid args={[150, 150]} cellColor="white" sectionColor="white" position={[0, -0.5, 0]}/>
+      ) : <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}><planeGeometry args={[150, 150]} /><meshStandardMaterial /></mesh>}
 
       <ModelManager />
 

@@ -9,80 +9,74 @@ export function useProcessedScene(scene, scale, id, position) {
     const processedMeshes = [];
     const model = modelStore.getModel(id);
     const modelCenter = new THREE.Vector3(...position);
-    // Initialize nodePositions array
     if (model) model.nodePositions = [];
     const scaleMatrix = new THREE.Matrix4().makeScale(...scale);
-    const excludePatterns = ["Roof", "Ceil"];
+    const initialRotationY = (model?.rotation || [0, 0, 0])[1];
 
     scene.traverse((object) => {
+      // Skip unwanted objects
       if (
         !object.isMesh ||
-        excludePatterns.some((pattern) => object.name.includes(pattern)) ||
+        ["Roof", "Ceil"].some((pattern) => object.name.includes(pattern)) ||
         (object.parent?.name && object.parent.name.includes("Ceiling"))
       ) {
         return;
       }
 
-      let material = materials.white;
+      // Clone and transform geometry
       const geometry = object.geometry.clone();
-      const transform = scaleMatrix.clone().multiply(object.matrixWorld);
-      geometry.applyMatrix4(transform);
+      geometry.applyMatrix4(scaleMatrix.clone().multiply(object.matrixWorld));
+      let material = materials.white;
 
+      // Process node-specific logic
       if (object.name.includes("Node")) {
         material = materials.cyan;
         geometry.computeBoundingBox();
-        const nodeBox = geometry.boundingBox;
-        const width = nodeBox.max.x - nodeBox.min.x;
-        const depth = nodeBox.max.z - nodeBox.min.z;
-        const centerX = (nodeBox.max.x + nodeBox.min.x) / 2;
-        const centerY = (nodeBox.max.y + nodeBox.min.y) / 2;
-        const centerZ = (nodeBox.max.z + nodeBox.min.z) / 2;
-        const isXAxis = width >= depth;
-        const axis = isXAxis ? "x" : "z";
-
-        const startX = isXAxis ? nodeBox.min.x : centerX;
-        const startZ = isXAxis ? centerZ : nodeBox.min.z;
-        const endX = isXAxis ? nodeBox.max.x : centerX;
-        const endZ = isXAxis ? centerZ : nodeBox.max.z;
-
-        const startPoint = new THREE.Vector3(startX, centerY, startZ).add(
-          modelCenter
+        const { min, max } = geometry.boundingBox;
+        const center = new THREE.Vector3(
+          (min.x + max.x) / 2,
+          (min.y + max.y) / 2,
+          (min.z + max.z) / 2
         );
-        const endPoint = new THREE.Vector3(endX, centerY, endZ).add(
-          modelCenter
+        const isXAxis = (max.x - min.x) >= (max.z - min.z);
+        let axis = isXAxis ? "x" : "z";
+        const startPoint = new THREE.Vector3(
+          isXAxis ? min.x : center.x,
+          center.y,
+          isXAxis ? center.z : min.z
         );
-        // Use node center as the connection point before adding gap.
-        const centerPoint = new THREE.Vector3(centerX, centerY, centerZ).add(
-          modelCenter
+        const endPoint = new THREE.Vector3(
+          isXAxis ? max.x : center.x,
+          center.y,
+          isXAxis ? center.z : max.z
         );
 
-        // Calculate a simple outer normal based on the quadrant.
-        const diff = new THREE.Vector3(centerX, centerY, centerZ); // relative (node center before offset)
-        let normal;
-        if (diff.x >= 0 && diff.z >= 0) {
-          normal = isXAxis
-            ? new THREE.Vector3(0, 0, 1)
-            : new THREE.Vector3(1, 0, 0);
-        } else if (diff.x < 0 && diff.z >= 0) {
-          normal = isXAxis
-            ? new THREE.Vector3(0, 0, -1)
-            : new THREE.Vector3(-1, 0, 0);
-        } else if (diff.x < 0 && diff.z < 0) {
-          normal = isXAxis
-            ? new THREE.Vector3(0, 0, -1)
-            : new THREE.Vector3(-1, 0, 0);
-        } else {
-          normal = isXAxis
-            ? new THREE.Vector3(0, 0, -1)
-            : new THREE.Vector3(1, 0, 0);
+        // Compute a simple normal based on the center’s quadrant.
+        const normal = new THREE.Vector3(
+          isXAxis ? 0 : (center.x < 0 ? -1 : 1),
+          0,
+          isXAxis ? (center.z < 0 ? -1 : 1) : 0
+        ).normalize();
+
+        // Apply rotation if needed
+        if (initialRotationY !== 0) {
+          const rotMatrix = new THREE.Matrix4().makeRotationY(initialRotationY);
+          startPoint.applyMatrix4(rotMatrix);
+          endPoint.applyMatrix4(rotMatrix);
+          center.applyMatrix4(rotMatrix);
+          normal.applyMatrix4(rotMatrix);
+          const normRot = THREE.MathUtils.euclideanModulo(initialRotationY, Math.PI * 2);
+          if (Math.abs(Math.cos(normRot)) < 0.1) {
+            axis = axis === "x" ? "z" : "x";
+          }
         }
-        normal.normalize();
+        startPoint.add(modelCenter);
+        endPoint.add(modelCenter);
+        center.add(modelCenter);
 
-        // Add a gap along the normal for the connection point.
-        const gap = 0.1;
-        const connectionPoint = centerPoint
-          .clone()
-          .add(normal.clone().multiplyScalar(gap));
+        // Add a gap along the normal
+        const gap = 0.09;
+        const connectionPoint = center.clone().add(normal.clone().multiplyScalar(gap));
 
         if (model) {
           model.nodePositions.push({
@@ -90,7 +84,7 @@ export function useProcessedScene(scene, scale, id, position) {
             endPoint,
             axis,
             farthestNormalPoint: connectionPoint,
-            normal, // for debugging purposes
+            normal,
             id,
           });
         }
@@ -99,21 +93,20 @@ export function useProcessedScene(scene, scale, id, position) {
       }
 
       processedMeshes.push({ geometry, material, name: object.name });
+      modelStore.setPositionYTo0(id);
     });
 
     const processedNodesMap = Object.fromEntries(
       processedMeshes.map((mesh, index) => [`mesh-${index}`, mesh])
     );
     const corners = computeGlobalCorners(processedNodesMap);
-
+    
     return { processedMeshes, corners };
   }, [scene, scale, id]);
 
   useEffect(() => {
     return () => {
-      processedData.processedMeshes.forEach(({ geometry }) =>
-        geometry.dispose()
-      );
+      processedData.processedMeshes.forEach(({ geometry }) => geometry.dispose());
     };
   }, [processedData]);
 

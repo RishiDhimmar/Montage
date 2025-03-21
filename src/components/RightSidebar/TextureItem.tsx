@@ -9,12 +9,14 @@ interface TextureItemProps {
     materialUrl: string;
   };
   sectionId: string;
+  sectionName: string;
 }
 
-const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId }) => {
+const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId, sectionName }) => {
+  console.log(textureStore.selectedTextures[sectionId]?.id)
   return (
     <button
-      onClick={() => textureStore.setTexture(sectionId, texture)}
+      onClick={() => textureStore.setTexture(sectionId, texture, sectionName)}
       className={`p-1 rounded ${
         textureStore.selectedTextures[sectionId]?.id === texture.id ? "border" : ""
       }`}
