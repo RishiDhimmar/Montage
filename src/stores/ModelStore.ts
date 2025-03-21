@@ -104,21 +104,10 @@ class ModelStore {
     this.models.push(newModel);
   }
 
-  saveDesign(name: string) {
-    const newDesign: SavedDesign = {
-      id: Date.now().toString(),
-      name,
-      models: JSON.parse(JSON.stringify(this.models)),
-    };
-    this.savedDesigns.push(newDesign);
+  clearModels() {
+    this.models = [];
   }
-
-  loadDesign(designId: string) {
-    const design = this.savedDesigns.find((d) => d.id === designId);
-    if (design) {
-      this.models = JSON.parse(JSON.stringify(design.models));
-    }
-  }
+  
   setNodePositions(id: number, nodePositions: THREE.Vector3[]) {
 
     const model = this.models.find((m) => m.id === id);

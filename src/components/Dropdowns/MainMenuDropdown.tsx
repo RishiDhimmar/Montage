@@ -7,6 +7,7 @@ import textureStore from "../../stores/TextureStore";
 import { saveDesign } from "../../components/DesignApi";
 import { BASE_URL, AUTH_TOKEN } from "../../Constants";
 import portfolioStore from "../../stores/PortfolioStore";
+import designStore from "../../stores/DesignStore";
 
 interface MainMenuDropdownProps {
   designName: string;
@@ -22,7 +23,7 @@ export function MainMenuDropdown({ designName }: MainMenuDropdownProps) {
     try {
       const selectedPortfolio = portfolioStore.selectedPortfolio.get();
       const portfolioId = selectedPortfolio ? String(selectedPortfolio.id) : "";
-
+      
       const response = await saveDesign(
         designName,
         portfolioId,
@@ -49,6 +50,7 @@ export function MainMenuDropdown({ designName }: MainMenuDropdownProps) {
           const secondResponseData = await secondApiResponse.json();
           console.log("Design added to portfolio:", secondResponseData);
           modelStore.setDesignSaved(true);
+          designStore.setDesignId(response.id);
         } else {
           const errorText = await secondApiResponse.text();
           console.error("Failed to add design to portfolio:", errorText);
@@ -78,3 +80,63 @@ export function MainMenuDropdown({ designName }: MainMenuDropdownProps) {
     />
   );
 }
+
+// import React, { useState } from "react";
+// import { IoIosMenu } from "react-icons/io";
+// import { CustomDropdown } from "./CustomDropdown";
+// import { RiSave2Line } from "react-icons/ri";
+// import modelStore from "../../stores/ModelStore";
+// import textureStore from "../../stores/TextureStore";
+// import { saveDesign } from "../../components/DesignApi";
+// import { BASE_URL, AUTH_TOKEN } from "../../Constants";
+// import portfolioStore from "../../stores/PortfolioStore";
+
+// interface MainMenuDropdownProps {
+//   captureCanvasRef: React.RefObject<{ captureCanvas: () => Promise<File | null> }>;
+//   designName: string;
+// }
+
+// export function MainMenuDropdown({ captureCanvasRef, designName }: MainMenuDropdownProps) {
+//   const [isSaving, setIsSaving] = useState(false);
+
+//   const handleSaveDesign = async () => {
+//     if (isSaving) return;
+//     setIsSaving(true);
+
+//     try {
+//       const selectedPortfolio = portfolioStore.selectedPortfolio.get();
+//       const portfolioId = selectedPortfolio ? String(selectedPortfolio.id) : "";
+
+//       // Capture screenshot using the ref
+//       const screenshotFile = await captureCanvasRef.current?.captureCanvas();
+//       console.log(screenshotFile, "screenshotFile");
+//       if (!screenshotFile) {
+//         console.error("Failed to capture screenshot");
+//         return;
+//       }
+
+//       const response = await saveDesign(designName, portfolioId, textureStore, modelStore);
+
+//       if (response && response.id) {
+//         console.log("Design saved successfully:", response);
+//       }
+//     } catch (error) {
+//       console.error("Error saving design:", error);
+//     } finally {
+//       setIsSaving(false);
+//     }
+//   };
+
+//   return (
+//     <CustomDropdown
+//       icon={<IoIosMenu size={20} />}
+//       options={[
+//         {
+//           label: "Save",
+//           onClick: handleSaveDesign,
+//           icon: <RiSave2Line size={20} />,
+//         },
+//       ]}
+//     />
+//   );
+// }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Navbar from "../components/Navbar";
 import LeftSidebar from "../components/Layout/LeftSidebar";
 import Center from "../components/Layout/Center";
@@ -8,14 +8,17 @@ function ConfiguratorLayout() {
   const [isLeftOpen, setIsLeftOpen] = useState(true);
   const [isRightOpen, setIsRightOpen] = useState(true);
 
+  const centerRef = useRef<{ captureCanvas: () => Promise<File | null> } | null>(null);
+
   const toggleLeftSidebar = () => setIsLeftOpen((prev) => !prev);
   const toggleRightSidebar = () => setIsRightOpen((prev) => !prev);
 
   return (
     <>
-      <Navbar />
+      <Navbar capturecanvasRef={centerRef} />
       <div className="relative w-full h-[calc(100vh-64px)]">
         <Center
+          ref={centerRef}
           onToggleLeft={toggleLeftSidebar}
           onToggleRight={toggleRightSidebar}
           isLeftOpen={isLeftOpen}

@@ -70,7 +70,6 @@ const EdgeModel = observer(({ id, scene }) => {
         )}
       </group>
 
-      {/* Render nodes at their calculated world positions */}
       {modelStore.getModel(id)?.nodePositions.map((nodePos, index) => (
         <>
           <mesh

@@ -1,15 +1,18 @@
 import Button from "./UiComponent/Button";
-import { PiSquaresFourLight } from "react-icons/pi"; // Importing icons
+import { PiSquaresFourLight } from "react-icons/pi"; 
 import { FaPlus, FaThList } from "react-icons/fa";
 import { FiFolderPlus } from "react-icons/fi";
 import Dropdown from "./UiComponent/Dropdown";
 import { useNavigate } from "react-router-dom";
 import portfolioStore from "../stores/PortfolioStore";
 import { observer } from "mobx-react-lite";
+import modelStore from "../stores/ModelStore";
+import designStore from "../stores/DesignStore";
+import moduleStore from "../stores/ModuleStore";
+import textureStore from "../stores/TextureStore";
 
 const Header = observer(() => {
   const navigate = useNavigate();
-  // const [viewMode, setViewMode] = useState("grid");
 
   const selectedPortfolio = portfolioStore.selectedPortfolio.get();
   const portfolioName = selectedPortfolio ? selectedPortfolio.name : "No Portfolio Selected";
@@ -65,7 +68,12 @@ const Header = observer(() => {
               variant="primary"
               icon={<FaPlus size={12} />}
               onClick={() => {
-                console.log(" clicked");
+                modelStore.clearModels();
+                modelStore.is3d = false;
+                designStore.setSelectedStyle("Design");
+                designStore.setDesignName("Untitle-1");
+                moduleStore.setSelectedCategory("Annex");
+                textureStore.resetSelectedTextures();
                 navigate("/design");
               }}
             />

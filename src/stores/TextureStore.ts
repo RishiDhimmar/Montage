@@ -76,6 +76,18 @@ class TextureStore {
     });
   }
 
+  resetSelectedTextures() {
+    runInAction(() => {
+      console.log(" Resetting selected textures to initial values...");
+  
+      this.textures.forEach((category) => {
+        this.selectedTextures[category.id] = category.textures[0] || null;
+      });
+  
+      console.log(" Selected textures after reset:", toJS(this.selectedTextures));
+    });
+  }
+  
   async fetchTextures() {
     runInAction(() => {
       this.loading = true;
