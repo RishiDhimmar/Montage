@@ -24,7 +24,7 @@ export async function saveDesign(
     lock: true,
     scale: model.scale,
     rotate: model.rotation,
-    position: model.position
+    position: model.position,
   }));
 
   const payload: SaveDesignPayload = {

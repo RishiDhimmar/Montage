@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
 import CanvasToolbar from "../Toolbars/CanvasToolbar";
+import * as THREE from "three";
 
 interface CenterProps {
   onToggleLeft: () => void;
@@ -61,7 +62,18 @@ const Center = observer(
           <img src={isRightOpen ? "/left-open.svg" : "/left-close.svg"} alt="Toggle right sidebar" className="w-6 h-6" />
         </button>
 
-        <Canvas shadows gl={{ antialias: true, preserveDrawingBuffer: true }} linear={false} className="w-full h-full" style={{ background: modelStore.is3d ? "#eeeeee" : "#ffffff" }}>
+        <Canvas
+          shadows
+          gl={{ antialias: true, preserveDrawingBuffer: true }}
+          linear={false}
+          className="w-full h-full"
+          style={{ background: modelStore.is3d ? "#eeeeee" : "#ffffff" }}
+          onPointerMissed={() => modelStore.selectModel(null)}
+          onCreated={({ gl }) => {
+            gl.shadowMap.enabled = true;
+            gl.shadowMap.type = THREE.PCFSoftShadowMap; // Set for smoother shadows
+          }}
+        >
           <Experience ref={experienceRef} />
         </Canvas>
       </div>

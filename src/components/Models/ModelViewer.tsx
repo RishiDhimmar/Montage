@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, Suspense } from "react";
-import { useGLTF } from "@react-three/drei";
+import { ContactShadows, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import EdgeModel from "./EdgeModel";
 import Model3D from "./Model3D";
@@ -18,13 +18,16 @@ const ModelViewer: React.FC<ModelRendererProps> = observer(
     const { nodes, scene } = useGLTF(modelPath);
 
     return modelStore.is3d ? (
-      <Model3D
-        id={id}
-        nodes={nodes}
-        position={modelStore.getPosition(id)}
-        rotation={modelStore.getRotation(id)}
-        scene={scene}
-      />
+      <>
+        <Model3D
+          id={id}
+          nodes={nodes}
+          position={modelStore.getPosition(id)}
+          rotation={modelStore.getRotation(id)}
+          scene={scene}
+          
+        />
+      </>
     ) : (
       <Suspense fallback={null}>
         <EdgeModel nodes={nodes} position={position} id={id} scene={scene} />
