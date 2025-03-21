@@ -8,7 +8,7 @@ import Loader from "../UiComponent/Loader";
 
 const ModuleBar: React.FC = observer(() => {
   useEffect(() => {
-    moduleStore.fetchModules();
+    moduleStore.fetchModules(); // ✅ Called only once
   }, []);
 
   return (
@@ -21,54 +21,27 @@ const ModuleBar: React.FC = observer(() => {
       <div className="mb-2 border-b border-gray-300"></div>
 
       <div className="flex justify-between mb-2 border-gray-300 rounded items-center h-[7vh] px-7">
-        <div
-          className={`border rounded w-[80px] ${
-            moduleStore.selectedCategory === "Annex"
-              ? "bg-gray-300"
-              : "hover:bg-gray-200"
-          }`}
-        >
-          <Button
-            label="Annex"
-            onClick={() => moduleStore.setSelectedCategory("Annex")}
-            variant="tertiary"
-          />
-        </div>
-        <div
-          className={`border rounded w-[80px] ${
-            moduleStore.selectedCategory === "Dwelling"
-              ? "bg-gray-300"
-              : "hover:bg-gray-200"
-          }`}
-        >
-          <Button
-            label="Dwelling"
-            onClick={() => moduleStore.setSelectedCategory("Dwelling")}
-            variant="tertiary"
-          />
-        </div>
-        <div
-          className={`border rounded w-[80px] ${
-            moduleStore.selectedCategory === "Lifestyle"
-              ? "bg-gray-300"
-              : "hover:bg-gray-200"
-          }`}
-        >
-          <Button
-            label="Lifestyle"
-            onClick={() => moduleStore.setSelectedCategory("Lifestyle")}
-            variant="tertiary"
-          />
-        </div>
+        {["Annex", "Dwelling", "Lifestyle"].map((category) => (
+          <div
+            key={category}
+            className={`border rounded w-[80px] ${
+              moduleStore.selectedCategory === category ? "bg-gray-300" : "hover:bg-gray-200"
+            }`}
+          >
+            <Button
+              label={category}
+              onClick={() => moduleStore.setSelectedCategory(category)}
+              variant="tertiary"
+            />
+          </div>
+        ))}
       </div>
 
       <div className="mb-2 border-b border-gray-300"></div>
 
       <div className="h-[60vh] p-4 overflow-y-scroll custom-scrollbar">
-        <Loader isLoading ={moduleStore.loading} />
-        {moduleStore.error && (
-          <p className="text-red-500">{moduleStore.error}</p>
-        )}
+        <Loader isLoading={moduleStore.loading} />
+        {moduleStore.error && <p className="text-red-500">{moduleStore.error}</p>}
 
         <div>
           {moduleStore.filteredModules.length === 0 && !moduleStore.loading ? (

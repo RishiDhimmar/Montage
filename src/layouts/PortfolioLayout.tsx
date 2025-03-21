@@ -15,7 +15,7 @@ const PortfolioLayout: React.FC = observer(() => {
   return (
     <>
       <Navbar />
-      <div className="flex h-[calc(100vh-97px)]">
+      <div className="flex h-[calc(100vh-97px)] ">
         <Sidebar />
         <div className="w-full">
           <Header />
@@ -23,8 +23,9 @@ const PortfolioLayout: React.FC = observer(() => {
             <div>All Designs</div>
           </div>
 
+        <div className="h-[75vh] overflow-y-scroll custom-scrollbar">
         {portfolioStore.selectedView === "grid" ? <PortfolioGridView /> : <PortfolioListView />}
-          
+        </div>
         </div>
       </div>
     </>

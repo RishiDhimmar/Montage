@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Canvas } from "@react-three/fiber";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
@@ -13,29 +13,35 @@ interface CenterProps {
   isRightOpen: boolean;
 }
 
-const Center: React.FC<CenterProps> = observer(
-  ({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen }) => {
-    const canvasRef = useRef<HTMLDivElement>(null);
+const Center = observer(
+  forwardRef(({ onToggleLeft, onToggleRight, isLeftOpen, isRightOpen }: CenterProps, ref) => {
     const experienceRef = useRef<{
       handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
     }>(null);
 
-    const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-      if (experienceRef.current?.handleDrop) {
-        experienceRef.current.handleDrop(event);
-      }
+    // Capture function inside the Canvas
+    const captureCanvas = () => {
+      const canvas = document.querySelector("canvas"); // Get the Three.js canvas
+      if (!canvas) return null;
+
+      return new Promise<File | null>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const file = new File([blob], "canvas_screenshot.png", { type: "image/png" });
+            resolve(file);
+          } else {
+            resolve(null);
+          }
+        });
+      });
     };
 
-    const leftSidebarWidth = isLeftOpen ? 440 : 80;
-    const rightSidebarWidth = isRightOpen ? 360 : 0;
+    useImperativeHandle(ref, () => ({
+      captureCanvas,
+    }));
 
     return (
-      <div
-        ref={canvasRef}
-        className="absolute inset-0 bg-gray-200"
-        onDrop={handleDrop}
-        onDragOver={(e) => e.preventDefault()}
-      >
+      <div className="absolute inset-0 bg-gray-200" onDrop={(e) => experienceRef.current?.handleDrop(e)} onDragOver={(e) => e.preventDefault()}>
         <div className="bg-white">
           <CanvasToolbar />
         </div>
@@ -43,25 +49,17 @@ const Center: React.FC<CenterProps> = observer(
         <button
           onClick={onToggleLeft}
           className="absolute bottom-4 hover:bg-gray-200 px-4 py-2 rounded z-10"
-          style={{ left: `${leftSidebarWidth + 20}px` }}
+          style={{ left: `${isLeftOpen ? 440 : 80}px` }}
         >
-          <img
-            src={isLeftOpen ? "/left-close.svg" : "/left-open.svg"}
-            alt="Toggle left sidebar"
-            className="w-6 h-6"
-          />
+          <img src={isLeftOpen ? "/left-close.svg" : "/left-open.svg"} alt="Toggle left sidebar" className="w-6 h-6" />
         </button>
 
         <button
           onClick={onToggleRight}
           className="absolute bottom-4 hover:bg-gray-200 px-4 py-2 rounded z-10"
-          style={{ right: `${rightSidebarWidth + 20}px` }}
+          style={{ right: `${isRightOpen ? 360 : 0}px` }}
         >
-          <img
-            src={isRightOpen ? "/left-open.svg" : "/left-close.svg"}
-            alt="Toggle right sidebar"
-            className="w-6 h-6"
-          />
+          <img src={isRightOpen ? "/left-open.svg" : "/left-close.svg"} alt="Toggle right sidebar" className="w-6 h-6" />
         </button>
 
         <Canvas
@@ -80,7 +78,7 @@ const Center: React.FC<CenterProps> = observer(
         </Canvas>
       </div>
     );
-  }
+  })
 );
 
 export default Center;

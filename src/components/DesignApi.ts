@@ -1,4 +1,5 @@
 import { AUTH_TOKEN, BASE_URL } from "../Constants";
+import captureCanvasImage from "./CaptureImage";
 
 interface SaveDesignPayload {
   name: string;
@@ -18,7 +19,6 @@ export async function saveDesign(
     subStyleId: Number(subStyleId),
     selectedMaterialId: texture ? texture.id : null,
   }));
-
   const moduleArr = modelStore.models.map((model) => ({
     moduleId: model.moduleId || 0,
     lock: true,

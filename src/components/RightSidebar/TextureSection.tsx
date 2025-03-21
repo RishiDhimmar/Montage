@@ -15,7 +15,7 @@ interface TextureSectionProps {
       price?: number;
     }[];
   };
-  index: number; // Receive section index
+  index: number; 
 }
 
 const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index }) => {
