@@ -1,6 +1,6 @@
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import designStore from "../../stores/designStore";
+import designStore from "../../stores/DesignStore";
 
 const AddModuleButtonList: React.FC = () => {
   return (
