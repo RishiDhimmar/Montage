@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import Button from "../components/UiComponent/Button"; // Custom Button Component
 import InputBox from "../components/UiComponent/InputTextArea";
