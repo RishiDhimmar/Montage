@@ -37,6 +37,7 @@ export function useProcessedScene(
     const modelCenter = new THREE.Vector3(...position);
     if (model) model.nodePositions = [];
     const scaleMatrix = new THREE.Matrix4().makeScale(...scale);
+    console.log(model)
     const initialRotationY = (model?.rotation || [0, 0, 0])[1];
 
     scene.traverse((object: THREE.Object3D) => {
@@ -85,7 +86,6 @@ export function useProcessedScene(
           isXAxis ? (center.z < 0 ? -1 : 1) : 0
         ).normalize();
 
-        // Apply rotation if needed
         if (initialRotationY !== 0) {
           const rotMatrix = new THREE.Matrix4().makeRotationY(initialRotationY);
           startPoint.applyMatrix4(rotMatrix);
