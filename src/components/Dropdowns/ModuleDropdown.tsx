@@ -4,10 +4,9 @@ import { HiDotsVertical } from "react-icons/hi";
 import { useDropdown } from "../../hooks/useDropdown";
 import modelStore from "../../stores/ModelStore";
 
-// Define dropdown option type globally (ensure it's not duplicated elsewhere)
 export interface DropdownOption {
-  label: string; // Ensuring label is always required and a string
-  shortcut?: string; // Optional shortcut
+  label: string; 
+  shortcut?: string; 
   onClick: () => void;
 }
 

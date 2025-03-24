@@ -33,7 +33,7 @@ const PortfolioGridView: React.FC = observer(() => {
               modelPath: moduleObj.module?.glbFile || "",
               image: moduleObj.module?.moduleImage || "",
               name: moduleObj.module?.name || "",
-              portfolioName, // Store portfolio name
+              portfolioName,
               position: Array.isArray(moduleObj.position) ? moduleObj.position : [0, 0, 0],
               rotation: Array.isArray(moduleObj.rotate) ? moduleObj.rotate : [0, 0, 0],
               scale: Array.isArray(moduleObj.scale) ? moduleObj.scale : [1, 1, 1],

@@ -1,34 +1,3 @@
-// import { Suspense } from "react";
-// import { useGLTF } from "@react-three/drei";
-// import EdgeModel from "./EdgeModel";
-// import Model3D from "./Model3D";
-// import { observer } from "mobx-react-lite";
-// import modelStore from "../../stores/ModelStore";
-
-// interface ModelRendererProps {
-//   id: number;
-//   modelPath: string;
-//   position: [number, number, number];
-//   onLoad?: () => void;
-// }
-
-// const ModelViewer: React.FC<ModelRendererProps> = observer(
-//   ({ id, modelPath }) => {
-//     const { nodes, scene } = useGLTF(modelPath);
-
-//     return modelStore.is3d ? (
-//       <>
-//         <Model3D id={id} nodes={nodes} />
-//       </>
-//     ) : (
-//       <Suspense fallback={null}>
-//         <EdgeModel id={id} scene={scene} />
-//       </Suspense>
-//     );
-//   }
-// );
-
-// export default ModelViewer;
 import React, { Suspense } from "react";
 import { useGLTF } from "@react-three/drei";
 import EdgeModel from "./EdgeModel";
