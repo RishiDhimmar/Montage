@@ -34,7 +34,7 @@
 
 import React from "react";
 import { observer } from "mobx-react-lite";
-import textureStore, { Texture } from "../../stores/TextureStore"; // ✅ Ensure correct type is imported
+import textureStore, { Texture } from "../../stores/TextureStore"; //  Ensure correct type is imported
 
 interface TextureItemProps {
   texture: Texture; 

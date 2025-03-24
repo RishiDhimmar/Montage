@@ -114,7 +114,7 @@ export function MainMenuDropdown({ designName }: MainMenuDropdownProps) {
       const selectedPortfolio = portfolioStore.selectedPortfolio.get();
       const portfolioId = selectedPortfolio ? String(selectedPortfolio.id) : "";
 
-      // ✅ Fixed: Ensure response matches the corrected SaveDesignResponse type
+      //  Fixed: Ensure response matches the corrected SaveDesignResponse type
       const response: SaveDesignResponse | null = await saveDesign(
         designName,
         portfolioId,

@@ -8,7 +8,7 @@ import Loader from "../UiComponent/Loader";
 
 const ModuleBar: React.FC = observer(() => {
   useEffect(() => {
-    moduleStore.fetchModules(); // ✅ Called only once
+    moduleStore.fetchModules(); //  Called only once
   }, []);
 
   return (

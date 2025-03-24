@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const loadTexture = async (url: string): Promise<THREE.Texture | null> => {
+const loadTexture = async (url: string | undefined): Promise<THREE.Texture | null> => {
   if (!url) return null;
 
   const localProxyUrl = `/s3proxy${new URL(url).pathname}`;
@@ -9,7 +9,7 @@ const loadTexture = async (url: string): Promise<THREE.Texture | null> => {
     new THREE.TextureLoader().load(
       localProxyUrl,
       (texture) => {
-        console.log(`✅ Texture Loaded: ${url}`);
+        console.log(` Texture Loaded: ${url}`);
 
         texture.wrapS = THREE.MirroredRepeatWrapping
         texture.wrapT = THREE.MirroredRepeatWrapping
@@ -19,7 +19,7 @@ const loadTexture = async (url: string): Promise<THREE.Texture | null> => {
       },
       undefined,
       (error) => {
-        console.error(`❌ Texture Load Failed: ${url}`, error);
+        console.error(` Texture Load Failed: ${url}`, error);
         // resolve(null);
       }
     );

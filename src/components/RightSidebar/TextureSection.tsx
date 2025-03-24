@@ -122,7 +122,7 @@ export default TextureSection;
 // import { observer } from "mobx-react-lite";
 // import textureStore from "../../stores/TextureStore";
 // import TextureItem from "./TextureItem";
-// import { Texture } from "../../stores/TextureStore"; // ✅ Ensure correct type import
+// import { Texture } from "../../stores/TextureStore"; //  Ensure correct type import
 
 // interface TextureSectionProps {
 //   section: {
@@ -132,13 +132,13 @@ export default TextureSection;
 // }
 
 // const TextureSection: React.FC<TextureSectionProps> = observer(({ section }) => {
-//   const sectionId = String(section.id); // ✅ Convert id to string
+//   const sectionId = String(section.id); //  Convert id to string
 
 //   useEffect(() => {
 //     textureStore.fetchTextures(sectionId); // Fetch textures when component mounts
 //   }, [sectionId]);
 
-//   // ✅ FIX: Explicitly define textures as an array
+//   //  FIX: Explicitly define textures as an array
 //   const textures: Texture[] = textureStore.textures[sectionId] ?? []; 
 //   const selectedTexture = textureStore.selectedTextures[sectionId];
 
