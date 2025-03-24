@@ -141,7 +141,7 @@ export interface NodeData {
 // (Assuming you update that file accordingly.)
 
 export function useProcessedScene(
-  scene: THREE.Scene,
+  scene: THREE.Group,
   scale: [number, number, number],
   id: number,
   position: [number, number, number]

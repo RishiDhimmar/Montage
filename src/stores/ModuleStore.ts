@@ -21,7 +21,7 @@ class ModuleStore {
   selectedCategory: string | null = "Annex"; 
   loading: boolean = false;
   error: string | null = null;
-  isDataLoaded: boolean = false; // ✅ Flag to check if data is loaded
+  isDataLoaded: boolean = false; //  Flag to check if data is loaded
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -49,7 +49,7 @@ class ModuleStore {
 
       this.error = null;
       this.selectedModule = null;
-      this.isDataLoaded = true; // ✅ Mark data as loaded
+      this.isDataLoaded = true; //  Mark data as loaded
 
       if (this.filteredModules.length > 0) {
         this.setSelectedModule(this.filteredModules[0]);
@@ -72,7 +72,7 @@ class ModuleStore {
   }
 
   async fetchModules() {
-    if (this.isDataLoaded) return; // ✅ Prevent unnecessary API calls
+    if (this.isDataLoaded) return; //  Prevent unnecessary API calls
 
     runInAction(() => {
       this.loading = true;
