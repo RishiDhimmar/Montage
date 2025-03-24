@@ -1,6 +1,6 @@
 import  { useState } from "react";
 import { HiSwitchHorizontal } from "react-icons/hi";
-import { MdDelete, MdHome, MdOutlineFlip } from "react-icons/md";
+import { MdDelete, MdHome } from "react-icons/md";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 
 import { LuFlipHorizontal, LuFlipVertical } from "react-icons/lu";
@@ -10,7 +10,7 @@ import ModuleDropdown from "../Dropdowns/ModuleDropdown";
 
 const ModelToolbar = () => {
   const [selectedTool, setSelectedTool] = useState<string>("Switch");
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [, setIsDropdownOpen] = useState<boolean>(false);
 
   const handleSelect = (tool: string) => {
     if (tool === "Menu") {

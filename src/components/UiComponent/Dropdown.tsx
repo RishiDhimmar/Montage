@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 const Dropdown = () => {

@@ -2,8 +2,19 @@ import  { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import moduleStore from "../../stores/ModuleStore";
 import dragStore from "../../stores/DragStore";
-
-const ModuleBarThumbnails = ({ module }) => {
+interface Module {
+  id: number;
+  name: string;
+  image: string;
+  model: string;
+  price: number;
+  noOfBedRooms: number;
+  noOfBathRooms: number;
+  size: number;
+  moduleType: string;
+  moduleTypeId: number;
+}
+const ModuleBarThumbnails = ({ module }: { module: Module }) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleSelect = () => {

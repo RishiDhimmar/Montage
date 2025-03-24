@@ -55,7 +55,7 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 
 interface Module {
-  id: string;
+  id: string | number;
   name: string;
   image: string;
   model: string;

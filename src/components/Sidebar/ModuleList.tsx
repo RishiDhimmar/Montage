@@ -3,7 +3,7 @@ import ModuleListItem from "./ModuleListItem";
 import { observer } from "mobx-react-lite";
 
 interface Module {
-  id: string;
+  id: string  | number;
   name: string;
   model: string;
 }
@@ -14,7 +14,7 @@ interface ModuleListProps {
 }
 
 const ModuleList: React.FC<ModuleListProps> = observer(({ modules, onDragStart }) => {
-  const [hoveredModule, setHoveredModule] = useState<string | null>(null);
+  const [hoveredModule, setHoveredModule] = useState<string | number |null>(null);
 
   return (
     <div className="h-[73vh] overflow-y-auto custom-scrollbar">
