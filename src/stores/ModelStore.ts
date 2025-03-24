@@ -387,7 +387,7 @@ class ModelStore {
     this.is3d = false;
   }
 
-  selectModel(id: number) {
+  selectModel(id: number | null) {
     this.selectedModelId = this.selectedModelId === id ? null : id;
   }
 

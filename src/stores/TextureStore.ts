@@ -144,7 +144,7 @@ import { makeAutoObservable, runInAction, observable, toJS } from "mobx";
 import { fetchData } from "../utils/fetchData";
 import { BASE_URL } from "../Constants";
 
-interface Texture {
+export interface Texture {
   id: number;
   label: string;
   previewUrl: string;
