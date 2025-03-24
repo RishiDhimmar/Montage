@@ -59,7 +59,7 @@ const RightSidebar: React.FC<RightSidebarProps> = observer(({ isOpen }) => {
         )}
       </div>
       {!showOrderSummary && (
-        <SidebarFooter onOrderNow={() => setShowOrderSummary(true)} />
+        <SidebarFooter blurIntensity={5} onOrderNow={() => setShowOrderSummary(true)} />
       )}
     </div>
   );

@@ -2,7 +2,6 @@ import { Edges, Html } from "@react-three/drei";
 import  { useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
-import * as THREE from "three";
 import modelStore from "../../stores/ModelStore";
 import BoundingBoxLine from "../../helpers/BoundingBoxLine";
 import BoundingBoxSpheres from "../../helpers/BoundingBoxSpheres";
@@ -77,3 +76,80 @@ const EdgeModel = observer(({ id, scene }) => {
 });
 
 export default EdgeModel;
+
+// import { Edges, Html } from "@react-three/drei";
+// import { useState } from "react";
+// import { useThree } from "@react-three/fiber";
+// import { observer } from "mobx-react-lite";
+// import modelStore from "../../stores/ModelStore";
+// import BoundingBoxLine from "../../helpers/BoundingBoxLine";
+// import BoundingBoxSpheres from "../../helpers/BoundingBoxSpheres";
+// import ModelToolbar from "../Toolbars/ModelToolbar";
+// import { useProcessedScene } from "../../hooks/useProcessedNodes";
+// import { useModelInteraction } from "../../hooks/useModelInteraction";
+// import * as THREE from "three";
+
+// interface ClonedNode {
+//   geometry: THREE.BufferGeometry;
+//   material: THREE.Material | null;
+//   name: string;
+//   matrixWorld: THREE.Matrix4;
+//   parent?: { name: string; visible: boolean };
+//   extras?: { tag?: string };
+// }
+
+// interface EdgeModelProps {
+//   id: string;
+//   nodes: Record<string, ClonedNode>; // ✅ Use nodes instead of scene
+//   position: [number, number, number];
+// }
+
+// const EdgeModel = observer(({ id, scene, position }: EdgeModelProps) => {
+//   const { camera, gl } = useThree();
+//   const [hovered, setHovered] = useState(false);
+
+//   const modelId = Number(id);
+//   const model = modelStore.models.find((m) => m.id === modelId);
+//   if (!model) return null;
+
+//   const { scale, rotation } = model;
+
+//   // ✅ Pass `nodes` instead of `scene`
+//   const { processedMeshes, corners } = useProcessedScene(scene, scale, id, position);
+//   const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
+//     id,
+//     camera,
+//     gl,
+//   });
+
+//   return (
+//     <group
+//       position={position}
+//       rotation={rotation}
+//       onPointerOver={() => setHovered(true)}
+//       onPointerOut={() => setHovered(false)}
+//       onPointerDown={handlePointerDown}
+//       onPointerMove={handlePointerMove}
+//       onPointerUp={handlePointerUp}
+//     >
+//       {modelStore.selectedModelId === modelId && (
+//         <Html position={[0, 2, 0]} transform>
+//           <ModelToolbar />
+//         </Html>
+//       )}
+//       {processedMeshes.map((mesh, index) => (
+//         <mesh key={`${mesh.name}-${id}-${index}`} geometry={mesh.geometry} material={mesh.material}>
+//           <Edges
+//             color={mesh.name.includes("Wall") ? "black" : "gray"}
+//             lineWidth={mesh.name.includes("Wall") ? 1 : 0.5}
+//             threshold={1}
+//           />
+//         </mesh>
+//       ))}
+//       {(modelStore.selectedModelId === modelId || hovered) && <BoundingBoxLine corners={corners} />}
+//       {modelStore.selectedModelId === modelId && <BoundingBoxSpheres corners={corners} />}
+//     </group>
+//   );
+// });
+
+// export default EdgeModel;

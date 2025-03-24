@@ -177,7 +177,7 @@ interface SaveDesignModalProps {
   onConfirm: () => void;
 }
 
-const SaveDesignModal: React.FC<SaveDesignModalProps> = observer(({ isOpen, onClose, onConfirm }) => {
+const SaveDesignModal: React.FC<SaveDesignModalProps> = observer(({ isOpen, onConfirm }) => {
   const [isSaving, setIsSaving] = useState(false);
 
   if (!isOpen) return null;
