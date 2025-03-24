@@ -15,7 +15,7 @@ function ConfiguratorLayout() {
 
   return (
     <>
-      <Navbar capturecanvasRef={centerRef} />
+      <Navbar  />
       <div className="relative w-full h-[calc(100vh-64px)]">
         <Center
           ref={centerRef}

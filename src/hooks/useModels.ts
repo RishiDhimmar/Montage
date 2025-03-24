@@ -7,9 +7,9 @@ export interface ModelProps {
   position: [number, number, number];
 }
 
-export const useModels = (cameraRef: React.RefObject<THREE.Camera>) => {
+export const useModels = () => {
   const [models, setModels] = useState<ModelProps[]>([]);
-  const [lastDropPosition, setLastDropPosition] = useState(new THREE.Vector3(0, 0, 0));
+  const [, setLastDropPosition] = useState(new THREE.Vector3(0, 0, 0));
   const addModel = (modelPath: string, image: string, position: [number, number, number]): Promise<void> => {
     return new Promise((resolve) => {
       setModels((prev) => [...prev, { modelPath, image, position }]);

@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 
 interface Module {
-  id: string;
+  id: string | number;
   name?: string;
   model: string;
 }
@@ -14,8 +14,8 @@ interface ModuleItemProps {
   module: Module;
   index: number;
   onDragStart: (event: React.DragEvent, modelPath: string) => void;
-  hoveredModule: string | null;
-  setHoveredModule: (id: string | null) => void;
+  hoveredModule: string | number |null;
+  setHoveredModule: (id: string | number | null) => void;
 }
 
 const ModuleListItem: React.FC<ModuleItemProps> = ({

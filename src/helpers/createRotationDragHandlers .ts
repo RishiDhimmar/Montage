@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef, useCallback } from "react";
+import {  useRef, useCallback } from "react";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
@@ -180,7 +180,7 @@ export const createRotationDragHandlers = () => {
   }, []);
 
   const updateNodePositionsForRotation = (
-    modelId: string | number,
+    modelId: number,
     center: THREE.Vector3,
     initialPositions: any[],
     rotationY: number
