@@ -2,13 +2,11 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/UiComponent/Button";
 import InputBox from "../components/UiComponent/InputTextArea";
-import Loader from "../components/UiComponent/Loader";
 import useLoading from "../hooks/useLoading";
-import Header from "../Header";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isLoading, startLoading, stopLoading } = useLoading();
+  const {  startLoading, stopLoading } = useLoading();
 
   const handleSignupRedirect = () => {
     startLoading();
