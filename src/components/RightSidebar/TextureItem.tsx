@@ -1,40 +1,6 @@
-// import React from "react";
-// import { observer } from "mobx-react-lite";
-// import textureStore from "../../stores/TextureStore";
-
-// interface TextureItemProps {
-//   texture: {
-//     id: number;
-//     label: string;
-//     materialUrl: string;
-//   };
-//   sectionId: string;
-//   sectionName: string;
-// }
-
-// const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId, sectionName }) => {
-//   console.log(textureStore.selectedTextures[sectionId]?.id)
-//   return (
-//     <button
-//       onClick={() => textureStore.setTexture(sectionId, texture, sectionName)}
-//       className={`p-1 rounded ${
-//         textureStore.selectedTextures[sectionId]?.id === texture.id ? "border" : ""
-//       }`}
-//     >
-//       <img
-//         src={texture.materialUrl || "placeholder.png"}
-//         alt={texture.label}
-//         className="w-10 h-10 object-cover"
-//       />
-//     </button>
-//   );
-// });
-
-// export default TextureItem;
-
 import React from "react";
 import { observer } from "mobx-react-lite";
-import textureStore, { Texture } from "../../stores/TextureStore"; //  Ensure correct type is imported
+import textureStore, { Texture } from "../../stores/TextureStore";
 
 interface TextureItemProps {
   texture: Texture; 
@@ -49,7 +15,7 @@ const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId, 
     <button
       onClick={() => textureStore.setTexture(sectionId, texture, sectionName)}
       className={`p-1 rounded ${
-        textureStore.selectedTextures[sectionId]?.id === texture.id ? "border" : ""
+        textureStore.selectedTextures[sectionId]?.id === texture.id ? " border" : ""
       }`}
     >
       <img
@@ -62,3 +28,5 @@ const TextureItem: React.FC<TextureItemProps> = observer(({ texture, sectionId, 
 });
 
 export default TextureItem;
+
+

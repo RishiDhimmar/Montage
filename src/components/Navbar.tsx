@@ -31,7 +31,7 @@ const Navbar = observer(() => {
           <img src="/Montage-Logo.svg" alt="Montage" />
         </div>
 
-        {location.pathname !== "/portfolio" && (
+        {location.pathname == "/design" && (
           <div className="flex items-center">
             <div className="hover:bg-gray-200 rounded flex items-center">
               <MainMenuDropdown designName={designStore.designName} />
