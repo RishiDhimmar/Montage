@@ -1,5 +1,5 @@
 import  { useRef, useImperativeHandle, forwardRef } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
 import Experience from "../Models/Experience";
