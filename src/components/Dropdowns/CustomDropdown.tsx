@@ -1,6 +1,3 @@
-
-
-
 import ReactDOM from "react-dom";
 import { useDropdown } from "../../hooks/useDropdown";
 import Button from "../UiComponent/Button";
