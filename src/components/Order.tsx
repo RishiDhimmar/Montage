@@ -1,4 +1,4 @@
-// import React, { useState } from "react";
+// import  { useState } from "react";
 // import { observer } from "mobx-react-lite";
 // import { FaChevronLeft, FaChevronDown } from "react-icons/fa";
 // import Button from "./UiComponent/Button";
@@ -69,7 +69,7 @@
 
 // export default OrderSummary;
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FaChevronLeft, FaChevronDown } from "react-icons/fa";
 import Button from "./UiComponent/Button";

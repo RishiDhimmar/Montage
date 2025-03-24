@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaVectorSquare, FaLock, FaImage, FaLayerGroup, FaCube } from "react-icons/fa"; 
 import modelStore from "../../stores/ModelStore";
 import { observer } from "mobx-react-lite";

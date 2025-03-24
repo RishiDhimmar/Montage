@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { HiSwitchHorizontal } from "react-icons/hi";
 import { MdDelete, MdHome, MdOutlineFlip } from "react-icons/md";
 import { IoEllipsisHorizontal } from "react-icons/io5";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Card from "../UiComponent/Card";
 import { CiSettings } from "react-icons/ci";
 
