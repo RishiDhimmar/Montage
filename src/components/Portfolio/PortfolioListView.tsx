@@ -26,7 +26,7 @@ interface ModuleArrItem {
   moduleId?: string;
   module?: Module;
   position?: [number, number, number];
-  rotate?: [number, number, number];
+  rotation?: [number, number, number];
   scale?: [number, number, number];
 }
 
@@ -72,7 +72,7 @@ const PortfolioListView: React.FC = observer(() => {
               image: moduleObj.module.moduleImage,
               name: moduleObj.module.name,
               position: moduleObj.position ?? [0, 0, 0],
-              rotation: moduleObj.rotate ?? [0, 0, 0],
+              rotation: moduleObj.rotation ?? [0, 0, 0],
               scale: moduleObj.scale ?? [1, 1, 1],
               nodePositions: [],
               noOfBathRooms: moduleObj.module.noOfBathrooms,

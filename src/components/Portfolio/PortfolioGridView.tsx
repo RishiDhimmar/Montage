@@ -35,7 +35,7 @@ const PortfolioGridView: React.FC = observer(() => {
               name: moduleObj.module?.name || "",
               portfolioName,
               position: Array.isArray(moduleObj.position) ? moduleObj.position : [0, 0, 0],
-              rotation: Array.isArray(moduleObj.rotate) ? moduleObj.rotate : [0, 0, 0],
+              rotation: Array.isArray(moduleObj.rotation) ? moduleObj.rotation : [0, 0, 0],
               scale: Array.isArray(moduleObj.scale) ? moduleObj.scale : [1, 1, 1],
               nodePositions: [], 
               noOfBathRooms: moduleObj.module?.noOfBathrooms ?? 0,
