@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, Suspense } from "react";
+import  { useMemo, useEffect, Suspense } from "react";
 import { ContactShadows, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import EdgeModel from "./EdgeModel";

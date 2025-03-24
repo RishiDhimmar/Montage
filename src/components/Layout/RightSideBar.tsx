@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import textureStore from "../../stores/TextureStore";
 import modelStore from "../../stores/ModelStore";

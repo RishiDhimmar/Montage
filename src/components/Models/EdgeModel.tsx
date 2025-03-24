@@ -1,5 +1,5 @@
 import { Edges, Html } from "@react-three/drei";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import * as THREE from "three";

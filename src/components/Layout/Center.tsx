@@ -1,4 +1,4 @@
-import React, { useRef, useImperativeHandle, forwardRef } from "react";
+import  { useRef, useImperativeHandle, forwardRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { observer } from "mobx-react-lite";
 import modelStore from "../../stores/ModelStore";
