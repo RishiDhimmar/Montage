@@ -57,29 +57,11 @@ interface ModelViewerProps {
 const ModelViewer: React.FC<ModelViewerProps> = observer(({ id, modelPath, position }) => {
   const { nodes, scene } = useGLTF(modelPath);
 
-  // Convert nodes from useGLTF (Record<string, THREE.Object3D>) into ClonedNode objects.
-  const clonedNodes: Record<string, ClonedNode> = {};
-  Object.keys(nodes).forEach((key) => {
-    const obj = nodes[key];
-    // Process only nodes that are meshes (i.e. have a geometry)
-    if ((obj as THREE.Mesh).geometry) {
-      const mesh = obj as THREE.Mesh;
-      // If material is an array, take the first element; otherwise, use it directly.
-      const mat = mesh.material;
-      clonedNodes[key] = {
-        geometry: mesh.geometry,
-        material: Array.isArray(mat) ? mat[0] : mat || null,
-        name: mesh.name,
-        matrixWorld: mesh.matrixWorld,
-        parent: mesh.parent ? { name: mesh.parent.name, visible: mesh.parent.visible } : undefined,
-      };
-    }
-  });
-
+ 
   return modelStore.is3d ? (
     <Model3D
       id={id}
-      nodes={clonedNodes}
+      nodes={nodes}
       position={position}
       rotation={modelStore.getRotation(id) || [0, 0, 0]}
     />

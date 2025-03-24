@@ -77,7 +77,6 @@
 
 // export default EdgeModel;
 
-
 import React, { useState } from "react";
 import { Edges, Html } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
@@ -102,16 +101,24 @@ const EdgeModel: React.FC<EdgeModelProps> = observer(({ id, scene }) => {
   const model = modelStore.models.find((m) => m.id === id);
   if (!model) return null; // Ensure a valid model
 
+  console.log(model);
+
   const scale = model.scale || [1, 1, 1];
   const rotation = model.rotation || [0, 0, 0];
   const position = model.position || [0, 0, 0];
 
-  const { processedMeshes, corners } = useProcessedScene(scene, scale, id, position);
-  const { handlePointerDown, handlePointerMove, handlePointerUp } = useModelInteraction({
+  const { processedMeshes, corners } = useProcessedScene(
+    scene,
+    scale,
     id,
-    camera,
-    gl,
-  });
+    position
+  );
+  const { handlePointerDown, handlePointerMove, handlePointerUp } =
+    useModelInteraction({
+      id,
+      camera,
+      gl,
+    });
 
   return (
     <group
@@ -124,12 +131,19 @@ const EdgeModel: React.FC<EdgeModelProps> = observer(({ id, scene }) => {
       onPointerUp={handlePointerUp}
     >
       {modelStore.selectedModelId === id && (
-        <Html style={{ position: "absolute", top: "-210px", left: "-130px" }} zIndexRange={[0, 0]}>
+        <Html
+          style={{ position: "absolute", top: "-210px", left: "-130px" }}
+          zIndexRange={[0, 0]}
+        >
           <ModelToolbar />
         </Html>
       )}
       {processedMeshes.map((mesh, index) => (
-        <mesh key={`${mesh.name}-${id}-${index}`} geometry={mesh.geometry} material={mesh.material}>
+        <mesh
+          key={`${mesh.name}-${id}-${index}`}
+          geometry={mesh.geometry}
+          material={mesh.material}
+        >
           <Edges
             color={mesh.name.includes("Wall") ? "black" : "gray"}
             lineWidth={mesh.name.includes("Wall") ? 1 : 0.5}
@@ -137,8 +151,12 @@ const EdgeModel: React.FC<EdgeModelProps> = observer(({ id, scene }) => {
           />
         </mesh>
       ))}
-      {(modelStore.selectedModelId === id || hovered) && <BoundingBoxLine corners={corners} />}
-      {modelStore.selectedModelId === id && <BoundingBoxSpheres corners={corners} />}
+      {(modelStore.selectedModelId === id || hovered) && (
+        <BoundingBoxLine corners={corners} />
+      )}
+      {modelStore.selectedModelId === id && (
+        <BoundingBoxSpheres corners={corners} />
+      )}
     </group>
   );
 });
