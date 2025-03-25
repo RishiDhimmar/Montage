@@ -9,7 +9,6 @@ const loadTexture = async (url: string | undefined): Promise<THREE.Texture | nul
     new THREE.TextureLoader().load(
       localProxyUrl,
       (texture) => {
-        console.log(` Texture Loaded: ${url}`);
 
         texture.wrapS = THREE.MirroredRepeatWrapping
         texture.wrapT = THREE.MirroredRepeatWrapping

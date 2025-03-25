@@ -33,7 +33,7 @@ const TextureSection: React.FC<TextureSectionProps> = observer(({ section, index
       )}
       <div className="font-semibold mb-2">{section.title}</div>
 
-      <div className="flex gap-2 justify-center">
+      <div className="flex flex-wrap gap-2 justify-center cursor-pointer">
         {section.textures.map((texture) => (
           <TextureItem key={texture.id} texture={texture} sectionId={section.id} sectionName={section.title} />
         ))}
