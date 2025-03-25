@@ -27,8 +27,6 @@ const ModuleListItem: React.FC<ModuleItemProps> = ({
 }) => {
   const isSelected = modelStore.selectedModelId === Number(module.id);
 
-  console.log("Module data in ModuleListItem:", module);
-
   return (
     <div
       key={module.id}

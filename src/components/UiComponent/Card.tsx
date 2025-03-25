@@ -1,5 +1,6 @@
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
+// import { MdDelete } from "react-icons/md";
 
 interface CardProps {
   imageSrc: string;
@@ -8,6 +9,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ imageSrc, title, description }) => {
+  
   return (
     <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
       <div className="w-full p-5 ">
@@ -18,8 +20,9 @@ const Card: React.FC<CardProps> = ({ imageSrc, title, description }) => {
           <div>{title}</div>
           <div className="text-gray-700 text-sm">{description}</div>
         </div>
-        <div className=" ">
+        <div className=" " onClick={() => {}}>
           <HiDotsHorizontal />
+          {/* <MdDelete/> */}
         </div>
       </div>
     </div>
