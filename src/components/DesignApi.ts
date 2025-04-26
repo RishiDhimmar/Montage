@@ -1,4 +1,3 @@
-
 import { AUTH_TOKEN, BASE_URL } from "../Constants";
 
 interface ConfiguredStyle {
@@ -53,12 +52,27 @@ export async function saveDesign(
   textureStore: TextureStore,
   modelStore: ModelStore
 ): Promise<SaveDesignResponse | null> {
-  const configuredStyle: ConfiguredStyle[] = Object.entries(textureStore.selectedTextures).map(
-    ([subStyleId, texture]) => ({
-      subStyleId: Number(subStyleId),
+  console.log(textureStore.selectedTextures, "selectedTextures");
+
+  const categoryToSubStyleId: Record<string, number> = {};
+  let currentId = 1;
+
+  Object.keys(textureStore.selectedTextures)
+    .slice(0, 9)
+    .forEach((categoryTitle) => {
+      if (!categoryToSubStyleId[categoryTitle] && currentId <= 9) {
+        categoryToSubStyleId[categoryTitle] = currentId++;
+      }
+    });
+
+  const configuredStyle: ConfiguredStyle[] = Object.entries(
+    textureStore.selectedTextures
+  )
+    .slice(0, 9)
+    .map(([categoryTitle, texture]) => ({
+      subStyleId: categoryToSubStyleId[categoryTitle],
       selectedMaterialId: texture ? texture.id : null,
-    })
-  );
+    }));
 
   const moduleArr: Module[] = modelStore.models.map((model) => ({
     moduleId: model.moduleId || 0,
@@ -72,27 +86,28 @@ export async function saveDesign(
     name: designName,
     styleId: 1,
     version: "0.0.1",
-    configuredStyle,
+    configuredStyle, // Now guaranteed to have ≤9 items
     moduleArr,
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/design?portfolioId=${portfolioId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${AUTH_TOKEN}`,
-      },
-      body: JSON.stringify(payload),
-    });
+    const response = await fetch(
+      `${BASE_URL}/design?portfolioId=${portfolioId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${AUTH_TOKEN}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to save design");
     }
 
-    const data: SaveDesignResponse = await response.json();
-    console.log("Design saved successfully:", data);
-    return data;
+    return await response.json();
   } catch (error) {
     console.error("Error saving design:", error);
     return null;
