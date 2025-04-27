@@ -4,24 +4,28 @@ interface InputBoxProps {
   label: string;
   type?: string;
   placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputBox: React.FC<InputBoxProps> = ({
   label,
   type = "text",
-  placeholder = "", // Default position in 3D space
+  placeholder = "",
+  value,
+  onChange,
 }) => {
   return (
-    
-      <div className="w-full">
-        <label className="block text-gray-700 font-sm">{label}</label>
-        <input
-          type={type}
-          placeholder={placeholder}
-          className="w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-    
+    <div className="w-full">
+      <label className="block text-gray-700 font-sm mb-1">{label}</label>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className="w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
   );
 };
 
